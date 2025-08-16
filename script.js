@@ -114,27 +114,3 @@ document.addEventListener('DOMContentLoaded', () => {
     cards.forEach(card => card.classList.add('visible'));
   }
 });
-    const images = document.querySelectorAll('.gallery img');
-    const modal = document.getElementById('imageModal');
-    const modalImg = document.getElementById('modalImg');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalDesc = document.getElementById('modalDesc');
-
-    images.forEach((img, index) => {
-      img.addEventListener('click', () => {
-        modal.style.display = 'flex';
-        modalImg.src = img.src;
-        modalTitle.innerText = `Image ${index + 1}`;
-        modalDesc.innerText = `This is the description for image ${index + 1}.`;
-      });
-    });
-
-    function closeModal() {
-      modal.style.display = 'none';
-    }
-
-    window.onclick = function(e) {
-      if (e.target == modal) {
-        closeModal();
-      }
-    }
