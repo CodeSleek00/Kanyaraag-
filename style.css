@@ -284,6 +284,9 @@ header {
     .occasion-card:hover::before {
       background: rgba(0,0,0,0.1);
     }
+    .shop {
+      margin:10px;
+    }
 
     .occasion-card img {
       width: 100%;
