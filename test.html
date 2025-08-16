@@ -1,33 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Big Pyramid Gallery</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
-      background: #fff0f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       font-family: Arial, sans-serif;
-      overflow: hidden;
+      background: #fff0f6;
+      
     }
 
     .gallery {
       position: relative;
-      width: 90%;
-      max-width: 1200px;
-      height: 90%;
+      width: 100%;
+      height: 80vh;
     }
 
     .gallery img {
+      position: absolute;
       border-radius: 12px;
       box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-      position: absolute;
       cursor: pointer;
       transition: transform 0.3s ease-in-out;
     }
@@ -37,29 +36,29 @@
       z-index: 10;
     }
 
-    /* Pyramid Core */
-    .main { width: 220px; top: 40%; left: 45%; z-index: 5; }
-    .layer2-left { width: 180px; top: 45%; left: 30%; transform: rotate(-5deg); }
-    .layer2-right { width: 180px; top: 45%; left: 60%; transform: rotate(5deg); }
-    .layer3-left { width: 150px; top: 55%; left: 25%; transform: rotate(-8deg); }
-    .layer3-right { width: 150px; top: 55%; left: 65%; transform: rotate(8deg); }
+    /* Pyramid Core - Sizes use vw (viewport width) for responsiveness */
+    .main { width: 25vw; top: 40%; left: 45%; z-index: 5; }
+    .layer2-left { width: 20vw; top: 45%; left: 30%; transform: rotate(-5deg); }
+    .layer2-right { width: 20vw; top: 45%; left: 60%; transform: rotate(5deg); }
+    .layer3-left { width: 17vw; top: 55%; left: 25%; transform: rotate(-8deg); }
+    .layer3-right { width: 17vw; top: 55%; left: 65%; transform: rotate(8deg); }
 
-    /* Extra Side Cluster Images */
-    .top1 { width: 140px; top: 5%; left: 40%; }
-    .top2 { width: 120px; top: 10%; left: 55%; }
-    .top3 { width: 100px; top: 15%; left: 30%; }
+    /* Cluster Images */
+    .top1 { width: 15vw; top: 5%; left: 40%; }
+    .top2 { width: 13vw; top: 10%; left: 55%; }
+    .top3 { width: 11vw; top: 15%; left: 30%; }
 
-    .bottom1 { width: 140px; bottom: 5%; left: 45%; }
-    .bottom2 { width: 120px; bottom: 10%; left: 60%; }
-    .bottom3 { width: 100px; bottom: 15%; left: 30%; }
+    .bottom1 { width: 15vw; bottom: 5%; left: 45%; }
+    .bottom2 { width: 13vw; bottom: 10%; left: 60%; }
+    .bottom3 { width: 11vw; bottom: 15%; left: 30%; }
 
-    .left1 { width: 120px; top: 25%; left: 10%; }
-    .left2 { width: 100px; top: 55%; left: 5%; }
-    .left3 { width: 140px; top: 70%; left: 15%; }
+    .left1 { width: 13vw; top: 25%; left: 10%; }
+    .left2 { width: 11vw; top: 55%; left: 5%; }
+    .left3 { width: 14vw; top: 70%; left: 15%; }
 
-    .right1 { width: 120px; top: 20%; right: 10%; }
-    .right2 { width: 100px; top: 50%; right: 5%; }
-    .right3 { width: 140px; top: 70%; right: 15%; }
+    .right1 { width: 13vw; top: 20%; right: 10%; }
+    .right2 { width: 11vw; top: 50%; right: 5%; }
+    .right3 { width: 14vw; top: 70%; right: 15%; }
 
     /* Modal Popup */
     .modal {
@@ -78,7 +77,7 @@
     .modal-content {
       background: #fff;
       border-radius: 12px;
-      max-width: 500px;
+      max-width: 90vw;
       padding: 20px;
       text-align: center;
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
@@ -131,6 +130,12 @@
       cursor: pointer;
       color: #333;
     }
+
+    @media (max-width: 600px) {
+      .gallery {
+        height: 0vh;
+      }
+    }
   </style>
 </head>
 <body>
@@ -143,7 +148,7 @@
     <img src="photos/12.jpeg" class="layer3-left" alt="">
     <img src="photos/12.jpeg" class="layer3-right" alt="">
 
-    <!-- Many More Side Photos -->
+    <!-- Side Photos -->
     <img src="photos/12.jpeg" class="top1" alt="">
     <img src="photos/12.jpeg" class="top2" alt="">
     <img src="photos/12.jpeg" class="top3" alt="">
@@ -198,5 +203,6 @@
       }
     }
   </script>
+
 </body>
 </html>
