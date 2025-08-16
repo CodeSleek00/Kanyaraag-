@@ -238,7 +238,135 @@ header {
     background-image: url('photos/3.jpg');
   }
 }
+ /* Shop by occasion */
+    .occasion-section {
+      padding: 20px;
+      max-width: 1400px;
+      margin: auto;
+    }
 
+    .occasion-section h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* Desktop Grid (3 columns) */
+    .occasion-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 250px;
+      gap: 15px;
+    }
+
+    .occasion-card {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .occasion-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.3);
+      transition: background 0.3s ease;
+      z-index: 1;
+    }
+
+    .occasion-card:hover::before {
+      background: rgba(0,0,0,0.1);
+    }
+
+    .occasion-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Special styling for the wedding card */
+    .occasion-card.large {
+      grid-row: span 2;
+    }
+
+    /* Make sure wedding image fills properly */
+    .occasion-card.large img {
+      object-position: center top;
+    }
+
+    .occasion-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      z-index: 2;
+    }
+
+    /* Mobile Layout */
+    @media (max-width: 768px) {
+      .occasion-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .occasion-card {
+        width: 100%;
+        height: 150px;
+      }
+
+      /* Wedding card should be same height as others on mobile */
+      .occasion-card.large {
+        height: 150px;
+      }
+
+      /* Next 4 cards take half width */
+      .occasion-card:nth-child(n+2):nth-child(-n+5) {
+        width: calc(50% - 5px);
+      }
+
+      .overlay {
+        padding: 15px 10px;
+        font-size: 16px;
+      }
+    }
+
+    /* For very small screens */
+    @media (max-width: 480px) {
+      .occasion-card {
+        height: 120px;
+      }
+      
+      .occasion-card.large {
+        height: 120px;
+      }
+      
+      .overlay {
+        font-size: 14px;
+        padding: 10px 5px;
+      }
+    }
 /* Slider Navigation */
 .click-area {
   position: absolute;
