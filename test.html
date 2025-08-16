@@ -1,208 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Big Pyramid Gallery</title>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>In High Demand</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: #fff0f6;
-      
+      font-family: 'Playfair Display', serif;
+      background-color: #fff5eb;
     }
-
-    .gallery {
-      position: relative;
-      width: 100%;
-      height: 80vh;
-    }
-
-    .gallery img {
-      position: absolute;
+    .card {
+      background: white;
       border-radius: 12px;
-      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-      cursor: pointer;
-      transition: transform 0.3s ease-in-out;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-
-    .gallery img:hover {
-      transform: scale(1.08);
-      z-index: 10;
+    .card-image-container {
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
     }
-
-    /* Pyramid Core - Sizes use vw (viewport width) for responsiveness */
-    .main { width: 25vw; top: 40%; left: 45%; z-index: 5; }
-    .layer2-left { width: 20vw; top: 45%; left: 30%; transform: rotate(-5deg); }
-    .layer2-right { width: 20vw; top: 45%; left: 60%; transform: rotate(5deg); }
-    .layer3-left { width: 17vw; top: 55%; left: 25%; transform: rotate(-8deg); }
-    .layer3-right { width: 17vw; top: 55%; left: 65%; transform: rotate(8deg); }
-
-    /* Cluster Images */
-    .top1 { width: 15vw; top: 5%; left: 40%; }
-    .top2 { width: 13vw; top: 10%; left: 55%; }
-    .top3 { width: 11vw; top: 15%; left: 30%; }
-
-    .bottom1 { width: 15vw; bottom: 5%; left: 45%; }
-    .bottom2 { width: 13vw; bottom: 10%; left: 60%; }
-    .bottom3 { width: 11vw; bottom: 15%; left: 30%; }
-
-    .left1 { width: 13vw; top: 25%; left: 10%; }
-    .left2 { width: 11vw; top: 55%; left: 5%; }
-    .left3 { width: 14vw; top: 70%; left: 15%; }
-
-    .right1 { width: 13vw; top: 20%; right: 10%; }
-    .right2 { width: 11vw; top: 50%; right: 5%; }
-    .right3 { width: 14vw; top: 70%; right: 15%; }
-
-    /* Modal Popup */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 100;
-      left: 0;
-      top: 0;
+    .card-image {
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
+      object-fit: cover;
     }
-
-    .modal-content {
-      background: #fff;
-      border-radius: 12px;
-      max-width: 90vw;
-      padding: 20px;
+    .card-details {
+      padding: 1rem;
+    }
+    .card-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: #374151;
+    }
+    .card-description {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+    .card-price {
+      font-weight: 600;
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+      color: #3a3a3a;
+    }
+    .heading {
       text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      position: relative;
-      animation: zoomIn 0.3s ease;
+      font-size: 2rem;
+      margin-bottom: 2rem;
     }
-
-    @keyframes zoomIn {
-      from { transform: scale(0.7); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .modal-content img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-
-    .modal-content h3 {
-      margin: 10px 0;
-      font-size: 20px;
-    }
-
-    .modal-content p {
-      font-size: 14px;
-      margin-bottom: 15px;
-      color: #555;
-    }
-
-    .modal-content button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background: #e91e63;
+    .view-all-btn {
+      display: block;
+      margin: 2rem auto 0;
+      padding: 0.75rem 2rem;
+      background-color: #3a3a3a;
       color: white;
-      font-size: 14px;
+      border-radius: 30px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s ease;
     }
-
-    .modal-content button:hover {
-      background: #ad1457;
-    }
-
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 22px;
-      cursor: pointer;
-      color: #333;
-    }
-
-    @media (max-width: 600px) {
-      .gallery {
-        height: 0vh;
-      }
+    .view-all-btn:hover {
+      background-color: #2a2a2a;
+      transform: translateY(-2px);
     }
   </style>
 </head>
 <body>
+  <section class="container mx-auto px-4 py-10">
+    <h2 class="heading">In High Demand</h2>
 
-  <div class="gallery">
-    <!-- Pyramid -->
-    <img src="photos/12.jpeg" class="main" alt="Main">
-    <img src="photos/12.jpeg" class="layer2-left" alt="">
-    <img src="photos/12.jpeg" class="layer2-right" alt="">
-    <img src="photos/12.jpeg" class="layer3-left" alt="">
-    <img src="photos/12.jpeg" class="layer3-right" alt="">
+    <!-- Swiper Container -->
+    <div class="swiper">
+      <div class="swiper-wrapper">
 
-    <!-- Side Photos -->
-    <img src="photos/12.jpeg" class="top1" alt="">
-    <img src="photos/12.jpeg" class="top2" alt="">
-    <img src="photos/12.jpeg" class="top3" alt="">
+        <!-- Card 1 -->
+        <div class="swiper-slide">
+          <div class="card">
+            <div class="card-image-container">
+              <img class="card-image" src="https://storage.googleapis.com/a1aa/image/460c5b75-dcb3-46c4-f9d1-79b947384aab.jpg" alt="lehenga 1">
+            </div>
+            <div class="card-details">
+              <p class="card-title">Ariyana By Aza</p>
+              <p class="card-description">Pink Silk, Net, Georgette Sequins lehenga with matching dupatta</p>
+              <p class="card-price">₹16,275</p>
+            </div>
+          </div>
+        </div>
 
-    <img src="photos/12.jpeg" class="bottom1" alt="">
-    <img src="photos/12.jpeg" class="bottom2" alt="">
-    <img src="photos/12.jpeg" class="bottom3" alt="">
+        <!-- Card 2 -->
+        <div class="swiper-slide">
+          <div class="card">
+            <div class="card-image-container">
+              <img class="card-image" src="https://storage.googleapis.com/a1aa/image/8b83a021-c58d-4c05-aeec-ef7fcf318d21.jpg" alt="lehenga 2">
+            </div>
+            <div class="card-details">
+              <p class="card-title">Paulmi And Harsh</p>
+              <p class="card-description">Pink Georgette, Cotton Silk Bird printed lehenga with floral patterns</p>
+              <p class="card-price">₹22,140</p>
+            </div>
+          </div>
+        </div>
 
-    <img src="photos/12.jpeg" class="left1" alt="">
-    <img src="photos/12.jpeg" class="left2" alt="">
-    <img src="photos/12.jpeg" class="left3" alt="">
+        <!-- Card 3 -->
+        <div class="swiper-slide">
+          <div class="card">
+            <div class="card-image-container">
+              <img class="card-image" src="https://storage.googleapis.com/a1aa/image/6f239880-b4a4-4292-31a7-1ea175682c51.jpg" alt="lehenga 3">
+            </div>
+            <div class="card-details">
+              <p class="card-title">Charu And Vasundhara</p>
+              <p class="card-description">Maroon Silk, Embroidered Pre-stitched lehenga with layered skirt</p>
+              <p class="card-price">₹41,200</p>
+            </div>
+          </div>
+        </div>
 
-    <img src="photos/12.jpeg" class="right1" alt="">
-    <img src="photos/12.jpeg" class="right2" alt="">
-    <img src="photos/12.jpeg" class="right3" alt="">
-  </div>
+        <!-- Card 4 -->
+        <div class="swiper-slide">
+          <div class="card">
+            <div class="card-image-container">
+              <img class="card-image" src="https://storage.googleapis.com/a1aa/image/edd86093-7721-45e2-96c3-404ce842fcbf.jpg" alt="lehenga 4">
+            </div>
+            <div class="card-details">
+              <p class="card-title">Mahima Mahajan</p>
+              <p class="card-description">Burgundy Organza Beaded lehenga with intricate handwork</p>
+              <p class="card-price">₹85,000</p>
+            </div>
+          </div>
+        </div>
 
-  <!-- Modal -->
-  <div class="modal" id="imageModal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <img id="modalImg" src="" alt="">
-      <h3 id="modalTitle">Image Title</h3>
-      <p id="modalDesc">This is a sample description of the image.</p>
-      <a href="index.html"><button>Know More</button></a>
+      </div>
+
+      <!-- Pagination Dots -->
+      <div class="swiper-pagination"></div>
     </div>
-  </div>
 
+    <button class="view-all-btn">View All Collections</button>
+  </section>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
-    const images = document.querySelectorAll('.gallery img');
-    const modal = document.getElementById('imageModal');
-    const modalImg = document.getElementById('modalImg');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalDesc = document.getElementById('modalDesc');
-
-    images.forEach((img, index) => {
-      img.addEventListener('click', () => {
-        modal.style.display = 'flex';
-        modalImg.src = img.src;
-        modalTitle.innerText = `Image ${index + 1}`;
-        modalDesc.innerText = `This is the description for image ${index + 1}.`;
-      });
-    });
-
-    function closeModal() {
-      modal.style.display = 'none';
-    }
-
-    window.onclick = function(e) {
-      if (e.target == modal) {
-        closeModal();
+    var swiper = new Swiper(".swiper", {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: true,
+      autoplay: {
+        delay: 2500, // auto slide time
+        disableOnInteraction: false,
+      },
+      speed: 800, // smooth transition speed
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      // ✨ Touch swipe always enabled (works on image also)
+      touchEventsTarget: "container",
+      grabCursor: true,
+      breakpoints: {
+        640: { slidesPerView: 2 },
+        768: { slidesPerView: 3 },
+        1024: { slidesPerView: 4 }
       }
-    }
+    });
   </script>
-
 </body>
 </html>
