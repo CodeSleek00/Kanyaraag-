@@ -9,7 +9,7 @@
 body {
   font-family: 'Outfit', sans-serif;
   line-height: 1.6;
-  padding-top: 96px;
+  padding-top: 70px;
   /* Account for sticky header height */
 }
 /* Utility Classes */
@@ -30,7 +30,7 @@ body {
 .breaking-news-container {
   background-color: #C75D2c;
   color: #fff;
-  padding: 12px 20px;
+  padding: 1px 20px;
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -647,7 +647,7 @@ header {
 
   .news-items {
     height: auto;
-    min-height: 24px;
+    min-height: 20px;
   }
 
   .news-item {
@@ -684,12 +684,12 @@ header {
 
 @media (max-width: 480px) {
   body {
-    padding-top: 100px;
+    padding-top:70px;
     /* Further adjustment for smaller screens */
   }
 
   .breaking-news-container {
-    padding: 10px 15px;
+    padding: 5px 15px;
   }
 
   .news-item {
