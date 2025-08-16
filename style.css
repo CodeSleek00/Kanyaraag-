@@ -177,9 +177,14 @@ header {
 /* Hero Slider */
 .hero {
   position: relative;
-  width: 100%;
+  width: 92%;
   overflow: hidden;
   height: 70vh;
+  border-radius: 20px;
+
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 }
 
 .slides {
