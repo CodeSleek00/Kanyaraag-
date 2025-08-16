@@ -12,7 +12,10 @@ body {
   padding-top: 96px;
   /* Account for sticky header height */
 }
-
+ .shop h1{
+      margin-top:40px;
+       color: #C75D2c;
+    }
 /* Utility Classes */
 .kanya {
   color: #C75D2c;
@@ -284,10 +287,7 @@ header {
     .occasion-card:hover::before {
       background: rgba(0,0,0,0.1);
     }
-    .shop h1{
-      margin-top:40px;
-       color: #C75D2c;
-    }
+   
 
     .occasion-card img {
       width: 100%;
