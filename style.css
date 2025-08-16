@@ -177,7 +177,7 @@ header {
 /* Hero Slider */
 .hero {
   position: relative;
-  width: 2%;
+  width: 90%;
   overflow: hidden;
   height: 70vh;
   border-radius: 20px;
