@@ -230,15 +230,15 @@ header {
 
 @media (max-width: 767px) {
   .slide:nth-child(1) {
-    background-image: url('photos/4.jpg');
+    background-image: url('photos/1.jpg');
   }
 
   .slide:nth-child(2) {
-    background-image: url('photos/5.jpg');
+    background-image: url('photos/2.jpg');
   }
 
   .slide:nth-child(3) {
-    background-image: url('photos/6.jpg');
+    background-image: url('photos/3.jpg');
   }
 }
  /* Shop by occasion */
