@@ -12,9 +12,9 @@ body {
   padding-top: 96px;
   /* Account for sticky header height */
 }
- .shop h1{
+ h1{
       margin-top:40px;
-       color: #C75D2c;
+      color: #C75D2c;
     }
 /* Utility Classes */
 .kanya {
