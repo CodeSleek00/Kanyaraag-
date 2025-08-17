@@ -138,3 +138,24 @@ document.addEventListener('DOMContentLoaded', () => {
         closeModal();
       }
     }
+        document.querySelectorAll('.editorcard').forEach(editorcard => {
+      editorcard.addEventListener('click', () => {
+        // Close any already open card
+        const currentActive = document.querySelector('.editorcard.active');
+        if (currentActive && currentActive !== editorcard) {
+          currentActive.classList.remove('active');
+        }
+        
+        // Toggle clicked card
+        editorcard.classList.toggle('active');
+      });
+    });
+    
+    // Close card when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.editorcard')) {
+        document.querySelectorAll('.editorcard').forEach(card => {
+          card.classList.remove('active');
+        });
+      }
+    });
