@@ -159,3 +159,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     });
+     // JS for scroll indicators
+    const featureContainer = document.getElementById('featureScrollContainer');
+    const featureDots = document.querySelectorAll('.feature-dot');
+
+    featureContainer.addEventListener('scroll', () => {
+      const scrollPercentage = featureContainer.scrollLeft / (featureContainer.scrollWidth - featureContainer.clientWidth);
+      const activeDot = Math.round(scrollPercentage * (featureDots.length - 1));
+
+      featureDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === activeDot);
+      });
+    });
