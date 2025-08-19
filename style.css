@@ -181,10 +181,13 @@ body {
       max-width: 1280px;
       margin: 0 auto;
       padding: 24px 16px;
+      padding-top: 0;
+      background-color: #fff4ef;
     }
 
     .feature-title {
-      font-size: 24px;
+      text-align: center;
+      font-size: 32px;
       font-weight: bold;
       color: #1a1a1a;
       margin-bottom: 16px;
@@ -297,6 +300,9 @@ body {
     @media(min-width:768px) {
       .feature-indicators {
         display: none;
+      }
+      .feature-container {
+        padding-top:  0;
       }
     }
 /* Sticky Header */
