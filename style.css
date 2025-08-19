@@ -993,7 +993,7 @@ header {
         text-align: center;
         font-size: 34px;
         font-weight: bold;
-        margin: 20px 0;
+        margin: 10px 0;
         color: #333;
     }
      .container {
@@ -1001,7 +1001,7 @@ header {
       margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(4, 1fr); /* 4 cards on desktop */
-      gap: 30px;
+      gap: 2vh;
     }
     .card {
       background: white;
