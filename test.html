@@ -12,25 +12,33 @@
   
   <style>
     .demanding-container {
-      background-color: #fff5eb;
+      background-color: #fffdf9;
       border-radius: 20px;
       margin: 10px;
     }
     .demanding-card {
       background: white;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .demanding-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
     }
     .demanding-card-image-container {
       width: 100%;
-      height: auto;
       overflow: hidden;
     }
     .demanding-card-image {
       width: 100%;
-      height: 100%;
+      height: auto;
       object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .demanding-card:hover .demanding-card-image {
+      transform: scale(1.05);
     }
     .demanding-card-details {
       padding: 1rem;
@@ -38,23 +46,46 @@
     .demanding-card-title {
       font-weight: 600;
       font-size: 1.1rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       color: #374151;
     }
     .demanding-card-description {
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       color: #6b7280;
+      line-height: 1.4;
     }
     .demanding-card-price {
       font-weight: 600;
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
       font-size: 1.1rem;
-      color: #3a3a3a;
+      color: #111827;
     }
     .demanding-heading {
       text-align: center;
-      font-size: 2rem;
+      font-size: 1.9rem;
+      font-weight: 700;
       margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+    .demanding-heading::after {
+      content: "";
+      position: absolute;
+      width: 60%;
+      height: 3px;
+      background: linear-gradient(90deg, #f472b6, #f59e0b);
+      left: 20%;
+      bottom: -8px;
+      border-radius: 6px;
+    }
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: #f472b6; /* pink shade */
+      transition: all 0.3s ease;
+    }
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+      color: #f59e0b; /* amber shade */
     }
     .swiper-pagination {
       display: none;
@@ -63,10 +94,10 @@
 </head>
 <body>
   <section class="demanding-container mx-auto px-4 py-10">
-    <h2 class="demanding-heading">In High Demand</h2>
+    <h2 class="demanding-heading mx-auto block">In High Demand</h2>
 
     <!-- Swiper Container -->
-    <div class="swiper">
+    <div class="swiper mt-8 relative">
       <div class="swiper-wrapper">
 
         <!-- Card 1 -->
@@ -135,6 +166,10 @@
 
       </div>
 
+      <!-- Navigation Arrows -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+
       <!-- Pagination Dots -->
       <div class="swiper-pagination"></div>
     </div>
@@ -148,7 +183,7 @@
       spaceBetween: 20,
       loop: true,
       autoplay: {
-        delay: 2500,
+        delay: 3000,
         disableOnInteraction: false,
       },
       speed: 800,
@@ -156,7 +191,10 @@
         el: ".swiper-pagination",
         clickable: true,
       },
-      touchEventsTarget: "container",
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
       grabCursor: true,
       breakpoints: {
         640: { slidesPerView: 2 },

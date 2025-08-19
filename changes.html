@@ -1,97 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking Section</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #fff;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
 
-    .booking {
-     background: #fcebeb;
-background: radial-gradient(circle, rgba(252, 235, 235, 1) 0%, rgba(247, 228, 247, 0.97) 100%);
+    .editorcontainer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 50px;
+
+    }
+    
+    
+    .editorgallery {
+      position: relative;
+      width: 100%;
+      height: 400px;
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
-      padding: 25px;
-      border-radius: 10px;
-      margin: 20px auto;
-      
-      gap: 30px;
-      flex-wrap: wrap;
+      margin-bottom: 60px;
     }
-
-    .video-call {
-      flex: 1 1 250px;
-      text-align: center;
-      padding: 15px;
-    }
-
-    .video-call img {
-      margin-bottom: 10px;
-    }
-
-    .video-call h3 {
-      margin: 8px 0 5px;
-      font-size: 1.1rem;
-      color: #333;
-    }
-
-    .video-call p {
-      font-size: 0.95rem;
-      color: #555;
-      margin-bottom: 12px;
-    }
-
-    .video-call button {
-      padding: 12px 16px;
-     border: none;
-      background:white;
-      color: black;
+    
+    .editorcard {
+      position: absolute;
+      width: 200px;
+      height: auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
       cursor: pointer;
-      font-size: 0.9rem;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+      display: flex;
+      flex-direction: column;
     }
-
-    .video-call button:hover {
+    
+    .editorcard img {
+      width: 100%;
+      height: 70%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    
+    .carntent {
+      padding: 15px;
+      background: white;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .editorcard h3 {
+      font-size: 15px;
+      margin: 0 0 5px;
+      font-weight: 500;
+      color: var(--primary);
+    }
+    
+    .editorcard p {
+      font-size: 13px;
+      color: var(--secondary);
+      margin: 0 0 10px;
+      flex-grow: 1;
+    }
+    
+    .editorcard a {
+      display: inline-block;
+      padding: 6px 12px;
       background: black;
-      color: #fff;
-      transition: 0.5s ease;
+      color: white;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 12px;
+      text-align: center;
+      transition: all 0.3s ease;
     }
-
-    @media (max-width: 768px) {
-      .booking {
-        flex-direction: column;
-        text-align: center;
-        padding: 0px;
+    
+    .editorcard a:hover {
+      background: var(--accent);
+      color: rgb(7, 6, 6);
+    }
+    
+    /* Stacked positions */
+    .left3 { transform: translateX(-350px) scale(0.85); z-index: 4; opacity: 0.9; }
+    .left2 { transform: translateX(-250px) scale(0.9); z-index: 3; opacity: 0.8; }
+    .left1 { transform: translateX(-120px) scale(0.95); z-index: 2; opacity: 0.7; }
+    .main  { transform: scale(1); z-index: 1;opacity: 0.7; }
+    .right1{ transform: translateX(120px) scale(0.95); z-index: 2; opacity: 0.7; }
+    .right2{ transform: translateX(250px) scale(0.9); z-index: 3; opacity: 0.8; }
+    .right3{ transform: translateX(350px) scale(0.85); z-index: 4; opacity: 0.9; }
+    
+    /* Active state */
+    .editorcard.active {
+      transform: translateX(0) scale(1.1);
+      z-index: 10;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    }
+    
+    .editorcard.active img {
+      transform: scale(1.05);
+    }
+    
+    /* Responsive */
+    @media (max-width: 900px) {
+      .editorgallery {
+        height: 350px;
       }
-      .video-call {
-        border-right: none !important;
-        border-bottom: 1px solid #fff;
+      .editorcontainer{
+        padding: 30px;
+        padding-bottom: 0;
       }
-      .video-call:last-child {
-        border-bottom: none;
+      .editorcard {
+        width: 160px;
+        height: auto;
+      }
+      
+      .left3 { transform: translateX(-350px) scale(0.85); }
+      .left2 { transform: translateX(-200px) scale(0.9); }
+      .left1 { transform: translateX(-100px) scale(0.95); }
+      .right1{ transform: translateX(100px) scale(0.95); }
+      .right2{ transform: translateX(200px) scale(0.9); }
+      .right3{ transform: translateX(350px) scale(0.85); }
+    }
+    
+    @media (max-width: 600px) {
+      .editorgallery {
+        height: 300px;
+      }
+      
+      .editorcard {
+        width: 130px;
+        height: auto;
+      }
+      
+      .left3 { display: none;}
+      .left2 { transform: translateX(-130px) scale(0.85); opacity: 0.7; }
+      .left1 { transform: translateX(-60px) scale(0.9); opacity: 0.8; }
+      .main  { transform: scale(0.95);z-index: 1 }
+      .right1{ transform: translateX(60px) scale(0.95); opacity: 0.8; }
+      .right2{ transform: translateX(130px) scale(0.85); opacity: 0.7; }
+      .right3{ display: none; }
+      
+      .editorcard.active {
+        transform: translateX(0) scale(1);
+      }
+      
+      .carntent {
+        padding: 10px;
+      }
+      
+      .editorcard h3 {
+        font-size: 13px;
+      }
+      
+      .editorcard p {
+        font-size: 11px;
+      }
+      
+      .editorcard a {
+        padding: 4px 8px;
+        font-size: 11px;
       }
     }
-  </style>
+    </style>
 </head>
 <body>
-  <div class="booking">
-    <div class="video-call" style="border-right: 1px solid #fff;">
-      <img width="70" height="70" src="https://img.icons8.com/external-vectorslab-detailed-outline-vectorslab/100/external-Video-Call-finance-vectorslab-detailed-outline-vectorslab.png" alt="video-call"/>
-      <h3>Shop Via Video Call</h3>
-      <p>Get a free Virtual styling Session</p>
-      <button>BOOK AN APPOINTMENT</button>
-    </div>   
-    <div class="video-call">
-      <img width="70" height="70" src="https://img.icons8.com/parakeet-line/100/wedding-dress.png" alt="wedding-dress"/>
-      <h3>Customise Dress for You</h3>
-      <p>Get a Customisable Dress Design</p>
-      <button>CONTACT US</button>
-    </div>
-  </div>
+    
+   <h1 style="text-align:center;">Editor's Pick</h1>
+    <div class="editorcontainer">
+    <div class="editorgallery">
+      <div class="editorcard left3">
+        <img src="photos/12.jpeg" alt="Art">
+        <div class="carntent">
+          <h3>Modern Architecture</h3>
+          <p>Innovative structures shaping our cities.</p>
+          <a href="#">Discover</a>
+        </div>
+      </div>
+      
+      <div class="editorcard left2">
+        <img src="photos/12.jpeg" alt="Art">
+        <div class="carntent">
+          <h3>Modern Architecture</h3>
+          <p>Innovative structures shaping our cities.</p>
+          <a href="#">Discover</a>
+        </div>
+      </div>
+      
+      <div class="editorcard left1">
+        <img src="photos/12.jpeg" alt="Art">
+        <div class="carntent">
+          <h3>Contemporary Art</h3>
+          <p>Thought-provoking works from emerging artists.</p>
+          <a href="#">View</a>
+        </div>
+      </div>
+      
+      <div class="editorcard main">
+        <img src="photos/12.jpeg" alt="Art">
+        <div class="carntent">
+          <h3>Photography</h3>
+          <p>Capturing moments with unique perspectives.</p>
+          <a href="#">See More</a>
+        </div>
+      </div>
+      
+      <div class="editorcard right1">
+        <img src="photos/12.jpeg" alt="Art">
+        <div class="carntent">
+          <h3>Fashion Trends</h3>
+          <p>Current styles making waves this season.</p>
+          <a href="#">Browse</a>
+        </div>
+      </div>
+      
+      <div class="editorcard right2">
+        <img src="photos/12.jpeg" alt="Art">
+        <div class="carntent">
+          <h3>Travel Destinations</h3>
+          <p>Hidden gems worth exploring this year.</p>
+          <a href="#">Plan</a>
+        </div>
+      </div>
+      <div class="editorcard right3">
+        <img src="photos/12.jpeg" alt="Art">
+        <div class="carntent">
+          <h3>Travel Destinations</h3>
+          <p>Hidden gems worth exploring this year.</p>
+          <a href="#">Plan</a>
+        </div>
+      </div>
+     
 </body>
 </html>
