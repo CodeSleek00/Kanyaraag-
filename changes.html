@@ -1,15 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Aza Fashion</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <style>
+    .feature-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    .feature-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin-bottom: 16px;
+    }
+
+    .feature-subtitle {
+      color: #555;
+      margin-bottom: 24px;
+    }
+
+    /* Scroll container */
+    .feature-scroll-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 16px;
+      padding-bottom: 16px;
+      scroll-behavior: smooth;
+    }
+
+    /* Custom scrollbar */
+    .feature-scroll-container::-webkit-scrollbar {
+      height: 6px;
+    }
+    .feature-scroll-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    .feature-scroll-container::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+    .feature-scroll-container::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    /* Card */
+    .feature-card {
+      flex: 0 0 80%;
+      background: #fff;
+      margin-right: 10px;
+      border-right: 2px solid rgb(247, 158, 42);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media(min-width: 768px) {
+      .feature-card {
+        flex: 0 0 30%;
+      }
+    }
+
+    .feature-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .feature-card-content {
+      padding: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1a1a1a;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 16px;
+    }
+
+    .feature-btn {
+      display: inline-block;
+      border: 1px solid #000;
+      padding: 8px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .feature-btn:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* Scroll indicator (mobile only) */
+    .feature-indicators {
+      display: flex;
+      justify-content: center;
+      margin-top: 16px;
+      gap: 8px;
+    }
+
+    .feature-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #bbb;
+    }
+
+    .feature-dot.active {
+      background: #333;
+    }
+
+    @media(min-width:768px) {
+      .feature-indicators {
+        display: none;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <h1>haa</h1>
-    <p>This is a paragraph</p>
-</body>
+  <div class="feature-container">
+    <h2 class="feature-title">Featured Stories</h2>
+    <p class="feature-subtitle">Swipe horizontally to view all featured content</p>
 
+    <!-- Horizontal scroll -->
+    <div class="feature-scroll-container" id="featureScrollContainer">
+      <!-- Card 1 -->
+      <div class="feature-card">
+        <img src="https://storage.googleapis.com/a1aa/image/d370d012-564f-40d7-dae9-a7a667fb9ee5.jpg" alt="Breaking The Mould"/>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card">
+        <img src="https://storage.googleapis.com/a1aa/image/4050d3e2-e4fd-4044-fac7-75b5a5fd7316.jpg" alt="Aza X Chitrangda Singh"/>
+        <div class="feature-card-content">
+          <h3>Aza X Chitrangda Singh</h3>
+          <p>From modelling and movies to motherhood, the dusky stunner reveals it all in the Aza exclusive cover story.</p>
+          <button class="feature-btn">Read More</button>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card">
+        <img src="https://storage.googleapis.com/a1aa/image/b25a885f-b732-4897-183b-5c6ecab5f7cd.jpg" alt="Paris Fashion Week 2025"/>
+        <div class="feature-card-content">
+          <h3>Paris Fashion Week 2025</h3>
+          <p>Discover the highlights of Paris Fashion Week 2025 Menswear and the best celebrity looks at Aza Editorials.</p>
+          <button class="feature-btn">Read More</button>
+        </div>
+      </div>
+    </div>
+
+    
+
+  <script>
+    // JS for scroll indicators
+    const featureContainer = document.getElementById('featureScrollContainer');
+    const featureDots = document.querySelectorAll('.feature-dot');
+
+    featureContainer.addEventListener('scroll', () => {
+      const scrollPercentage = featureContainer.scrollLeft / (featureContainer.scrollWidth - featureContainer.clientWidth);
+      const activeDot = Math.round(scrollPercentage * (featureDots.length - 1));
+
+      featureDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === activeDot);
+      });
+    });
+  </script>
+</body>
 </html>
