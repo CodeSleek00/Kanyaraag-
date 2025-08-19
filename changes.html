@@ -1,239 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-
-    .editorcontainer {
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>The Finishing Touches</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      margin: 0;
+      background: #fff;
+      color: #111;
+    }
+    .finishing-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 50px;
-
+      padding: 40px 16px;
     }
-    
-    
-    .editorgallery {
-      position: relative;
-      width: 100%;
-      height: 400px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 60px;
-    }
-    
-    .editorcard {
-      position: absolute;
-      width: 200px;
-      height: auto;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-      cursor: pointer;
-      overflow: hidden;
-      transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .editorcard img {
-      width: 100%;
-      height: 70%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-    
-    .carntent {
-      padding: 15px;
-      background: white;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .editorcard h3 {
-      font-size: 15px;
-      margin: 0 0 5px;
-      font-weight: 500;
-      color: var(--primary);
-    }
-    
-    .editorcard p {
-      font-size: 13px;
-      color: var(--secondary);
-      margin: 0 0 10px;
-      flex-grow: 1;
-    }
-    
-    .editorcard a {
-      display: inline-block;
-      padding: 6px 12px;
-      background: black;
-      color: white;
-      border: 1px solid var(--accent);
-      border-radius: 4px;
-      text-decoration: none;
-      font-size: 12px;
+   .finishing-container h2 {
       text-align: center;
-      transition: all 0.3s ease;
+      font-size: 28px;
+      margin-bottom: 40px;
+      font-weight: 600;
     }
-    
-    .editorcard a:hover {
-      background: var(--accent);
-      color: rgb(7, 6, 6);
+    .finishing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
-    
-    /* Stacked positions */
-    .left3 { transform: translateX(-350px) scale(0.85); z-index: 4; opacity: 0.9; }
-    .left2 { transform: translateX(-250px) scale(0.9); z-index: 3; opacity: 0.8; }
-    .left1 { transform: translateX(-120px) scale(0.95); z-index: 2; opacity: 0.7; }
-    .main  { transform: scale(1); z-index: 1;opacity: 0.7; }
-    .right1{ transform: translateX(120px) scale(0.95); z-index: 2; opacity: 0.7; }
-    .right2{ transform: translateX(250px) scale(0.9); z-index: 3; opacity: 0.8; }
-    .right3{ transform: translateX(350px) scale(0.85); z-index: 4; opacity: 0.9; }
-    
-    /* Active state */
-    .editorcard.active {
-      transform: translateX(0) scale(1.1);
-      z-index: 10;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.12);
-    }
-    
-    .editorcard.active img {
-      transform: scale(1.05);
-    }
-    
-    /* Responsive */
-    @media (max-width: 900px) {
-      .editorgallery {
-        height: 350px;
-      }
-      .editorcontainer{
-        padding: 30px;
-        padding-bottom: 0;
-      }
-      .editorcard {
-        width: 160px;
-        height: auto;
-      }
-      
-      .left3 { transform: translateX(-350px) scale(0.85); }
-      .left2 { transform: translateX(-200px) scale(0.9); }
-      .left1 { transform: translateX(-100px) scale(0.95); }
-      .right1{ transform: translateX(100px) scale(0.95); }
-      .right2{ transform: translateX(200px) scale(0.9); }
-      .right3{ transform: translateX(350px) scale(0.85); }
-    }
-    
-    @media (max-width: 600px) {
-      .editorgallery {
-        height: 300px;
-      }
-      
-      .editorcard {
-        width: 130px;
-        height: auto;
-      }
-      
-      .left3 { display: none;}
-      .left2 { transform: translateX(-130px) scale(0.85); opacity: 0.7; }
-      .left1 { transform: translateX(-60px) scale(0.9); opacity: 0.8; }
-      .main  { transform: scale(0.95);z-index: 1 }
-      .right1{ transform: translateX(60px) scale(0.95); opacity: 0.8; }
-      .right2{ transform: translateX(130px) scale(0.85); opacity: 0.7; }
-      .right3{ display: none; }
-      
-      .editorcard.active {
-        transform: translateX(0) scale(1);
-      }
-      
-      .carntent {
-        padding: 10px;
-      }
-      
-      .editorcard h3 {
-        font-size: 13px;
-      }
-      
-      .editorcard p {
-        font-size: 11px;
-      }
-      
-      .editorcard a {
-        padding: 4px 8px;
-        font-size: 11px;
+    @media (min-width: 1024px) {
+      .finishing-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
       }
     }
-    </style>
+    .finishing-card {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .finishing-card:hover {
+      transform: translateY(-4px);
+    }
+    .finishing-card img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    .finishing-card-content {
+      padding: 16px;
+    }
+    .finishing-card-content h3 {
+      font-size: 18px;
+      margin: 0 0 8px;
+      font-weight: 600;
+    }
+    .finishing-card-content p {
+      font-size: 14px;
+      color: #444;
+      margin: 0 0 12px;
+    }
+    .finishing-card-content a {
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #000;
+    }
+    .finishing-card-content a:hover {
+      color: #444;
+    }
+  </style>
 </head>
 <body>
-    
-   <h1 style="text-align:center;">Editor's Pick</h1>
-    <div class="editorcontainer">
-    <div class="editorgallery">
-      <div class="editorcard left3">
-        <img src="photos/12.jpeg" alt="Art">
-        <div class="carntent">
-          <h3>Modern Architecture</h3>
-          <p>Innovative structures shaping our cities.</p>
-          <a href="#">Discover</a>
-        </div>
-      </div>
+  <div class="finishing-container">
+    <h2>The Finishing Touches</h2>
+
+    <div class="finishing-grid">
       
-      <div class="editorcard left2">
-        <img src="photos/12.jpeg" alt="Art">
-        <div class="carntent">
-          <h3>Modern Architecture</h3>
-          <p>Innovative structures shaping our cities.</p>
-          <a href="#">Discover</a>
+      <!-- Item 1 -->
+      <div class="finishing-card">
+        <img src="photos/12.jpeg" 
+             alt="Man wearing cream stole and kurta with sunglasses outdoors near lake"/>
+        <div class="finishing-card-content">
+          <h3>Stoles & Dupattas</h3>
+          <p>Drape yourself in quiet elegance!</p>
+          <a href="#">EXPLORE <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
-      
-      <div class="editorcard left1">
-        <img src="photos/12.jpeg" alt="Art">
-        <div class="carntent">
-          <h3>Contemporary Art</h3>
-          <p>Thought-provoking works from emerging artists.</p>
-          <a href="#">View</a>
+
+      <!-- Item 2 -->
+      <div class="finishing-card">
+        <div class="finishing-card-content">
+          <h3>Brooches & Malas</h3>
+          <p>Accents that speak volumes!</p>
+          <a href="#">EXPLORE <i class="fas fa-arrow-right"></i></a>
+        </div>
+       <img src="photos/12.jpeg" 
+             alt="Couple wearing traditional Indian attire with brooches and mala outdoors"/>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="finishing-card">
+       <img src="photos/12.jpeg" 
+             alt="Pair of cream embroidered juttis on peach background"/>
+        <div class="finishing-card-content">
+          <h3>Juttis & Footwear</h3>
+          <p>Where comfort walks with craft!</p>
+          <a href="#">EXPLORE <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
-      
-      <div class="editorcard main">
-        <img src="photos/12.jpeg" alt="Art">
-        <div class="carntent">
-          <h3>Photography</h3>
-          <p>Capturing moments with unique perspectives.</p>
-          <a href="#">See More</a>
+
+      <!-- Item 4 -->
+      <div class="finishing-card">
+        <div class="finishing-card-content">
+          <h3>Safas & Turbans</h3>
+          <p>Top off your look with timeless pride!</p>
+          <a href="#">EXPLORE <i class="fas fa-arrow-right"></i></a>
         </div>
+       <img src="photos/12.jpeg" 
+             alt="Three men wearing safas and turbans smiling outdoors"/>
       </div>
-      
-      <div class="editorcard right1">
-        <img src="photos/12.jpeg" alt="Art">
-        <div class="carntent">
-          <h3>Fashion Trends</h3>
-          <p>Current styles making waves this season.</p>
-          <a href="#">Browse</a>
-        </div>
-      </div>
-      
-      <div class="editorcard right2">
-        <img src="photos/12.jpeg" alt="Art">
-        <div class="carntent">
-          <h3>Travel Destinations</h3>
-          <p>Hidden gems worth exploring this year.</p>
-          <a href="#">Plan</a>
-        </div>
-      </div>
-      <div class="editorcard right3">
-        <img src="photos/12.jpeg" alt="Art">
-        <div class="carntent">
-          <h3>Travel Destinations</h3>
-          <p>Hidden gems worth exploring this year.</p>
-          <a href="#">Plan</a>
-        </div>
-      </div>
-     
+
+    </div>
+  </div>
+
+  <!-- Optional JS (for future interactive features) -->
+  <script>
+    document.querySelectorAll(".finishing-card-content a").forEach(link=>{
+      link.addEventListener("click", e=>{
+        e.preventDefault();
+        alert("Explore clicked!");
+      });
+    });
+  </script>
 </body>
 </html>

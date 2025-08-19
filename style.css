@@ -450,6 +450,68 @@ background: radial-gradient(circle, rgba(252, 235, 235, 1) 0%, rgba(247, 228, 24
     .swiper-pagination {
       display: none;
     }
+      .finishing-container {
+      width: 90%;
+      margin: 0 auto;
+      padding: 10px 16px;
+    }
+   .finishing-container h2 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .finishing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    @media (min-width: 1024px) {
+      .finishing-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+      }
+    }
+    .finishing-card {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .finishing-card:hover {
+      transform: translateY(-4px);
+    }
+    .finishing-card img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    .finishing-card-content {
+      padding: 16px;
+    }
+    .finishing-card-content h3 {
+      font-size: 18px;
+      margin: 0 0;
+      font-weight: 600;
+    }
+    .finishing-card-content p {
+      font-size: 14px;
+      color: #444;
+      margin: 0 0 12px;
+    }
+    .finishing-card-content a {
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #000;
+    }
+    .finishing-card-content a:hover {
+      color: #444;
+    }
 /* Sticky Header */
 .sticky-header {
   position: fixed;
