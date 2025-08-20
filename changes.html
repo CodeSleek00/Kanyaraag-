@@ -1,143 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>The Finishing Touches</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Background Video Section</title>
   <style>
     body {
-      font-family: "Inter", sans-serif;
       margin: 0;
-      background: #fff;
-      color: #111;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #222;
     }
-    .finishing-container {
+
+    .video-section {
       max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 16px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
-   .finishing-container h2 {
-      text-align: center;
-      font-size: 28px;
-      margin-bottom: 40px;
-      font-weight: 600;
-    }
-    .finishing-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-    @media (min-width: 1024px) {
-      .finishing-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 24px;
-      }
-    }
-    .finishing-card {
-      display: flex;
-      flex-direction: column;
-      background: #fff;
-      overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .finishing-card:hover {
-      transform: translateY(-4px);
-    }
-    .finishing-card img {
+
+    .video-container {
+      position: relative;
       width: 100%;
-      height: auto;
+      padding-top: 56.25%; /* 16:9 aspect ratio */
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background: #000;
+    }
+
+    .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
       object-fit: cover;
-    }
-    .finishing-card-content {
-      padding: 16px;
-    }
-    .finishing-card-content h3 {
-      font-size: 18px;
-      margin: 0 0 8px;
-      font-weight: 600;
-    }
-    .finishing-card-content p {
-      font-size: 14px;
-      color: #444;
-      margin: 0 0 12px;
-    }
-    .finishing-card-content a {
-      font-size: 14px;
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #000;
-    }
-    .finishing-card-content a:hover {
-      color: #444;
     }
   </style>
 </head>
 <body>
-  <div class="finishing-container">
-    <h2>The Finishing Touches</h2>
 
-    <div class="finishing-grid">
-      
-      <!-- Item 1 -->
-      <div class="finishing-card">
-        <img src="photos/12.jpeg" 
-             alt="Man wearing cream stole and kurta with sunglasses outdoors near lake"/>
-        <div class="finishing-card-content">
-          <h3>Stoles & Dupattas</h3>
-          <p>Drape yourself in quiet elegance!</p>
-          <a href="#">EXPLORE <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-
-      <!-- Item 2 -->
-      <div class="finishing-card">
-        <div class="finishing-card-content">
-          <h3>Brooches & Malas</h3>
-          <p>Accents that speak volumes!</p>
-          <a href="#">EXPLORE <i class="fas fa-arrow-right"></i></a>
-        </div>
-       <img src="photos/12.jpeg" 
-             alt="Couple wearing traditional Indian attire with brooches and mala outdoors"/>
-      </div>
-
-      <!-- Item 3 -->
-      <div class="finishing-card">
-       <img src="photos/12.jpeg" 
-             alt="Pair of cream embroidered juttis on peach background"/>
-        <div class="finishing-card-content">
-          <h3>Juttis & Footwear</h3>
-          <p>Where comfort walks with craft!</p>
-          <a href="#">EXPLORE <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-
-      <!-- Item 4 -->
-      <div class="finishing-card">
-        <div class="finishing-card-content">
-          <h3>Safas & Turbans</h3>
-          <p>Top off your look with timeless pride!</p>
-          <a href="#">EXPLORE <i class="fas fa-arrow-right"></i></a>
-        </div>
-       <img src="photos/12.jpeg" 
-             alt="Three men wearing safas and turbans smiling outdoors"/>
-      </div>
-
+  <section class="video-section">
+    <div class="video-container">
+      <!-- Replace with your video file -->
+      <video autoplay muted loop playsinline>
+        <source src="template.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
     </div>
-  </div>
+  </section>
 
-  <!-- Optional JS (for future interactive features) -->
-  <script>
-    document.querySelectorAll(".finishing-card-content a").forEach(link=>{
-      link.addEventListener("click", e=>{
-        e.preventDefault();
-        alert("Explore clicked!");
-      });
-    });
-  </script>
 </body>
 </html>
