@@ -3,122 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pantaloons Gift Card</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f6f6f6;
-    }
-
-    .giftcard-section {
-      text-align: center;
-      padding-top: 20px;
-    }
-
-    .giftcard-section h2 {
-      font-size: 2rem;
-      font-style: italic;
-      margin-bottom: 18px;
-    }
-
-    .giftcard-box {
-      background: url("cardb.jpg") center/cover no-repeat;
-      border-radius: 120px 120px 0 0;
-      padding: 0 0 40px;
-      width: 100%;
-      perspective: 1200px; /* 3D depth */
-    }
-
-    /* Flip wrapper */
-    .flip-card {
-      width: 500px;
-      height: 300px;
-      margin: -40px auto 0;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 1s ease;
-      cursor: pointer;
-    }
-
-    /* Flip state */
-    .flip-card.flipped {
-      transform: rotateY(360deg);
-    }
-
-    .flip-card .side {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      backface-visibility: hidden;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .flip-card .front {
-      background-image: url("card.jpg");
-    }
-
-    .flip-card .back {
-      background-image: url("cardb.jpg");
-      transform: rotateY(180deg);
-    }
-
-    .giftcard-btn {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #fff;
-      background: black;
-      padding: 15px 25px;
-      border: none;
-      cursor: pointer;
-      letter-spacing: 1px;
-      font-weight: 500;
-      text-transform: uppercase;
-      border-radius: 6px;
-      transition: 0.3s;
-    }
-
-    .giftcard-btn:hover {
-      background: white;
-      color: black;
-    }
-
-    @media (max-width: 600px) {
-      .flip-card {
-        width: 300px;
-        height: 180px;
-        margin-top: -20px;
-      }
-      .giftcard-box {
-        border-radius: 30px 30px 0 0;
-        padding-bottom: 20px;
-      }
-    }
-  </style>
+  <title>Document</title>
 </head>
 <body>
-
-  <div class="giftcard-section">
-    <h2>Pantaloons Gift Card</h2>
-
-    <div class="giftcard-box">
-      <!-- Flip Card -->
-      <div class="flip-card" id="giftCard">
-        <div class="side front"></div>
-        <div class="side back"></div>
+  <div class="footer">
+    <div class="footer-links">
+      <h1>Kanyaraag</h1>
+      <img src="logo.jpg" alt="">
+      <div class="pages">
+        <a href="">privacy polciy</a>
+        a <a href="">terms of use</a>
+        <a href="">contact us</a>
+        <a href="">about us</a>
+        <a href="">Refund & Return Polciy</a>
+        <a href="">shipping Policy</a>
       </div>
-
-      <button class="giftcard-btn">Explore Now</button>
     </div>
+    <div class="footer-track">
+      <a href="">Track Order</a>
+      <a href="">Order Customization</a>
+      <a href="">Orders Refunds & Returns</a>
+      <a href="">Purchase Order Policy</a>
+    </div>
+    <div class="footer-contact">
+      <a href="">Contact </a>
+      <p>Mon-Fri 10AM-8PM IST</p>
+      <a href="">Whatsapp</a>
+      <a href="">Mail</a>
+    </div>
+    <div class="footer-payment">
+      <h2>We Accept</h2>
+      <a href="">Razorpay</a>
+      <a href="">COd</a>
+    </div>
+    <div class="footer-social">
+      <h2>Follow Us</h2>
+      <a href="https://www.instagram.com/kanyaraag/" target="_blank">Instagram</a>
+      <a href="https://www.facebook.com/kanyaraag" target="_blank">Facebook</a>
+      <a href="https://www.youtube.com/@kanyaraag" target="_blank">YouTube</a>
   </div>
-
-  <script>
-    document.getElementById("giftCard")
-      .addEventListener("click", e => e.currentTarget.classList.toggle("flipped"));
-  </script>
-
+  <div class="qr">
+    <h2>Scan to Download</h2>
+    <img src="qr.png" alt="QR Code">
+    <p>Download the app for a better experience</p>
+  </div>
+  </div>
 </body>
 </html>
