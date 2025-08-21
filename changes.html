@@ -3,50 +3,346 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Kanyaraag Footer</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f9f9f9;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .footer {
+      background: linear-gradient(135deg, #fff 0%, #f8f8f8 100%);
+      color: #444;
+      padding: 60px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px;
+      border-top: 2px solid #eee;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f0f0f0' fill-opacity='0.3' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .footer > div {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #C75D2c;
+      margin-bottom: 15px;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    }
+
+    .footer img.logo {
+      width: 90px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .footer img.logo:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .footer h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 18px;
+      color: #C75D2c;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer h2::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background-color: #C75D2c;
+      border-radius: 2px;
+    }
+
+    .footer a {
+      display: block;
+      margin: 8px 0;
+      text-decoration: none;
+      font-size: 14px;
+      color: #555;
+      transition: all 0.3s ease;
+      padding: 4px 0;
+      position: relative;
+    }
+
+    .footer a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: #ff3d6a;
+      transition: width 0.3s ease;
+    }
+
+    .footer a:hover {
+      color: #ff3d6a;
+      transform: translateX(5px);
+    }
+
+    .footer a:hover::before {
+      width: 20px;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: #666;
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+
+    .qr {
+      background: #fff;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .qr:hover {
+      transform: translateY(-5px);
+    }
+
+    .qr img {
+      width: 120px;
+      margin: 15px auto;
+      display: block;
+      border-radius: 10px;
+      padding: 8px;
+      background: #fafafa;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    .qr p {
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+    }
+
+    /* Social Icons */
+    .footer-social {
+      margin-top: 15px;
+    }
+
+    .footer-social h2 {
+      margin-bottom: 15px;
+    }
+
+    .footer-social a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      margin: 0 8px 8px 0;
+      font-size: 16px;
+      color: #fff;
+      background-color: #C75D2c;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .footer-social a:hover {
+      color: #fff;
+      background-color: #ff3d6a;
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 5px 10px rgba(199, 93, 44, 0.3);
+    }
+
+    .footer-social a::before {
+      display: none;
+    }
+
+    /* Payment methods */
+    .footer-payment a {
+      display: inline-block;
+      background: #f7f7f7;
+      padding: 6px 12px;
+      border-radius: 6px;
+      margin: 5px 5px 5px 0;
+      font-size: 13px;
+      transition: all 0.2s ease;
+    }
+
+    .footer-payment a:hover {
+      background: #C75D2c;
+      color: white;
+    }
+
+    /* ✅ Mobile friendly - 2 columns */
+    @media(max-width: 768px) {
+      .footer {
+        grid-template-columns: 1fr 1fr;
+        text-align: center;
+        gap: 30px;
+        padding: 40px 20px;
+      }
+      
+      .footer h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      
+      .footer a:hover {
+        transform: translateX(0);
+      }
+      
+      /* Reorganize grid items for better mobile layout */
+      .footer {
+        grid-template-areas:
+          "logo track"
+          "contact payment"
+          "qr qr";
+      }
+      
+      .footer-links { grid-area: logo; }
+      .footer-track { grid-area: track; }
+      .footer-contact { grid-area: contact; }
+      .footer-payment { grid-area: payment; }
+      .qr { grid-area: qr; }
+    }
+
+    @media(max-width: 500px) {
+      .footer {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "logo"
+          "track"
+          "contact"
+          "payment"
+          "qr";
+        gap: 25px;
+        text-align: center;
+      }
+      
+      .footer-payment {
+        margin-bottom: 10px;
+      }
+      
+      .qr {
+        margin-top: 10px;
+      }
+    }
+
+    /* Bottom bar */
+    .footer-bottom {
+      background: #fff;
+      text-align: center;
+      padding: 15px;
+      font-size: 13px;
+      color: #777;
+      border-top: 1px solid #eee;
+      position: relative;
+      z-index: 1;
+    }
+  </style>
 </head>
 <body>
+  <div class="content">
+    <h2>Kanyaraag Website Content</h2>
+    <p>This is a sample page to demonstrate the footer design.</p>
+  </div>
+  
   <div class="footer">
     <div class="footer-links">
       <h1>Kanyaraag</h1>
-      <img src="logo.jpg" alt="">
-      <div class="pages">
-        <a href="">privacy polciy</a>
-        a <a href="">terms of use</a>
-        <a href="">contact us</a>
-        <a href="">about us</a>
-        <a href="">Refund & Return Polciy</a>
-        <a href="">shipping Policy</a>
-      </div>
+      <img src="https://placehold.co/90x90/FFE5D9/C75D2C?text=K" alt="Kanyaraag Logo" class="logo">
     </div>
+
     <div class="footer-track">
+      <h2>Orders</h2>
       <a href="">Track Order</a>
       <a href="">Order Customization</a>
-      <a href="">Orders Refunds & Returns</a>
-      <a href="">Purchase Order Policy</a>
-    </div>
-    <div class="footer-contact">
-      <a href="">Contact </a>
+      <a href="">Refunds & Returns</a>
+      <a href="">Purchase Policy</a>
+      <h2>Contact</h2>
       <p>Mon-Fri 10AM-8PM IST</p>
-      <a href="">Whatsapp</a>
-      <a href="">Mail</a>
+      <a href=""><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+      <a href=""><i class="fa-solid fa-envelope"></i> Mail</a>
     </div>
+
+    <div class="footer-contact">
+      <div class="pages">
+        <h2>Quick Links</h2>
+        <a href="">Privacy Policy</a>
+        <a href="">Terms of Use</a>
+        <a href="">Contact Us</a>
+        <a href="">About Us</a>
+        <a href="">Refund & Return Policy</a>
+        <a href="">Shipping Policy</a>
+      </div>
+    </div>
+
     <div class="footer-payment">
       <h2>We Accept</h2>
       <a href="">Razorpay</a>
-      <a href="">COd</a>
+      <a href="">Cash on Delivery</a>
+      <div class="footer-social">
+        <h2>Follow Us</h2>
+        <a href="https://www.instagram.com/kanyaraag/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/kanyaraag" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.youtube.com/@kanyaraag" target="_blank"><i class="fab fa-youtube"></i></a>
+      </div>
     </div>
-    <div class="footer-social">
-      <h2>Follow Us</h2>
-      <a href="https://www.instagram.com/kanyaraag/" target="_blank">Instagram</a>
-      <a href="https://www.facebook.com/kanyaraag" target="_blank">Facebook</a>
-      <a href="https://www.youtube.com/@kanyaraag" target="_blank">YouTube</a>
+
+    <div class="qr">
+      <h2>Scan to Download</h2>
+      <img src="https://placehold.co/120x120/FFFFFF/555555?text=QR" alt="QR Code">
+      <p>Download the app for a better experience</p>
+    </div>
   </div>
-  <div class="qr">
-    <h2>Scan to Download</h2>
-    <img src="qr.png" alt="QR Code">
-    <p>Download the app for a better experience</p>
-  </div>
+
+  <div class="footer-bottom">
+    © 2025 Kanyaraag. All Rights Reserved.
   </div>
 </body>
 </html>
