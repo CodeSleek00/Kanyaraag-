@@ -47,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <textarea name="description" placeholder="Description"></textarea>
     <select name="page_name">
       <option value="co-ord">Co-Ord Set</option>
-      <option value="women">Women</option>
       <option value="crop-top">Crop-Top</option>
       <option value="shortkurtis">Short-Kurtis</option>
     </select>
