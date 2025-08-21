@@ -46,10 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <input type="number" step="0.01" name="discount_price" placeholder="Discount Price" required>
     <textarea name="description" placeholder="Description"></textarea>
     <select name="page_name">
-      <option value="men">Men</option>
+      <option value="co-ord">Co-Ord Set</option>
       <option value="women">Women</option>
-      <option value="anime">Anime</option>
-      <option value="exclusive">Exclusive</option>
+      <option value="crop-top">Crop-Top</option>
+      <option value="shortkurtis">Short-Kurtis</option>
     </select>
     <button type="submit">Add Product</button>
   </form>
