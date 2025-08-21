@@ -37,8 +37,12 @@
 <h2>💡 Suggested Products (High Price, Low Discount)</h2>
 <div class="products">
 <?php
-// costly + low discount वाले products
-$sql = "SELECT * FROM products WHERE original_price > 2000 AND discount_percent < 20 ORDER BY original_price DESC LIMIT 20";
+
+$sql = "SELECT * FROM products 
+        WHERE original_price > 2000 
+        AND discount_percent < 20 
+        ORDER BY RAND() 
+        LIMIT 20";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
