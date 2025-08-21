@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $page = $_POST['page_name'];
 
     // image upload
-    $target_dir = "uploads/";
+    $target_dir = "../uploads/";
     if (!is_dir($target_dir)) mkdir($target_dir);
     $image = $target_dir . basename($_FILES["product_image"]["name"]);
     move_uploaded_file($_FILES["product_image"]["tmp_name"], $image);
