@@ -171,5 +171,4 @@ document.addEventListener('DOMContentLoaded', () => {
         dot.classList.toggle('active', i === activeDot);
       });
     });
-     document.getElementById("giftCard")
-      .addEventListener("click", e => e.currentTarget.classList.toggle("flipped"));
+   
