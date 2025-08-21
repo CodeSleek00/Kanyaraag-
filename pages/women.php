@@ -37,7 +37,7 @@
 <h2>🛍️ All Products</h2>
 <div class="products">
 <?php
-$sql = "SELECT * FROM products ORDER BY id DESC";
+$sql = "SELECT * FROM products ORDER BY RAND()";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
