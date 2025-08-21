@@ -855,7 +855,7 @@ background: radial-gradient(circle, rgba(252, 235, 235, 1) 0%, rgba(247, 228, 24
     }
 
     .giftcard-box {
-      background: url("cardb.jpg") center/cover no-repeat;
+      background: url("photos/cardb.jpg") center/cover no-repeat;
       border-radius: 120px 120px 0 0;
       padding: 0 0 40px;
       width: 100%;
@@ -890,11 +890,11 @@ background: radial-gradient(circle, rgba(252, 235, 235, 1) 0%, rgba(247, 228, 24
     }
 
     .flip-card .front {
-      background-image: url("card.jpg");
+      background-image: url("photos/card.jpg");
     }
 
     .flip-card .back {
-      background-image: url("cardb.jpg");
+      background-image: url("photos/cardb.jpg");
       transform: rotateY(180deg);
     }
 
