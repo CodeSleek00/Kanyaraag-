@@ -43,15 +43,25 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<div class='card'>
-                <img src='".$row['product_image']."' alt='".$row['product_name']."'>
-                <h3>".$row['product_name']."</h3>
-                <p>".$row['description']."</p>
-                <p class='price'>
-                    <span class='old'>₹".$row['original_price']."</span> 
-                    ₹".$row['discount_price']." 
-                    <span class='discount'>(".round($row['discount_percent'])."% OFF)</span>
-                </p>
-              </div>";
+        <img src='".$row['product_image']."' alt='".$row['product_name']."'>
+        <h3>".$row['product_name']."</h3>
+        <p>".$row['description']."</p>
+        <p class='price'>
+            <span class='old'>₹".$row['original_price']."</span> 
+            ₹".$row['discount_price']." 
+            <span class='discount'>(".round($row['discount_percent'])."% OFF)</span>
+        </p>
+
+        <!-- 🛒 Add to Cart button -->
+        <button class='add-to-cart'
+          data-id='".$row['id']."'
+          data-name='".$row['product_name']."'
+          data-price='".$row['discount_price']."'
+          data-image='".$row['product_image']."'>
+          Add to Cart
+        </button>
+      </div>";
+
     }
 } else {
     echo "<p style='text-align:center;'>😢 No products available yet!</p>";
