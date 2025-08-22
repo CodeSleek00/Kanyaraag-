@@ -67,21 +67,57 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<div class='card'>
-                <img src='".$row['product_image']."' alt='".$row['product_name']."'>
-                <h3>".$row['product_name']."</h3>
-                <p>".$row['description']."</p>
-                <p class='price'>
-                    <span class='old'>₹".$row['original_price']."</span> 
-                    ₹".$row['discount_price']." 
-                    <span class='discount'>(".round($row['discount_percent'])."% OFF)</span>
-                </p>
-              </div>";
+        <img src='".$row['product_image']."' alt='".$row['product_name']."'>
+        <h3>".$row['product_name']."</h3>
+        <p>".$row['description']."</p>
+        <p class='price'>
+            <span class='old'>₹".$row['original_price']."</span> 
+            ₹".$row['discount_price']." 
+            <span class='discount'>(".round($row['discount_percent'])."% OFF)</span>
+        </p>
+
+        <!-- 🛒 Add to Cart button -->
+        <button class='add-to-cart'
+          data-id='".$row['id']."'
+          data-name='".$row['product_name']."'
+          data-price='".$row['discount_price']."'
+          data-image='".$row['product_image']."'>
+          Add to Cart
+        </button>
+      </div>";
+
     }
 } else {
-    echo "<p style='text-align:center;'>😢 No products on Sale above 30% yet!</p>";
+    echo "<p style='text-align:center;'>😢 No products available yet!</p>";
 }
 ?>
 </div>
+<script>
+    // Add to Cart
+  document.querySelectorAll(".add-to-cart").forEach(btn => {
+    btn.addEventListener("click", () => {
+      let product = {
+        id: btn.getAttribute("data-id"),
+        name: btn.getAttribute("data-name"),
+        price: btn.getAttribute("data-price"),
+        image: btn.getAttribute("data-image"),
+        qty: 1
+      };
 
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      // Check if product already exists
+      let existing = cart.find(p => p.id === product.id);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push(product);
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(product.name + " added to cart!");
+    });
+  });
+</script>
 </body>
 </html>
