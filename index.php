@@ -48,6 +48,7 @@
         <a href="pages/coord-set.php">Co-ord Set</a>
         <a href="pages/croptop.php">Crop Top</a>
         <a href="pages/shortkurtis.php">Short Kurtis</a>
+        <a href="pages/sale.php">Sale</a>
       </div>
 
       <div class="brand"><span class="kanya">कन्या</span>Raag</div>
