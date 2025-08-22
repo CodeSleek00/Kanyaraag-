@@ -68,6 +68,32 @@ if ($result->num_rows > 0) {
 }
 ?>
 </div>
+<script>
+    // Add to Cart
+  document.querySelectorAll(".add-to-cart").forEach(btn => {
+    btn.addEventListener("click", () => {
+      let product = {
+        id: btn.getAttribute("data-id"),
+        name: btn.getAttribute("data-name"),
+        price: btn.getAttribute("data-price"),
+        image: btn.getAttribute("data-image"),
+        qty: 1
+      };
 
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      // Check if product already exists
+      let existing = cart.find(p => p.id === product.id);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push(product);
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(product.name + " added to cart!");
+    });
+  });
+</script>
 </body>
 </html>
