@@ -54,7 +54,7 @@ $sql = "SELECT * FROM products WHERE page_name='shortkurtis' ORDER BY RAND()";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        echo "<div class='card'>
+       echo "<div class='card'>
         <img src='".$row['product_image']."' alt='".$row['product_name']."'>
         <h3>".$row['product_name']."</h3>
         <p>".$row['description']."</p>
@@ -64,13 +64,18 @@ if ($result->num_rows > 0) {
             <span class='discount'>(".round($row['discount_percent'])."% OFF)</span>
         </p>
 
+        <!-- 🏷 Stock -->
+        <p class='stock'>Stock: ".$row['stock']."</p>
+
         <!-- 🛒 Add to Cart button -->
         <button class='add-to-cart'
           data-id='".$row['id']."'
           data-name='".$row['product_name']."'
           data-price='".$row['discount_price']."'
-          data-image='".$row['product_image']."'>
-          Add to Cart
+          data-image='".$row['product_image']."'
+          data-stock='".$row['stock']."'
+          ".($row['stock'] <= 0 ? "disabled" : "").">
+          ".($row['stock'] > 0 ? "Add to Cart" : "Out of Stock")."
         </button>
       </div>";
 

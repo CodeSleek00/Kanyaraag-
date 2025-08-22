@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $discount = $_POST['discount_price'];
     $desc = $_POST['description'];
     $page = $_POST['page_name'];
+    $stock = $_POST['stock']; // 🆕 Stock input liya
 
     // image upload
     $target_dir = "../uploads/";
@@ -14,13 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $image = $target_dir . basename($_FILES["product_image"]["name"]);
     move_uploaded_file($_FILES["product_image"]["tmp_name"], $image);
 
-    $sql = "INSERT INTO products (product_name, product_image, original_price, discount_price, description, page_name)
-            VALUES ('$name', '$image', '$price', '$discount', '$desc', '$page')";
+    // insert query with stock
+    $sql = "INSERT INTO products (product_name, product_image, original_price, discount_price, description, page_name, stock)
+            VALUES ('$name', '$image', '$price', '$discount', '$desc', '$page', '$stock')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<p style='color:green'>Product Added Successfully!</p>";
+        echo "<p style='color:green'>✅ Product Added Successfully with Stock!</p>";
     } else {
-        echo "<p style='color:red'>Error: " . $conn->error . "</p>";
+        echo "<p style='color:red'>❌ Error: " . $conn->error . "</p>";
     }
 }
 ?>
@@ -50,6 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <option value="crop-top">Crop-Top</option>
       <option value="shortkurtis">Short-Kurtis</option>
     </select>
+    
+    <!-- 🆕 Stock input -->
+    <input type="number" name="stock" placeholder="Enter Stock Quantity" required>
+
     <button type="submit">Add Product</button>
   </form>
 </body>
