@@ -52,13 +52,18 @@ if ($result->num_rows > 0) {
             <span class='discount'>(".round($row['discount_percent'])."% OFF)</span>
         </p>
 
+        <!-- 🏷 Stock -->
+        <p class='stock'>Stock: ".$row['stock']."</p>
+
         <!-- 🛒 Add to Cart button -->
         <button class='add-to-cart'
           data-id='".$row['id']."'
           data-name='".$row['product_name']."'
           data-price='".$row['discount_price']."'
-          data-image='".$row['product_image']."'>
-          Add to Cart
+          data-image='".$row['product_image']."'
+          data-stock='".$row['stock']."'
+          ".($row['stock'] <= 0 ? "disabled" : "").">
+          ".($row['stock'] > 0 ? "Add to Cart" : "Out of Stock")."
         </button>
       </div>";
 
