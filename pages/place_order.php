@@ -27,7 +27,7 @@ if($payment_method=="COD"){
     echo "✅ Order placed successfully! Order ID: $order_id. Payment: Cash on Delivery.";
 } else {
     // Razorpay Payment Integration
-    $keyId = "rzp_live_pA6jgjncp78sq7";
+    $keyId = "rzp_ive_pA6jgjncp78sq7";
     $keySecret = "YOUR_KEY_SECRET";
 
     $api = new Api($keyId, $keySecret);
