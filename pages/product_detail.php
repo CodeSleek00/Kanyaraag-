@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+include '../db/db_connect.php';
 
 // Product ID from URL
 $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
