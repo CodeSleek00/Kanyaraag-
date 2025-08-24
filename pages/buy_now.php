@@ -35,9 +35,9 @@ $total = $product["price"];
       <h2 class="text-xl font-bold mb-4">Shipping Details</h2>
       <form id="buyForm" method="POST">
         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-        <input type="hidden" name="product_name" value="<?php echo $product['name']; ?>">
+        <input type="hidden" name="product_name" value="<?php echo $product['product_name']; ?>">
         <input type="hidden" name="subtotal" value="<?php echo $product['price']; ?>">
-        <input type="hidden" name="product_image" value="<?php echo $product['image']; ?>">
+        <input type="hidden" name="product_image" value="<?php echo $product['product_image']; ?>">
 
         <div class="mb-3">
           <label class="block">Name</label>
