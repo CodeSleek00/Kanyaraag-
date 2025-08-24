@@ -30,6 +30,20 @@
     .price { font-weight: bold; margin: 10px 0; font-size: 16px; }
     .old { text-decoration: line-through; color: red; margin-right: 5px; }
     .discount { color: green; font-size: 14px; }
+    .buy-now {
+  background: #ff3f6c;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  margin-top: 8px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.buy-now:hover {
+  background: #e91e63;
+}
+
   </style>
 </head>
 <body>
@@ -65,7 +79,24 @@ if ($result->num_rows > 0) {
           ".($row['stock'] <= 0 ? "disabled" : "").">
           ".($row['stock'] > 0 ? "Add to Cart" : "Out of Stock")."
         </button>
-      </div>";
+      </div>
+      <!-- 🛒 Add to Cart button -->
+<button class='add-to-cart'
+  data-id='".$row['id']."'
+  data-name='".$row['product_name']."'
+  data-price='".$row['discount_price']."'
+  data-image='".$row['product_image']."'
+  data-stock='".$row['stock']."'
+  ".($row['stock'] <= 0 ? "disabled" : "").">
+  ".($row['stock'] > 0 ? "Add to Cart" : "Out of Stock")."
+</button>
+
+<!-- ⚡ Buy Now button -->
+<a href='product_detail.php?id=".$row['id']."' style='text-decoration:none;'>
+  <button class='buy-now'>Buy Now</button>
+</a>
+"
+      ;
 
     }
 } else {
