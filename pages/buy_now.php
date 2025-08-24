@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("db.php"); // database connection
+include("../db/db_connect.php"); // database connection
 
 // Example product details (fetch dynamically in real case)
 $product = [
