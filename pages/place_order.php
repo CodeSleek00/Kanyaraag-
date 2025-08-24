@@ -1,6 +1,10 @@
 <?php
 include '../db/db_connect.php';
 
+// Razorpay SDK
+require 'vendor/autoload.php';
+use Razorpay\Api\Api; // MUST be after require, at top
+
 $total = $_POST['total'];
 $payment_method = $_POST['payment_method'];
 
@@ -23,9 +27,6 @@ if($payment_method=="COD"){
     echo "✅ Order placed successfully! Order ID: $order_id. Payment: Cash on Delivery.";
 } else {
     // Razorpay Payment Integration
-    require('vendor/autoload.php');
-    use Razorpay\Api\Api;
-
     $keyId = "rzp_live_pA6jgjncp78sq7";
     $keySecret = "YOUR_KEY_SECRET";
 
