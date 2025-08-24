@@ -59,6 +59,32 @@ button:hover { background:#e91e63; }
     <br><br>
     <button type="submit">Place Order</button>
 </form>
+ <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<button id="rzp-button">Pay with Razorpay</button>
+
+<script>
+var options = {
+    "key": "rzp_live_pA6jgjncp78sq7",
+    "amount": <?= $total*100 ?>, // in paise
+    "currency": "INR",
+    "name": "Your Store",
+    "description": "Order #<?= $order_id ?>",
+    "handler": function (response){
+        // After payment success, call PHP to mark order completed
+        fetch('payment_success.php', {
+            method: 'POST',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            body: 'order_id=<?= $order_id ?>&razorpay_payment_id='+response.razorpay_payment_id
+        }).then(res=>res.text()).then(alert);
+    },
+    "theme": { "color": "#ff3f6c" }
+};
+var rzp1 = new Razorpay(options);
+document.getElementById('rzp-button').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
 
 </body>
 </html>
