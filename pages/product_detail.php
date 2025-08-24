@@ -119,6 +119,13 @@ $reviews_result = $conn->query($reviews_sql);
 
     <button class="btn">Add to Cart</button>
 
+    <!-- Buy Now Button -->
+    <form action="buy_now.php" method="GET" style="margin-top:10px;">
+      <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
+      <button type="submit" class="btn" style="background:#28a745;">Buy Now</button>
+    </form>
+
+
     <!-- Tabs -->
     <div class="tabs">
       <div class="tab-btns">
