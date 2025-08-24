@@ -115,8 +115,8 @@ $suggest_result = $conn->query($suggest_sql);
   <div class="suggestions-grid">
     <?php while($row = $suggest_result->fetch_assoc()): ?>
       <div>
-        <img src="<?php echo $row['image']; ?>" alt="<?php echo $row['name']; ?>">
-        <h4><?php echo $row['name']; ?></h4>
+        <img src="<?php echo $row['product_image']; ?>" alt="<?php echo $row['name']; ?>">
+        <h4><?php echo $row['product_name']; ?></h4>
         <p>₹<?php echo $row['discount_price']; ?></p>
       </div>
     <?php endwhile; ?>
