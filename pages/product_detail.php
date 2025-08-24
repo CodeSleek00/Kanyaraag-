@@ -71,7 +71,7 @@ $suggest_result = $conn->query($suggest_sql);
 
   <!-- Product Info -->
   <div class="product-info">
-    <h1><?php echo $product['name']; ?></h1>
+    <h1><?php echo $product['product_name']; ?></h1>
     <div class="price">
       <del>₹<?php echo $product['original_price']; ?></del>
       <span style="color:#e53935;">₹<?php echo $product['discount_price']; ?></span>
