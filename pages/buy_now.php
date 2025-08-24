@@ -2,23 +2,29 @@
 session_start();
 include("../db/db_connect.php"); // database connection
 
-// Example product details (fetch dynamically in real case)
-$product = [
-    "id" => 1,
-    "name" => "Premium T-shirt",
-    "price" => 499,
-    "image" => "uploads/tshirt.jpg"
-];
+// Get product ID from URL
+$product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
+// Fetch product details from database
+$sql = "SELECT * FROM products WHERE id = $product_id LIMIT 1";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $product = $result->fetch_assoc();
+} else {
+    die("❌ Product not found!");
+}
+
+// Initial price
 $shipping = 0;
-$total = $product["price"];
+$total = $product["discount_price"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buy Now - <?php echo $product["name"]; ?></title>
+  <title>Buy Now - <?php echo $product["product_name"]; ?></title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
@@ -36,7 +42,7 @@ $total = $product["price"];
       <form id="buyForm" method="POST">
         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
         <input type="hidden" name="product_name" value="<?php echo $product['product_name']; ?>">
-        <input type="hidden" name="subtotal" value="<?php echo $product['price']; ?>">
+        <input type="hidden" name="subtotal" value="<?php echo $product['discount_price']; ?>">
         <input type="hidden" name="product_image" value="<?php echo $product['product_image']; ?>">
 
         <div class="mb-3">
@@ -95,14 +101,14 @@ $total = $product["price"];
     <div class="bg-white p-6 shadow rounded-lg">
       <h2 class="text-xl font-bold mb-4">Order Details</h2>
       <div class="flex items-center mb-4">
-        <img src="<?php echo $product['image']; ?>" alt="product" class="w-20 h-20 rounded mr-4">
+        <img src="<?php echo $product['product_image']; ?>" alt="product" class="w-20 h-20 rounded mr-4">
         <div>
-          <h3 class="font-semibold"><?php echo $product['name']; ?></h3>
-          <p>Subtotal: ₹<?php echo $product['price']; ?></p>
+          <h3 class="font-semibold"><?php echo $product['product_name']; ?></h3>
+          <p>Subtotal: ₹<?php echo $product['discount_price']; ?></p>
         </div>
       </div>
       <div id="orderSummary" class="text-lg font-semibold">
-        Total: ₹<?php echo $product['price']; ?>
+        Total: ₹<?php echo $product['discount_price']; ?>
       </div>
     </div>
   </div>
@@ -110,7 +116,7 @@ $total = $product["price"];
   <script>
   document.querySelectorAll("input[name='payment_method']").forEach(radio => {
     radio.addEventListener("change", function(){
-      let subtotal = <?php echo $product['price']; ?>;
+      let subtotal = <?php echo $product['discount_price']; ?>;
       let shipping = this.value === "cod" ? 49 : 0;
       let total = subtotal + shipping;
       document.getElementById("orderSummary").innerHTML = "Total: ₹" + total;
@@ -127,7 +133,7 @@ $total = $product["price"];
       .then(res => res.json())
       .then(data => {
         var options = {
-          "key": "rzp_live_pA6jgjncp78sq7",
+          "key": "rzp_live_pA6jgjncp78sq7", // 🔑 apna Razorpay key id yahan daalo
           "amount": data.amount,
           "currency": "INR",
           "name": "Pyaara Store",
