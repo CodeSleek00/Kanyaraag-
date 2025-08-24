@@ -2,7 +2,7 @@
 include '../db/db_connect.php';
 
 // Razorpay SDK
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 use Razorpay\Api\Api; // MUST be after require, at top
 
 $total = $_POST['total'];
@@ -28,7 +28,7 @@ if($payment_method=="COD"){
 } else {
     // Razorpay Payment Integration
     $keyId = "rzp_test_TMaKHOLutXGYTH";
-    $keySecret = "YOUR_KEY_SECRET";
+    $keySecret = "eyvkr7ljPXve2MnuDjHXZQVE";
 
     $api = new Api($keyId, $keySecret);
 
