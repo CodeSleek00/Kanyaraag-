@@ -64,7 +64,7 @@ button:hover { background:#e91e63; }
 
 <script>
 var options = {
-    "key": "rzp_live_pA6jgjncp78sq7",
+    "key": "",
     "amount": <?= $total*100 ?>, // in paise
     "currency": "INR",
     "name": "Your Store",
