@@ -66,7 +66,7 @@ $suggest_result = $conn->query($suggest_sql);
       <i class="fab fa-twitter"></i>
       <i class="fab fa-whatsapp"></i>
     </div>
-    <img src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>">
+    <img src="<?php echo $product['product_image']; ?>" alt="<?php echo $product['product_name']; ?>">
   </div>
 
   <!-- Product Info -->
