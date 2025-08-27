@@ -13,6 +13,7 @@ $product = $result->fetch_assoc();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo $product['product_name']; ?> - Product Details</title>
+  <link rel="stylesheet" href="product-style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -375,15 +376,17 @@ $product = $result->fetch_assoc();
 
 <div class="container">
   <!-- Breadcrumb Navigation -->
-  <div class="breadcrumb">
-    <a href="#">Home</a>
-    <i class="fas fa-chevron-right"></i>
-    <a href="#">Products</a>
-    <i class="fas fa-chevron-right"></i>
-    <a href="#">Category</a>
-    <i class="fas fa-chevron-right"></i>
-    <span><?php echo $product['product_name']; ?></span>
-  </div>
+  <header class="header">
+    <!-- Back button -->
+    <button onclick="history.back()"><img width="25" height="25" src="https://img.icons8.com/puffy-filled/50/left.png" alt="left"/>
+</button>
+
+    <!-- Text logo -->
+    <div class="logo">कन्या<span class="raag">Raag</span></div>
+
+    <!-- Cart button -->
+    <button onclick="alert('Cart clicked!')"><img width="28" height="28" src="https://img.icons8.com/parakeet-line/50/shopping-cart-loaded.png" alt="shopping-cart-loaded"/></button>
+  </header>
   
   <div class="product-detail">
     <!-- Product Gallery -->
