@@ -420,6 +420,7 @@
     }
 
     .tabs-container {
+        height: 1200px;
       margin: 60px auto;
       background: #fff;
       border-radius: 20px;
