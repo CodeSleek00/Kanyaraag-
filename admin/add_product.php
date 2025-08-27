@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stock = $_POST['stock'];
     $color = $_POST['color'];
     $fabric = $_POST['fabric'];
+
+    // Sizes from checkboxes
     $sizes = !empty($_POST['sizes']) ? implode(',', $_POST['sizes']) : '';
 
     $target_dir = "../uploads/";
@@ -56,14 +58,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html>
 <head>
   <title>Add Product</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 10px; }
     form { max-width: 500px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }
-    input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; }
-    button { background: #007bff; color: #fff; border: none; padding: 10px; cursor: pointer; border-radius: 5px; }
+    input, textarea, select, button { width: 100%; padding: 10px; margin: 8px 0; }
+    button { background: #007bff; color: #fff; border: none; cursor: pointer; border-radius: 5px; }
     button:hover { background: #0056b3; }
-    .preview img { width: 80px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    .preview img { width: 70px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; }
     .label { font-weight: bold; margin-top: 10px; display: block; }
+    .sizes-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+    .sizes-container label { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+    input[type="file"] { padding: 3px; }
   </style>
 </head>
 <body>
@@ -105,14 +111,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <input type="text" name="fabric" placeholder="Enter Fabric" required>
 
     <label class="label">Sizes</label>
-    <select name="sizes[]" multiple required>
-        <option value="XS">XS</option>
-        <option value="S">S</option>
-        <option value="M">M</option>
-        <option value="L">L</option>
-        <option value="XL">XL</option>
-        <option value="XXL">XXL</option>
-    </select>
+    <div class="sizes-container">
+        <label><input type="checkbox" name="sizes[]" value="XS"> XS</label>
+        <label><input type="checkbox" name="sizes[]" value="S"> S</label>
+        <label><input type="checkbox" name="sizes[]" value="M"> M</label>
+        <label><input type="checkbox" name="sizes[]" value="L"> L</label>
+        <label><input type="checkbox" name="sizes[]" value="XL"> XL</label>
+        <label><input type="checkbox" name="sizes[]" value="XXL"> XXL</label>
+    </div>
 
     <button type="submit">Add Product</button>
   </form>
