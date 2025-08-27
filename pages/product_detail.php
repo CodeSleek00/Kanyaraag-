@@ -387,7 +387,7 @@ $product = $result->fetch_assoc();
     <div class="logo">कन्या<span class="raag">Raag</span></div>
 
     <!-- Cart button -->
-    <a href="cart.php"><button onclick="alert('Cart clicked!')"><img width="28" height="28" src="https://img.icons8.com/parakeet-line/50/shopping-cart-loaded.png" alt="shopping-cart-loaded"/></button></a>
+    <a href="cart.php"><button><img width="28" height="28" src="https://img.icons8.com/parakeet-line/50/shopping-cart-loaded.png" alt="shopping-cart-loaded"/></button></a>
   </header>
 <div class="container">
   <!-- Breadcrumb Navigation -->
