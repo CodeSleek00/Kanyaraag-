@@ -567,6 +567,39 @@ $product = $result->fetch_assoc();
   <i class="fas fa-check-circle"></i>
   <span>Product added to cart successfully!</span>
 </div>
+<div class="tabs-container">
+
+    <!-- Tab Headers -->
+    <div class="tab-headers">
+      <div class="tab-link active" data-tab="details">Product Details</div>
+      <div class="tab-link" data-tab="shipping">Shipping Details</div>
+      <div class="tab-link" data-tab="style">Style & Fit Tips</div>
+    </div>
+
+    <!-- Tab Contents -->
+    <div id="details" class="tab-content active">
+      <p>
+        Crafted from 100% premium cotton for ultimate comfort and breathability. Available in multiple sizes and colors. Soft texture ensures all-day wearability, with durable stitching for long-lasting use.
+      </p>
+    </div>
+
+    <div id="shipping" class="tab-content">
+      <ul>
+        <li>Free shipping on orders above ₹499</li>
+        <li>Estimated delivery: 3-7 business days</li>
+        <li>Cash on Delivery available</li>
+        <li>Easy returns within 15 days</li>
+      </ul>
+    </div>
+
+    <div id="style" class="tab-content">
+      <p>
+        Perfect for casual outings, pair with jeans, chinos, or shorts. Slim-fit design; consider sizing up for a relaxed fit. Layer under jackets for a trendy look.
+      </p>
+    </div>
+
+  </div>
+
 
 <script>
   function showImage(img) {
@@ -618,6 +651,20 @@ document.querySelector('.add-cart').addEventListener('click', function() {
     alert('Proceeding to checkout...');
     // In a real application, this would redirect to checkout page
   });
+  const tabs = document.querySelectorAll(".tab-link");
+    const contents = document.querySelectorAll(".tab-content");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        // Remove active class from all tabs and contents
+        tabs.forEach(t => t.classList.remove("active"));
+        contents.forEach(c => c.classList.remove("active"));
+
+        // Add active to clicked tab and corresponding content
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.tab).classList.add("active");
+      });
+    });
 </script>
 </body>
 </html>
