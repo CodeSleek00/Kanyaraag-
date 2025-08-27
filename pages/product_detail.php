@@ -421,15 +421,7 @@ $product = $result->fetch_assoc();
       <h1><?php echo $product['product_name']; ?></h1>
       
       <div class="product-meta">
-        <div class="rating">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star-half-alt"></i>
-          <span>4.5</span>
-        </div>
-        <div class="reviews">(128 reviews)</div>
+
         <div class="stock in-stock"><?php echo $product['stock'] > 0 ? 'In Stock' : 'Out of Stock'; ?></div>
       </div>
       
