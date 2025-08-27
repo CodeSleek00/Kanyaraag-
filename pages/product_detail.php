@@ -1,68 +1,78 @@
-<?php
-include '../db/db_connect.php';
+<?php include '../db/db_connect.php'; ?>
 
-$id = intval($_GET['id']);
-$sql = "SELECT * FROM products WHERE id=$id";
+<?php
+$id = $_GET['id'] ?? 0;
+$sql = "SELECT * FROM products WHERE id = $id";
 $result = $conn->query($sql);
-if($result->num_rows == 0){
-    echo "Product not found!";
-    exit;
-}
 $product = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title><?= $product['product_name'] ?></title>
-<style>
-body { font-family: Arial; background:#fafafa; padding:20px; }
-.container { display:flex; gap:20px; }
-.container img { max-width:400px; border-radius:10px; }
-.details { max-width:500px; }
-.price { font-weight:bold; margin:10px 0; font-size:20px; }
-.old { text-decoration:line-through; color:red; margin-right:5px; }
-.discount { color:green; }
-button { padding:10px 15px; background:#ff3f6c; color:#fff; border:none; cursor:pointer; border-radius:5px; }
-button:hover { background:#e91e63; }
-</style>
+  <title><?php echo $product['product_name']; ?> - Details</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+    .container { max-width: 900px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }
+    .gallery { display: flex; gap: 15px; }
+    .gallery-main { flex: 2; }
+    .gallery-main img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 10px; }
+    .gallery-thumbs { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .gallery-thumbs img { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid #ddd; }
+    h2 { margin: 15px 0; }
+    .price { font-size: 20px; margin: 10px 0; }
+    .old { text-decoration: line-through; color: red; margin-right: 10px; }
+    .discount { color: green; }
+    .details p { margin: 8px 0; }
+    .btns { margin-top: 15px; }
+    .btns button { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px; }
+    .add-cart { background: #007bff; color: #fff; }
+    .buy-now { background: #ff3f6c; color: #fff; }
+  </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
-    <div class="details">
-        <h2><?= $product['product_name'] ?></h2>
-        <p><?= $product['description'] ?></p>
-        <p class="price">
-            <span class="old">₹<?= $product['original_price'] ?></span> 
-            ₹<?= $product['discount_price'] ?> 
-            <span class="discount">(<?= round($product['discount_percent']) ?>% OFF)</span>
-        </p>
-        <p>Stock: <?= $product['stock'] ?></p>
-        <button id="add-to-cart" <?= ($product['stock']<=0?"disabled":"") ?>>
-            <?= ($product['stock']>0?"Add to Cart":"Out of Stock") ?>
-        </button>
-        <a href="checkout.php?id=<?= $product['id'] ?>"><button>Buy Now</button></a>
+  <div class="gallery">
+    <div class="gallery-main">
+      <img id="mainImg" src="<?php echo $product['product_image']; ?>" alt="">
     </div>
+    <div class="gallery-thumbs">
+      <img src="<?php echo $product['product_image']; ?>" onclick="showImage(this)">
+      <?php
+        if (!empty($product['images'])) {
+            $extra = json_decode($product['images'], true);
+            foreach ($extra as $img) {
+                echo "<img src='".$img."' onclick='showImage(this)'>";
+            }
+        }
+      ?>
+    </div>
+  </div>
+
+  <h2><?php echo $product['product_name']; ?></h2>
+  <div class="price">
+    <span class="old">₹<?php echo $product['original_price']; ?></span>
+    ₹<?php echo $product['discount_price']; ?>
+    <span class="discount">(<?php echo round($product['discount_percent']); ?>% OFF)</span>
+  </div>
+  <div class="details">
+    <p><b>Description:</b> <?php echo $product['description']; ?></p>
+    <p><b>Color:</b> <?php echo $product['color']; ?></p>
+    <p><b>Fabric:</b> <?php echo $product['fabric']; ?></p>
+    <p><b>Stock:</b> <?php echo $product['stock']; ?></p>
+  </div>
+
+  <div class="btns">
+    <button class="add-cart">Add to Cart</button>
+    <button class="buy-now">Buy Now</button>
+  </div>
 </div>
 
 <script>
-let btn = document.getElementById("add-to-cart");
-btn?.addEventListener("click", () => {
-    let product = {
-        id: "<?= $product['id'] ?>",
-        name: "<?= $product['product_name'] ?>",
-        price: "<?= $product['discount_price'] ?>",
-        image: "<?= $product['product_image'] ?>",
-        qty: 1
-    };
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let exist = cart.find(p=>p.id==product.id);
-    if(exist){ exist.qty++; } else { cart.push(product); }
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert(product.name+" added to cart!");
-});
+function showImage(img) {
+  document.getElementById("mainImg").src = img.src;
+}
 </script>
 </body>
 </html>
