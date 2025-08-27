@@ -7,20 +7,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $discount = $_POST['discount_price'];
     $desc = $_POST['description'];
     $page = $_POST['page_name'];
-    $stock = $_POST['stock']; // 🆕 Stock input liya
+    $stock = $_POST['stock'];
+    $color = $_POST['color'];
+    $fabric = $_POST['fabric'];
 
-    // image upload
+    // image upload (multiple)
     $target_dir = "../uploads/";
     if (!is_dir($target_dir)) mkdir($target_dir);
-    $image = $target_dir . basename($_FILES["product_image"]["name"]);
-    move_uploaded_file($_FILES["product_image"]["tmp_name"], $image);
 
-    // insert query with stock
-    $sql = "INSERT INTO products (product_name, product_image, original_price, discount_price, description, page_name, stock)
-            VALUES ('$name', '$image', '$price', '$discount', '$desc', '$page', '$stock')";
+    $uploaded_images = [];
+    foreach ($_FILES['product_images']['name'] as $key => $val) {
+        if ($_FILES['product_images']['error'][$key] === 0) {
+            $file_name = time() . "_" . basename($_FILES['product_images']['name'][$key]);
+            $target_file = $target_dir . $file_name;
+
+            if (move_uploaded_file($_FILES['product_images']['tmp_name'][$key], $target_file)) {
+                $uploaded_images[] = $target_file;
+            }
+        }
+    }
+
+    // convert images array to JSON
+    $images_json = json_encode($uploaded_images);
+
+    // insert query with stock, color, fabric, images
+    $sql = "INSERT INTO products 
+            (product_name, original_price, discount_price, description, page_name, stock, color, fabric, images)
+            VALUES 
+            ('$name', '$price', '$discount', '$desc', '$page', '$stock', '$color', '$fabric', '$images_json')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<p style='color:green'>✅ Product Added Successfully with Stock!</p>";
+        echo "<p style='color:green'>✅ Product Added Successfully with Multiple Images!</p>";
     } else {
         echo "<p style='color:red'>❌ Error: " . $conn->error . "</p>";
     }
@@ -43,18 +60,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <h2>Add Product</h2>
   <form method="POST" enctype="multipart/form-data">
     <input type="text" name="product_name" placeholder="Product Name" required>
-    <input type="file" name="product_image" required>
+
+    <!-- multiple images input -->
+    <input type="file" name="product_images[]" multiple required>
+
     <input type="number" step="0.01" name="original_price" placeholder="Original Price" required>
     <input type="number" step="0.01" name="discount_price" placeholder="Discount Price" required>
     <textarea name="description" placeholder="Description"></textarea>
+
     <select name="page_name">
       <option value="co-ord">Co-Ord Set</option>
       <option value="crop-top">Crop-Top</option>
       <option value="shortkurtis">Short-Kurtis</option>
     </select>
-    
-    <!-- 🆕 Stock input -->
+
     <input type="number" name="stock" placeholder="Enter Stock Quantity" required>
+    <input type="text" name="color" placeholder="Enter Color" required>
+    <input type="text" name="fabric" placeholder="Enter Fabric" required>
 
     <button type="submit">Add Product</button>
   </form>
