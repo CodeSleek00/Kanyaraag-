@@ -422,6 +422,7 @@ $product = $result->fetch_assoc();
       
       <div class="product-meta">
 
+
         <div class="stock in-stock"><?php echo $product['stock'] > 0 ? 'In Stock' : 'Out of Stock'; ?></div>
       </div>
       

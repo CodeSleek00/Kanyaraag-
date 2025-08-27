@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stock = $_POST['stock'];
     $color = $_POST['color'];
     $fabric = $_POST['fabric'];
+    $sizes = !empty($_POST['sizes']) ? implode(',', $_POST['sizes']) : '';
 
     $target_dir = "../uploads/";
     if (!is_dir($target_dir)) mkdir($target_dir);
@@ -24,12 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // extra images (multiple)
     $uploaded_images = [];
-    foreach ($_FILES['extra_images']['name'] as $key => $val) {
-        if ($_FILES['extra_images']['error'][$key] === 0) {
-            $file_name = time() . "_" . basename($_FILES['extra_images']['name'][$key]);
-            $target_file = $target_dir . $file_name;
-            if (move_uploaded_file($_FILES['extra_images']['tmp_name'][$key], $target_file)) {
-                $uploaded_images[] = $target_file;
+    if (!empty($_FILES['extra_images']['name'][0])) {
+        foreach ($_FILES['extra_images']['name'] as $key => $val) {
+            if ($_FILES['extra_images']['error'][$key] === 0) {
+                $file_name = time() . "_" . basename($_FILES['extra_images']['name'][$key]);
+                $target_file = $target_dir . $file_name;
+                if (move_uploaded_file($_FILES['extra_images']['tmp_name'][$key], $target_file)) {
+                    $uploaded_images[] = $target_file;
+                }
             }
         }
     }
@@ -37,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // insert query
     $sql = "INSERT INTO products 
-            (product_name, product_image, original_price, discount_price, description, page_name, stock, color, fabric, images)
+            (product_name, product_image, original_price, discount_price, description, page_name, stock, color, fabric, sizes, images)
             VALUES 
-            ('$name', '$main_image', '$price', '$discount', '$desc', '$page', '$stock', '$color', '$fabric', '$images_json')";
+            ('$name', '$main_image', '$price', '$discount', '$desc', '$page', '$stock', '$color', '$fabric', '$sizes', '$images_json')";
 
     if ($conn->query($sql) === TRUE) {
         echo "<p style='color:green'>✅ Product Added Successfully!</p>";
@@ -100,6 +103,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <label class="label">Fabric</label>
     <input type="text" name="fabric" placeholder="Enter Fabric" required>
+
+    <label class="label">Sizes</label>
+    <select name="sizes[]" multiple required>
+        <option value="XS">XS</option>
+        <option value="S">S</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+        <option value="XXL">XXL</option>
+    </select>
 
     <button type="submit">Add Product</button>
   </form>
