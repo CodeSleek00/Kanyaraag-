@@ -387,15 +387,7 @@ $product = $result->fetch_assoc();
     <div class="logo">कन्या<span class="raag">Raag</span></div>
 
     <!-- Cart button -->
-    <button onclick="alert('Cart clicked!')"><button class='add-to-cart'
-          data-id='".$row['id']."'
-          data-name='".$row['product_name']."'
-          data-price='".$row['discount_price']."'
-          data-image='".$row['product_image']."'
-          data-stock='".$row['stock']."'
-          ".($row['stock'] <= 0 ? "disabled" : "").">
-          ".($row['stock'] > 0 ? "Add to Cart" : "Out of Stock")."
-        </button><img width="28" height="28" src="https://img.icons8.com/parakeet-line/50/shopping-cart-loaded.png" alt="shopping-cart-loaded"/></button>
+    <a href="cart.php"><button onclick="alert('Cart clicked!')"><img width="28" height="28" src="https://img.icons8.com/parakeet-line/50/shopping-cart-loaded.png" alt="shopping-cart-loaded"/></button></a>
   </header>
 <div class="container">
   <!-- Breadcrumb Navigation -->
