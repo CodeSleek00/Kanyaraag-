@@ -1,96 +1,152 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sticky Header with Text Logo</title>
+  <title>Product Details Tabs - Optimized UI</title>
   <style>
-    * {
-      box-sizing: border-box;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
     }
 
-    body {
-      min-height: 2000px; /* for scroll demo */
-      background: #f9f9f9;
+    .tabs-container {
+      max-width: 900px;
+      margin: 60px auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+      overflow: hidden;
     }
 
-    /* Sticky header */
-    .header {
-      position: sticky;
-      top: 0;
-      width: 100%;
-      height: 60px;
-      background-color: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    /* Tab Headers */
+    .tab-headers {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
-      z-index: 1000;
+      background: linear-gradient(90deg, #f0f2f5, #e2e6ec);
     }
 
-    /* Left and right buttons */
-    .header button {
-      background-color: transparent;
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-      color: #333;
-    }
-
-    .header .logo {
+    .tab-headers div {
       flex: 1;
       text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-      color: #C75D2c;
-    }
-    .raag {
-      color: black; /* Different color for "Raag" */
-    }
-
-    /* Optional hover effect */
-    .header button:hover {
-      color: #007bff;
+      padding: 18px 0;
+      cursor: pointer;
+      font-weight: 600;
+      color: #555;
+      transition: all 0.3s ease;
+      position: relative;
     }
 
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-      .header {
-        padding: 0 10px;
-      }
+    .tab-headers div::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0%;
+      height: 3px;
+      background-color: #4f46e5;
+      transition: width 0.3s ease;
+    }
 
-      .header .logo {
-        font-size: 18px;
-      }
+    .tab-headers div.active {
+      color: #4f46e5;
+    }
 
-      .header button {
-        font-size: 16px;
+    .tab-headers div.active::after {
+      width: 60%;
+    }
+
+    .tab-headers div:hover:not(.active) {
+      color: #1e40af;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      padding: 25px 30px;
+      color: #4b5563;
+      line-height: 1.7;
+      font-size: 0.95rem;
+      display: none;
+      background-color: #f9f9f9;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    @media(max-width: 768px){
+      .tab-headers div {
+        font-size: 0.9rem;
+        padding: 15px 0;
       }
     }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <!-- Back button -->
-    <button onclick="history.back()"><img width="25" height="25" src="https://img.icons8.com/puffy-filled/50/left.png" alt="left"/>
-</button>
+  <div class="tabs-container">
 
-    <!-- Text logo -->
-    <div class="logo">कन्या<span class="raag">Raag</span></div>
+    <!-- Tab Headers -->
+    <div class="tab-headers">
+      <div class="tab-link active" data-tab="details">Product Details</div>
+      <div class="tab-link" data-tab="shipping">Shipping Details</div>
+      <div class="tab-link" data-tab="style">Style & Fit Tips</div>
+    </div>
 
-    <!-- Cart button -->
-    <button onclick="alert('Cart clicked!')"><img width="28" height="28" src="https://img.icons8.com/parakeet-line/50/shopping-cart-loaded.png" alt="shopping-cart-loaded"/></button>
-  </header>
+    <!-- Tab Contents -->
+    <div id="details" class="tab-content active">
+      <p>
+        Crafted from 100% premium cotton for ultimate comfort and breathability. Available in multiple sizes and colors. Soft texture ensures all-day wearability, with durable stitching for long-lasting use.
+      </p>
+    </div>
 
-  <main>
-    <p style="padding: 20px;">Scroll down to see sticky header in action.</p>
-  </main>
+    <div id="shipping" class="tab-content">
+      <ul>
+        <li>Free shipping on orders above ₹499</li>
+        <li>Estimated delivery: 3-7 business days</li>
+        <li>Cash on Delivery available</li>
+        <li>Easy returns within 15 days</li>
+      </ul>
+    </div>
+
+    <div id="style" class="tab-content">
+      <p>
+        Perfect for casual outings, pair with jeans, chinos, or shorts. Slim-fit design; consider sizing up for a relaxed fit. Layer under jackets for a trendy look.
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab-link");
+    const contents = document.querySelectorAll(".tab-content");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        // Remove active class from all tabs and contents
+        tabs.forEach(t => t.classList.remove("active"));
+        contents.forEach(c => c.classList.remove("active"));
+
+        // Add active to clicked tab and corresponding content
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.tab).classList.add("active");
+      });
+    });
+  </script>
 
 </body>
 </html>
