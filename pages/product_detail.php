@@ -469,7 +469,7 @@ $product = $result->fetch_assoc();
               data-image="<?php echo $product['product_image']; ?>"
               data-stock="<?php echo $product['stock']; ?>"
               <?php echo ($product['stock'] <= 0 ? "disabled" : ""); ?>>
-          <i class="fas fa-shopping-cart"></i> <?php echo $product['stock'] > 0 ? "Add to Cart" : "Out of Stock"; ?>
+          <i class="fas fa-shopping-cart"></i> <?php echo $product['stock'] > 0 ? "Ad to Cart" : "Out of Stock"; ?>
       </button>
 
         <button class="btn btn-secondary buy-now">
