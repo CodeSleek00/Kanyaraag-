@@ -20,30 +20,40 @@
       text-align: center; 
       transition: transform 0.2s ease-in-out; 
     }
-    .card:hover { transform: scale(1.05); }
+    .card:hover { transform: scale(1.03); }
     .card img { 
       max-width: 100%; 
       height: 200px; 
       object-fit: cover; 
       border-radius: 8px; 
     }
+    .thumbs { margin-top: 8px; display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+    .thumbs img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; border: 1px solid #ddd; }
     .price { font-weight: bold; margin: 10px 0; font-size: 16px; }
     .old { text-decoration: line-through; color: red; margin-right: 5px; }
     .discount { color: green; font-size: 14px; }
     .buy-now {
-  background: #ff3f6c;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  margin-top: 8px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-.buy-now:hover {
-  background: #e91e63;
-}
-
+      background: #ff3f6c;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 8px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+    .buy-now:hover { background: #e91e63; }
+    .add-to-cart {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 8px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+    .add-to-cart:disabled { background: #999; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -57,7 +67,9 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<div class='card'>
-        <img src='".$row['product_image']."' alt='".$row['product_name']."'>
+        <a href='product_detail.php?id=".$row['id']."'>
+          <img src='".$row['product_image']."' alt='".$row['product_name']."'>
+        </a>
         <h3>".$row['product_name']."</h3>
         <p>".$row['description']."</p>
         <p class='price'>
@@ -65,11 +77,21 @@ if ($result->num_rows > 0) {
             ₹".$row['discount_price']." 
             <span class='discount'>(".round($row['discount_percent'])."% OFF)</span>
         </p>
+        <p class='stock'>Stock: ".$row['stock']."</p>";
 
-        <!-- 🏷 Stock -->
-        <p class='stock'>Stock: ".$row['stock']."</p>
+        // show extra images
+        if (!empty($row['images'])) {
+            $images = json_decode($row['images'], true);
+            if (!empty($images)) {
+                echo "<div class='thumbs'>";
+                foreach ($images as $img) {
+                    echo "<img src='".$img."' alt='extra'>";
+                }
+                echo "</div>";
+            }
+        }
 
-        <!-- 🛒 Add to Cart button -->
+        echo "
         <button class='add-to-cart'
           data-id='".$row['id']."'
           data-name='".$row['product_name']."'
@@ -79,33 +101,20 @@ if ($result->num_rows > 0) {
           ".($row['stock'] <= 0 ? "disabled" : "").">
           ".($row['stock'] > 0 ? "Add to Cart" : "Out of Stock")."
         </button>
-      </div>
-      <!-- 🛒 Add to Cart button -->
-<button class='add-to-cart'
-  data-id='".$row['id']."'
-  data-name='".$row['product_name']."'
-  data-price='".$row['discount_price']."'
-  data-image='".$row['product_image']."'
-  data-stock='".$row['stock']."'
-  ".($row['stock'] <= 0 ? "disabled" : "").">
-  ".($row['stock'] > 0 ? "Add to Cart" : "Out of Stock")."
-</button>
 
-<!-- ⚡ Buy Now button -->
-<a href='product_detail.php?id=".$row['id']."' style='text-decoration:none;'>
-  <button class='buy-now'>Buy Now</button>
-</a>
-"
-      ;
-
+        <a href='product_detail.php?id=".$row['id']."' style='text-decoration:none;'>
+          <button class='buy-now'>Buy Now</button>
+        </a>
+      </div>";
     }
 } else {
     echo "<p style='text-align:center;'>😢 No products available yet!</p>";
 }
 ?>
 </div>
+
 <script>
-    // Add to Cart
+  // Add to Cart
   document.querySelectorAll(".add-to-cart").forEach(btn => {
     btn.addEventListener("click", () => {
       let product = {
@@ -117,8 +126,6 @@ if ($result->num_rows > 0) {
       };
 
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-      // Check if product already exists
       let existing = cart.find(p => p.id === product.id);
       if (existing) {
         existing.qty++;
