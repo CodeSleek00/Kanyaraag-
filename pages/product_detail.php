@@ -462,12 +462,16 @@ $product = $result->fetch_assoc();
       </div>
       
       <div class="action-buttons">
-        <button class="btn btn-outline">
-          <i class="far fa-heart"></i> Wishlist
-        </button>
-        <button class="btn btn-primary add-cart">
-          <i class="fas fa-shopping-cart"></i> Add to Cart
-        </button>
+      <button class="btn btn-primary add-cart"
+              data-id="<?php echo $product['id']; ?>"
+              data-name="<?php echo $product['product_name']; ?>"
+              data-price="<?php echo $product['discount_price']; ?>"
+              data-image="<?php echo $product['product_image']; ?>"
+              data-stock="<?php echo $product['stock']; ?>"
+              <?php echo ($product['stock'] <= 0 ? "disabled" : ""); ?>>
+          <i class="fas fa-shopping-cart"></i> <?php echo $product['stock'] > 0 ? "Add to Cart" : "Out of Stock"; ?>
+      </button>
+
         <button class="btn btn-secondary buy-now">
           <i class="fas fa-bolt"></i> Buy Now
         </button>
@@ -510,6 +514,29 @@ $product = $result->fetch_assoc();
   document.querySelector('.buy-now').addEventListener('click', function() {
     alert('Proceeding to checkout...');
     // In a real application, this would redirect to checkout page
+  });
+  // Add to Cart
+  document.querySelectorAll(".add-to-cart").forEach(btn => {
+    btn.addEventListener("click", () => {
+      let product = {
+        id: btn.getAttribute("data-id"),
+        name: btn.getAttribute("data-name"),
+        price: btn.getAttribute("data-price"),
+        image: btn.getAttribute("data-image"),
+        qty: 1
+      };
+
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let existing = cart.find(p => p.id === product.id);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push(product);
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(product.name + " added to cart!");
+    });
   });
 </script>
 </body>
