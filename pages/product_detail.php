@@ -454,16 +454,23 @@ $product = $result->fetch_assoc();
       </div>
       
       <div class="action-buttons">
-        <button class="btn btn-outline">
-          <i class="far fa-heart"></i> Wishlist
-        </button>
-        <button class="btn btn-primary add-cart">
-          <i class="fas fa-shopping-cart"></i> Add to Cart
-        </button>
-        <button class="btn btn-secondary buy-now">
-          <i class="fas fa-bolt"></i> Buy Now
-        </button>
-      </div>
+  <button class="btn btn-outline">
+    <i class="far fa-heart"></i> Wishlist
+  </button>
+  <button 
+    class="btn btn-primary add-cart"
+    data-id="<?php echo $product['id']; ?>"
+    data-name="<?php echo addslashes($product['product_name']); ?>"
+    data-price="<?php echo $product['discount_price']; ?>"
+    data-image="<?php echo $product['product_image']; ?>"
+  >
+    <i class="fas fa-shopping-cart"></i> Add to Cart
+  </button>
+  <button class="btn btn-secondary buy-now">
+    <i class="fas fa-bolt"></i> Buy Now
+  </button>
+</div>
+
       
       <div class="shipping-info">
         <i class="fas fa-truck"></i>
