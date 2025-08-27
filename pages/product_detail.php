@@ -547,9 +547,6 @@ $product = $result->fetch_assoc();
 
       
       <div class="action-buttons">
-        <button class="btn btn-outline">
-          <i class="far fa-heart"></i> Wishlist
-        </button>
         <button class="btn btn-primary add-cart">
           <i class="fas fa-shopping-cart"></i> Add to Cart
         </button>
