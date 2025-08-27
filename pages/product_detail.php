@@ -373,10 +373,7 @@ $product = $result->fetch_assoc();
   </style>
 </head>
 <body>
-
-<div class="container">
-  <!-- Breadcrumb Navigation -->
-  <header class="header">
+<header class="header">
     <!-- Back button -->
     <button onclick="history.back()"><img width="25" height="25" src="https://img.icons8.com/puffy-filled/50/left.png" alt="left"/>
 </button>
@@ -387,6 +384,9 @@ $product = $result->fetch_assoc();
     <!-- Cart button -->
     <button onclick="alert('Cart clicked!')"><img width="28" height="28" src="https://img.icons8.com/parakeet-line/50/shopping-cart-loaded.png" alt="shopping-cart-loaded"/></button>
   </header>
+<div class="container">
+  <!-- Breadcrumb Navigation -->
+  
   
   <div class="product-detail">
     <!-- Product Gallery -->
