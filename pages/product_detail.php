@@ -132,6 +132,10 @@ $product = $result->fetch_assoc();
     <div id="details" class="tab-content active">
       <table border="1">
         <tr>
+          <th>Name</th>
+          <td><?php echo $product['product_name']; ?></td>
+        </tr>
+        <tr>
           <th>Color</th>
           <td><?php echo $product['color']; ?></td>
         </tr>
