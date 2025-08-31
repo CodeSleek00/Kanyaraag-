@@ -694,6 +694,72 @@ $product = $result->fetch_assoc();
     ?>
   </div>
 </div>
+<!-- Reviews Section -->
+<div class="container" style="margin-top:50px;">
+  <h2>Reviews</h2>
+  <?php
+    // Fetch reviews for current product
+    $reviewQuery = $conn->query("SELECT * FROM reviews WHERE product_id = $id ORDER BY created_at DESC");
+    $reviewCount = $reviewQuery->num_rows;
+  ?>
+  <p style="margin-bottom:20px; color:#6c757d;"><?php echo $reviewCount; ?> review<?php echo $reviewCount != 1 ? 's' : ''; ?> for this product</p>
+
+  <div class="reviews-list" style="display:flex; flex-direction:column; gap:20px;">
+    <?php
+      while($review = $reviewQuery->fetch_assoc()) {
+        echo '<div class="review-item" style="background:#fff; padding:15px; border-radius:10px; border:1px solid #eee; position:relative; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div style="font-weight:600; color:#3a86ff;">'.$review['user_name'].'</div>
+                  <button class="share-review" 
+                          data-url="'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'#review'.$review['review_id'].'" 
+                          style="border:none; background:transparent; cursor:pointer; color:#555;">
+                    <i class="fas fa-share-alt"></i>
+                  </button>
+                </div>
+                <div style="margin:5px 0; color:#ffc107;">';
+                  for($i=1;$i<=5;$i++){
+                    echo $i <= $review['rating'] ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+                  }
+        echo '</div>
+                <p style="color:#212529;">'.htmlspecialchars($review['review_text']).'</p>';
+                
+                if(!empty($review['review_image'])) {
+                  echo '<img src="'.$review['review_image'].'" alt="Review Image" style="max-width:150px; max-height:150px; object-fit:cover; border-radius:8px; margin-top:8px;">';
+                }
+
+        echo '</div>';
+      }
+
+      if($reviewCount == 0){
+        echo '<p style="color:#6c757d;">No reviews yet for this product.</p>';
+      }
+    ?>
+  </div>
+</div>
+
+<script>
+  // Share button functionality
+  document.querySelectorAll('.share-review').forEach(btn => {
+    btn.addEventListener('click', function() {
+      let url = this.getAttribute('data-url');
+      if (navigator.share) {
+        // Native share on mobile devices
+        navigator.share({
+          title: "Check out this review!",
+          url: "https://" + url
+        }).then(() => {
+          console.log('Shared successfully');
+        }).catch(console.error);
+      } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText("https://" + url).then(() => {
+          alert("Review link copied to clipboard!");
+        });
+      }
+    });
+  });
+</script>
+
 
 
 <script>
