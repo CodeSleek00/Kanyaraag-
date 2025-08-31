@@ -135,6 +135,18 @@ $product = $result->fetch_assoc();
           <th>Color</th>
           <td><?php echo $product['color']; ?></td>
         </tr>
+        <tr>
+          <th>Fabric</th>
+          <td><?php echo $product['fabric']; ?></td>
+        </tr>
+        <tr>
+          <th>Stock</th>
+          <td><?php echo $product['stock']; ?> units available</td>
+        </tr>
+        <tr>
+          <th>Sizes</th>
+          <td><?php echo implode(', ', explode(',', $product['sizes'])); ?></td>
+        </tr>
 
       </table>
     </div>
