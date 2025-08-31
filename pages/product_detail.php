@@ -20,7 +20,75 @@ $product = $result->fetch_assoc();
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   
+<style>
+  #details {
+  margin: 20px 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
 
+/* Title */
+.details-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+/* Table Container */
+.details-table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Table Style */
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.details-table th,
+.details-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.details-table th {
+  width: 180px;
+  background: #f9f9f9;
+  font-weight: 600;
+  color: #444;
+}
+
+.details-table td {
+  color: #555;
+  font-size: 15px;
+}
+
+/* Hover effect */
+.details-table tr:hover td {
+  background: #fafafa;
+  transition: 0.3s;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .details-table th, .details-table td {
+    display: block;
+    width: 100%;
+  }
+  .details-table th {
+    background: transparent;
+    font-size: 14px;
+    padding: 8px 0;
+  }
+  .details-table td {
+    padding: 6px 0 14px 0;
+  }
+}
+</style>
 </head>
 <body>
 <header class="header">
