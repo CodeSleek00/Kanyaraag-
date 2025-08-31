@@ -97,11 +97,6 @@ $product = $result->fetch_assoc();
       </div>
 </div>
 
-
-<script>
-  
-</script>
-
       
       <div class="action-buttons">
         <button class="btn btn-primary add-cart">
@@ -114,7 +109,7 @@ $product = $result->fetch_assoc();
       
       <div class="shipping-info">
         <i class="fas fa-truck"></i>
-        <div class="shipping-text"> Order within 5 hrs 32 mins for same day dispatch.</div>
+        <div class="shipping-text"> Order Dispatch the same day </div>
       </div>
     </div>
   </div>
@@ -135,9 +130,13 @@ $product = $result->fetch_assoc();
 
     <!-- Tab Contents -->
     <div id="details" class="tab-content active">
-      <p>
-        Crafted from 100% premium cotton for ultimate comfort and breathability. Available in multiple sizes and colors. Soft texture ensures all-day wearability, with durable stitching for long-lasting use.
-      </p>
+      <table border="1">
+        <tr>
+          <th>Color</th>
+          <td><?php echo $product['color']; ?></td>
+        </tr>
+
+      </table>
     </div>
 
     <div id="shipping" class="tab-content">
