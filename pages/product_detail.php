@@ -147,6 +147,10 @@ $product = $result->fetch_assoc();
           <th>Sizes</th>
           <td><?php echo implode(', ', explode(',', $product['sizes'])); ?></td>
         </tr>
+        <tr>
+          <th>Description</th>
+          <td><?php echo $product['description']; ?></td>
+        </tr>
 
       </table>
     </div>
