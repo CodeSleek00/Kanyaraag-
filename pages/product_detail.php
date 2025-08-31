@@ -130,7 +130,7 @@ $product = $result->fetch_assoc();
 
     <!-- Tab Contents -->
     <div id="details" class="tab-content active">
-      <table >
+      <table>
         <tr>
           <th>Name</th>
           <td><?php echo $product['product_name']; ?></td>
@@ -214,37 +214,6 @@ $product = $result->fetch_assoc();
   </div>
 </div>
 
-<script>
-  const fbtProducts = <?php echo json_encode($fbtProducts); ?>;
-
-  document.getElementById('addAllFBT').addEventListener('click', function() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    fbtProducts.forEach(p => {
-      let product = {
-        id: p.id,
-        name: p.product_name,
-        price: p.discount_price,
-        image: p.product_image,
-        qty: 1
-      };
-
-      let existing = cart.find(item => item.id == product.id);
-      if(existing) {
-        existing.qty++;
-      } else {
-        cart.push(product);
-      }
-    });
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    const toast = document.getElementById('addedToCart');
-    toast.querySelector('span').innerText = "Both products added to cart!";
-    toast.classList.add('show');
-    setTimeout(() => { toast.classList.remove('show'); }, 3000);
-  });
-</script>
 
 
 
@@ -307,22 +276,6 @@ $product = $result->fetch_assoc();
   </form>
 </div>
 
-<script>
-  // Rating stars selection
-  const stars = document.querySelectorAll('#ratingStars i');
-  const ratingInput = document.getElementById('ratingValue');
-
-  stars.forEach(star => {
-    star.addEventListener('click', () => {
-      const value = star.getAttribute('data-value');
-      ratingInput.value = value;
-      stars.forEach(s => s.classList.replace('fas','far'));
-      for(let i=0; i<value; i++){
-        stars[i].classList.replace('far','fas');
-      }
-    });
-  });
-</script>
 
 <!-- Reviews Section -->
 <div class="container" style="margin-top:50px;">
@@ -499,6 +452,49 @@ document.querySelector('.add-cart').addEventListener('click', function() {
     toast.querySelector('span').innerText = product.name + " ("+product.size+") added to cart!";
     toast.classList.add('show');
     setTimeout(() => { toast.classList.remove('show'); }, 3000);
+  });
+    const fbtProducts = <?php echo json_encode($fbtProducts); ?>;
+
+  document.getElementById('addAllFBT').addEventListener('click', function() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    fbtProducts.forEach(p => {
+      let product = {
+        id: p.id,
+        name: p.product_name,
+        price: p.discount_price,
+        image: p.product_image,
+        qty: 1
+      };
+
+      let existing = cart.find(item => item.id == product.id);
+      if(existing) {
+        existing.qty++;
+      } else {
+        cart.push(product);
+      }
+    });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    const toast = document.getElementById('addedToCart');
+    toast.querySelector('span').innerText = "Both products added to cart!";
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); }, 3000);
+  });
+  // Rating stars selection
+  const stars = document.querySelectorAll('#ratingStars i');
+  const ratingInput = document.getElementById('ratingValue');
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const value = star.getAttribute('data-value');
+      ratingInput.value = value;
+      stars.forEach(s => s.classList.replace('fas','far'));
+      for(let i=0; i<value; i++){
+        stars[i].classList.replace('far','fas');
+      }
+    });
   });
 </script>
 </body>
