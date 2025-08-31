@@ -20,26 +20,16 @@ $product = $result->fetch_assoc();
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   
-<style></style>
+
 </head>
 <body>
 <header class="header">
-    <!-- Back button -->
-    <button onclick="history.back()"><img width="25" height="25" src="https://img.icons8.com/puffy-filled/50/left.png" alt="left"/>
-</button>
-
-    <!-- Text logo -->
-    <div class="logo">कन्या<span class="raag">Raag</span></div>
-
-    <!-- Cart button -->
-    <a href="cart.php"><button><img width="28" height="28" src="https://img.icons8.com/parakeet-line/50/shopping-cart-loaded.png" alt="shopping-cart-loaded"/></button></a>
-  </header>
+  <button onclick="history.back()"><img width="25" height="25" src="https://img.icons8.com/puffy-filled/50/left.png" alt="left"/></button>
+  <div class="logo">कन्या<span class="raag">Raag</span></div>
+  <a href="cart.php"><button><img width="28" height="28" src="https://img.icons8.com/parakeet-line/50/shopping-cart-loaded.png" alt="shopping-cart-loaded"/></button></a>
+</header>
 <div class="container">
-  <!-- Breadcrumb Navigation -->
-  
-  
   <div class="product-detail">
-    <!-- Product Gallery -->
     <div class="gallery">
       <div class="gallery-main">
         <img id="mainImg" src="<?php echo $product['product_image']; ?>" alt="<?php echo $product['product_name']; ?>">
@@ -59,7 +49,8 @@ $product = $result->fetch_assoc();
           }
         ?>
       </div>
-    </div>
+  </div>
+  </div>
     
     <!-- Product Information -->
     <div class="product-info">
