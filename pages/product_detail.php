@@ -50,18 +50,11 @@ $product = $result->fetch_assoc();
         ?>
       </div>
   </div>
-  </div>
-    
-    <!-- Product Information -->
     <div class="product-info">
       <h1><?php echo $product['product_name']; ?></h1>
-      
       <div class="product-meta">
-
-
         <div class="stock in-stock"><?php echo $product['stock'] > 0 ? 'In Stock' : 'Out of Stock'; ?></div>
       </div>
-      
       <div class="pricing">
         <div class="price-container">
           <div class="current-price">₹<?php echo $product['discount_price']; ?></div>
@@ -74,7 +67,6 @@ $product = $result->fetch_assoc();
       <div class="description">
         <p><?php echo $product['description']; ?></p>
       </div>
-      
       <div class="details">
         <div class="detail-item">
           <div class="detail-label">Color:</div>
@@ -90,20 +82,19 @@ $product = $result->fetch_assoc();
         </div>
       </div>
       <!-- Sizes Selection -->
-<div class="sizes">
-  <h3>Select Size:</h3>
-  <div class="size-options">
-    <?php
-      $all_sizes = ['XS','S','M','L','XL','XXL','XXXL'];
-      $available_sizes = explode(',', $product['sizes']); // from DB
-
-      foreach($all_sizes as $size) {
-        $isAvailable = in_array($size, $available_sizes);
-        echo '<div class="size-circle '.($isAvailable ? '' : 'disabled').'" 
+      <div class="sizes">
+        <h3>Select Size:</h3>
+      <div class="size-options">
+        <?php
+          $all_sizes = ['XS','S','M','L','XL','XXL','XXXL'];
+          $available_sizes = explode(',', $product['sizes']); // from DB
+          foreach($all_sizes as $size) {
+          $isAvailable = in_array($size, $available_sizes);
+          echo '<div class="size-circle '.($isAvailable ? '' : 'disabled').'" 
                   data-size="'.$size.'">'.$size.'</div>';
-      }
-    ?>
-  </div>
+            }
+        ?>
+      </div>
 </div>
 
 <style>
