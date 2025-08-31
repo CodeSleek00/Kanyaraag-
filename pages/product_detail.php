@@ -600,11 +600,11 @@ $product = $result->fetch_assoc();
 
   </div>
   <!-- Frequently Bought Together -->
+<!-- Frequently Bought Together -->
 <div class="container" style="margin-top:50px;">
   <h2 style="margin-bottom:20px;">Frequently Bought Together</h2>
   <div class="fbt-products" style="display:flex; gap:20px; flex-wrap:wrap;">
     <?php
-      // Example: pick 2 random products except current
       $fbtQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 2");
       $fbtProducts = [];
       $totalPrice = 0;
@@ -616,10 +616,17 @@ $product = $result->fetch_assoc();
                 <img src="'.$p['product_image'].'" alt="'.$p['product_name'].'" style="max-width:150px; height:150px; object-fit:contain;">
                 <h4 style="margin:10px 0;">'.$p['product_name'].'</h4>
                 <p style="font-weight:600; color:#3a86ff;">₹'.$p['discount_price'].'</p>
+                <button class="btn-add-fbt" 
+                        data-id="'.$p['id'].'" 
+                        data-name="'.addslashes($p['product_name']).'" 
+                        data-price="'.$p['discount_price'].'" 
+                        data-image="'.$p['product_image'].'"
+                        style="margin-top:10px; padding:8px 15px; border:none; background:#3a86ff; color:white; border-radius:5px; cursor:pointer;">
+                  <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
               </div>';
       }
 
-      // Apply 10% discount on total
       $discountedTotal = $totalPrice - ($totalPrice * 0.10);
     ?>
   </div>
@@ -629,6 +636,36 @@ $product = $result->fetch_assoc();
     </h3>
   </div>
 </div>
+
+<script>
+  // Add to cart for Frequently Bought Together
+  document.querySelectorAll('.btn-add-fbt').forEach(btn => {
+    btn.addEventListener('click', function() {
+      let product = {
+        id: this.getAttribute('data-id'),
+        name: this.getAttribute('data-name'),
+        price: this.getAttribute('data-price'),
+        image: this.getAttribute('data-image'),
+        qty: 1
+      };
+
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let existing = cart.find(p => p.id == product.id);
+      if(existing) {
+        existing.qty++;
+      } else {
+        cart.push(product);
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      const toast = document.getElementById('addedToCart');
+      toast.querySelector('span').innerText = product.name + " added to cart!";
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    });
+  });
+</script>
+
 
 
 <!-- Similar Products -->
