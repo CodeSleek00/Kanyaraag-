@@ -195,10 +195,10 @@ $product = $result->fetch_assoc();
       <div class="tab-link" data-tab="shipping">Shipping Details</div>
       <div class="tab-link" data-tab="style">Style & Fit Tips</div>
     </div>
-
+</div>
     <!-- Tab Contents -->
     <div id="details" class="tab-content active">
-      <table border="">
+      <table>
         <tr>
           <th>Name</th>
           <td><?php echo $product['product_name']; ?></td>
