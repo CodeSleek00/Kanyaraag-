@@ -1,152 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Details Tabs - Optimized UI</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f8;
-      margin: 0;
-      padding: 0;
-    }
-
-    .tabs-container {
-      max-width: 900px;
-      margin: 60px auto;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 12px 25px rgba(0,0,0,0.08);
-      overflow: hidden;
-    }
-
-    /* Tab Headers */
-    .tab-headers {
-      display: flex;
-      background: linear-gradient(90deg, #f0f2f5, #e2e6ec);
-    }
-
-    .tab-headers div {
-      flex: 1;
-      text-align: center;
-      padding: 18px 0;
-      cursor: pointer;
-      font-weight: 600;
-      color: #555;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .tab-headers div::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0%;
-      height: 3px;
-      background-color: #4f46e5;
-      transition: width 0.3s ease;
-    }
-
-    .tab-headers div.active {
-      color: #4f46e5;
-    }
-
-    .tab-headers div.active::after {
-      width: 60%;
-    }
-
-    .tab-headers div:hover:not(.active) {
-      color: #1e40af;
-    }
-
-    /* Tab Content */
-    .tab-content {
-      padding: 25px 30px;
-      color: #4b5563;
-      line-height: 1.7;
-      font-size: 0.95rem;
-      display: none;
-      background-color: #f9f9f9;
-      border-top: 1px solid #e5e7eb;
-    }
-
-    .tab-content.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .tab-content ul {
-      list-style-type: disc;
-      padding-left: 20px;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-
-    @media(max-width: 768px){
-      .tab-headers div {
-        font-size: 0.9rem;
-        padding: 15px 0;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="tabs-container">
-
-    <!-- Tab Headers -->
-    <div class="tab-headers">
-      <div class="tab-link active" data-tab="details">Product Details</div>
-      <div class="tab-link" data-tab="shipping">Shipping Details</div>
-      <div class="tab-link" data-tab="style">Style & Fit Tips</div>
-    </div>
-
-    <!-- Tab Contents -->
-    <div id="details" class="tab-content active">
-      <p>
-        Crafted from 100% premium cotton for ultimate comfort and breathability. Available in multiple sizes and colors. Soft texture ensures all-day wearability, with durable stitching for long-lasting use.
-      </p>
-    </div>
-
-    <div id="shipping" class="tab-content">
-      <ul>
-        <li>Free shipping on orders above ₹499</li>
-        <li>Estimated delivery: 3-7 business days</li>
-        <li>Cash on Delivery available</li>
-        <li>Easy returns within 15 days</li>
-      </ul>
-    </div>
-
-    <div id="style" class="tab-content">
-      <p>
-        Perfect for casual outings, pair with jeans, chinos, or shorts. Slim-fit design; consider sizing up for a relaxed fit. Layer under jackets for a trendy look.
-      </p>
-    </div>
-
+<div id="details" class="tab-content active">
+  <h2 class="details-title">Product Details</h2>
+  <div class="details-table-wrapper">
+    <table class="details-table">
+      <tr>
+        <th>Name</th>
+        <td><?php echo $product['product_name']; ?></td>
+      </tr>
+      <tr>
+        <th>Color</th>
+        <td><?php echo $product['color']; ?></td>
+      </tr>
+      <tr>
+        <th>Fabric</th>
+        <td><?php echo $product['fabric']; ?></td>
+      </tr>
+      <tr>
+        <th>Stock</th>
+        <td><?php echo $product['stock']; ?> units available</td>
+      </tr>
+      <tr>
+        <th>Sizes</th>
+        <td><?php echo implode(', ', explode(',', $product['sizes'])); ?></td>
+      </tr>
+      <tr>
+        <th>Description</th>
+        <td><?php echo $product['description']; ?></td>
+      </tr>
+    </table>
   </div>
+</div>
 
-  <script>
-    const tabs = document.querySelectorAll(".tab-link");
-    const contents = document.querySelectorAll(".tab-content");
+<style>
+/* Wrapper */
+#details {
+  margin: 20px 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    tabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        // Remove active class from all tabs and contents
-        tabs.forEach(t => t.classList.remove("active"));
-        contents.forEach(c => c.classList.remove("active"));
+/* Title */
+.details-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+}
 
-        // Add active to clicked tab and corresponding content
-        tab.classList.add("active");
-        document.getElementById(tab.dataset.tab).classList.add("active");
-      });
-    });
-  </script>
+/* Table Container */
+.details-table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
 
-</body>
-</html>
+/* Table Style */
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.details-table th,
+.details-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.details-table th {
+  width: 180px;
+  background: #f9f9f9;
+  font-weight: 600;
+  color: #444;
+}
+
+.details-table td {
+  color: #555;
+  font-size: 15px;
+}
+
+/* Hover effect */
+.details-table tr:hover td {
+  background: #fafafa;
+  transition: 0.3s;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .details-table th, .details-table td {
+    display: block;
+    width: 100%;
+  }
+  .details-table th {
+    background: transparent;
+    font-size: 14px;
+    padding: 8px 0;
+  }
+  .details-table td {
+    padding: 6px 0 14px 0;
+  }
+}
+</style>
