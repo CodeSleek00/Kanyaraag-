@@ -9,12 +9,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $review_image = null;
 
     // Handle image upload
-    if(isset($_FILES['review_image']) && $_FILES['review_image']['error'] == 0){
-        $ext = pathinfo($_FILES['review_image']['name'], PATHINFO_EXTENSION);
-        $filename = '../uploads/review_'.time().'.'.$ext;
-        move_uploaded_file($_FILES['review_image']['tmp_name'], '../'.$filename);
-        $review_image = $filename;
-    }
+   if(isset($_FILES['review_image']) && $_FILES['review_image']['error'] == 0){
+    $ext = pathinfo($_FILES['review_image']['name'], PATHINFO_EXTENSION);
+    $filename = 'uploads/review_'.time().'.'.$ext;
+    move_uploaded_file($_FILES['review_image']['tmp_name'], '../'.$filename); 
+    // "../" because script is in submit_review.php, folder uploads is one level above
+    $review_image = $filename; // save relative path
+}
+
 
     $sql = "INSERT INTO reviews (product_id, user_name, rating, review_text, review_image) 
             VALUES ($product_id, '$user_name', $rating, '$review_text', ".($review_image ? "'$review_image'" : "NULL").")";
