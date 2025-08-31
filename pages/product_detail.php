@@ -616,21 +616,22 @@ $product = $result->fetch_assoc();
                 <img src="'.$p['product_image'].'" alt="'.$p['product_name'].'" style="max-width:150px; height:150px; object-fit:contain;">
                 <h4 style="margin:10px 0;">'.$p['product_name'].'</h4>
                 <p style="font-weight:600; color:#3a86ff;">₹'.$p['discount_price'].'</p>
-                <button class="btn-add-fbt" 
-                        data-id="'.$p['id'].'" 
-                        data-name="'.addslashes($p['product_name']).'" 
-                        data-price="'.$p['discount_price'].'" 
-                        data-image="'.$p['product_image'].'"
-                        style="margin-top:10px; padding:8px 15px; border:none; background:#3a86ff; color:white; border-radius:5px; cursor:pointer;">
-                  <i class="fas fa-shopping-cart"></i> Add to Cart
-                </button>
               </div>';
       }
 
       $discountedTotal = $totalPrice - ($totalPrice * 0.10);
     ?>
   </div>
-  <div class="fbt-total" style="margin-top:20px; padding:15px; background:#f8f9fa; border-radius:8px;">
+
+  <!-- Add All to Cart Button -->
+  <div style="margin-top:20px; text-align:center;">
+    <button id="addAllFBT" 
+            style="padding:12px 25px; background:#28a745; color:white; font-size:16px; border:none; border-radius:8px; cursor:pointer;">
+      <i class="fas fa-shopping-cart"></i> Add Both to Cart (10% OFF Applied)
+    </button>
+  </div>
+
+  <div class="fbt-total" style="margin-top:20px; padding:15px; background:#f8f9fa; border-radius:8px; text-align:center;">
     <h3>Total Price for 2 Products:  
       <span style="color:#28a745;">₹<?php echo $discountedTotal; ?> (10% OFF Applied)</span>
     </h3>
@@ -638,31 +639,34 @@ $product = $result->fetch_assoc();
 </div>
 
 <script>
-  // Add to cart for Frequently Bought Together
-  document.querySelectorAll('.btn-add-fbt').forEach(btn => {
-    btn.addEventListener('click', function() {
+  const fbtProducts = <?php echo json_encode($fbtProducts); ?>;
+
+  document.getElementById('addAllFBT').addEventListener('click', function() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    fbtProducts.forEach(p => {
       let product = {
-        id: this.getAttribute('data-id'),
-        name: this.getAttribute('data-name'),
-        price: this.getAttribute('data-price'),
-        image: this.getAttribute('data-image'),
+        id: p.id,
+        name: p.product_name,
+        price: p.discount_price,
+        image: p.product_image,
         qty: 1
       };
 
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let existing = cart.find(p => p.id == product.id);
+      let existing = cart.find(item => item.id == product.id);
       if(existing) {
         existing.qty++;
       } else {
         cart.push(product);
       }
-      localStorage.setItem("cart", JSON.stringify(cart));
-
-      const toast = document.getElementById('addedToCart');
-      toast.querySelector('span').innerText = product.name + " added to cart!";
-      toast.classList.add('show');
-      setTimeout(() => { toast.classList.remove('show'); }, 3000);
     });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    const toast = document.getElementById('addedToCart');
+    toast.querySelector('span').innerText = "Both products added to cart!";
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); }, 3000);
   });
 </script>
 
