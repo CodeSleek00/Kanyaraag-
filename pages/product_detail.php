@@ -694,6 +694,60 @@ $product = $result->fetch_assoc();
     ?>
   </div>
 </div>
+<!-- Review Submission Form -->
+<div class="container" style="margin-top:50px;">
+  <h2>Write a Review</h2>
+  <form id="reviewForm" action="submit_review.php" method="POST" enctype="multipart/form-data" style="background:#fff; padding:20px; border-radius:10px; border:1px solid #eee; max-width:600px;">
+    <input type="hidden" name="product_id" value="<?php echo $id; ?>">
+
+    <div style="margin-bottom:15px;">
+      <label for="user_name" style="font-weight:600;">Your Name:</label>
+      <input type="text" name="user_name" id="user_name" required style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;">
+    </div>
+
+    <div style="margin-bottom:15px;">
+      <label style="font-weight:600;">Rating:</label>
+      <div id="ratingStars" style="display:flex; gap:5px; cursor:pointer;">
+        <?php for($i=1;$i<=5;$i++){ ?>
+          <i class="far fa-star" data-value="<?php echo $i; ?>" style="font-size:20px; color:#ffc107;"></i>
+        <?php } ?>
+      </div>
+      <input type="hidden" name="rating" id="ratingValue" required>
+    </div>
+
+    <div style="margin-bottom:15px;">
+      <label for="review_text" style="font-weight:600;">Review:</label>
+      <textarea name="review_text" id="review_text" rows="4" required style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;"></textarea>
+    </div>
+
+    <div style="margin-bottom:15px;">
+      <label for="review_image" style="font-weight:600;">Upload Image (optional):</label>
+      <input type="file" name="review_image" id="review_image" accept="image/*">
+    </div>
+
+    <button type="submit" style="padding:10px 20px; border:none; background:#3a86ff; color:white; border-radius:6px; cursor:pointer;">
+      Submit Review
+    </button>
+  </form>
+</div>
+
+<script>
+  // Rating stars selection
+  const stars = document.querySelectorAll('#ratingStars i');
+  const ratingInput = document.getElementById('ratingValue');
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const value = star.getAttribute('data-value');
+      ratingInput.value = value;
+      stars.forEach(s => s.classList.replace('fas','far'));
+      for(let i=0; i<value; i++){
+        stars[i].classList.replace('far','fas');
+      }
+    });
+  });
+</script>
+
 <!-- Reviews Section -->
 <div class="container" style="margin-top:50px;">
   <h2>Reviews</h2>
