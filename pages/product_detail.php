@@ -632,12 +632,13 @@ $product = $result->fetch_assoc();
 
 
 <!-- Similar Products -->
+<!-- Similar Products -->
 <div class="container" style="margin-top:50px;">
   <h2 style="margin-bottom:20px;">Similar Products</h2>
   <div class="similar-products" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px;">
     <?php
-      // Fetch all products (costly ones first)
-      $similarQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY discount_price DESC LIMIT 8");
+      // Shuffle products every page load
+      $similarQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 8");
 
       while($sp = $similarQuery->fetch_assoc()) {
         echo '<div class="product-card" style="background:#fff; border:1px solid #eee; border-radius:10px; padding:15px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
