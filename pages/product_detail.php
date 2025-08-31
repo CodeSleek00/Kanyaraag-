@@ -320,30 +320,6 @@ $product = $result->fetch_assoc();
   </div>
 </div>
 
-<script>
-  // Share button functionality
-  document.querySelectorAll('.share-review').forEach(btn => {
-    btn.addEventListener('click', function() {
-      let url = this.getAttribute('data-url');
-      if (navigator.share) {
-        // Native share on mobile devices
-        navigator.share({
-          title: "Check out this review!",
-          url: "https://" + url
-        }).then(() => {
-          console.log('Shared successfully');
-        }).catch(console.error);
-      } else {
-        // Fallback: copy to clipboard
-        navigator.clipboard.writeText("https://" + url).then(() => {
-          alert("Review link copied to clipboard!");
-        });
-      }
-    });
-  });
-</script>
-
-
 
 <script>
   function showImage(img) {
@@ -493,6 +469,26 @@ document.querySelector('.add-cart').addEventListener('click', function() {
       stars.forEach(s => s.classList.replace('fas','far'));
       for(let i=0; i<value; i++){
         stars[i].classList.replace('far','fas');
+      }
+    });
+  });
+    // Share button functionality
+  document.querySelectorAll('.share-review').forEach(btn => {
+    btn.addEventListener('click', function() {
+      let url = this.getAttribute('data-url');
+      if (navigator.share) {
+        // Native share on mobile devices
+        navigator.share({
+          title: "Check out this review!",
+          url: "https://" + url
+        }).then(() => {
+          console.log('Shared successfully');
+        }).catch(console.error);
+      } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText("https://" + url).then(() => {
+          alert("Review link copied to clipboard!");
+        });
       }
     });
   });
