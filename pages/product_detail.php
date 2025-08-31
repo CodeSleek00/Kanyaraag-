@@ -599,6 +599,59 @@ $product = $result->fetch_assoc();
     </div>
 
   </div>
+  <!-- Frequently Bought Together -->
+<div class="container" style="margin-top:50px;">
+  <h2 style="margin-bottom:20px;">Frequently Bought Together</h2>
+  <div class="fbt-products" style="display:flex; gap:20px; flex-wrap:wrap;">
+    <?php
+      // Example: pick 2 random products except current
+      $fbtQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 2");
+      $fbtProducts = [];
+      $totalPrice = 0;
+
+      while($p = $fbtQuery->fetch_assoc()) {
+        $fbtProducts[] = $p;
+        $totalPrice += $p['discount_price'];
+        echo '<div class="fbt-item" style="flex:1; min-width:200px; background:#fff; border:1px solid #eee; border-radius:10px; padding:15px; text-align:center;">
+                <img src="'.$p['product_image'].'" alt="'.$p['product_name'].'" style="max-width:150px; height:150px; object-fit:contain;">
+                <h4 style="margin:10px 0;">'.$p['product_name'].'</h4>
+                <p style="font-weight:600; color:#3a86ff;">₹'.$p['discount_price'].'</p>
+              </div>';
+      }
+
+      // Apply 10% discount on total
+      $discountedTotal = $totalPrice - ($totalPrice * 0.10);
+    ?>
+  </div>
+  <div class="fbt-total" style="margin-top:20px; padding:15px; background:#f8f9fa; border-radius:8px;">
+    <h3>Total Price for 2 Products:  
+      <span style="color:#28a745;">₹<?php echo $discountedTotal; ?> (10% OFF Applied)</span>
+    </h3>
+  </div>
+</div>
+
+
+<!-- Similar Products -->
+<div class="container" style="margin-top:50px;">
+  <h2 style="margin-bottom:20px;">Similar Products</h2>
+  <div class="similar-products" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px;">
+    <?php
+      // Fetch all products (costly ones first)
+      $similarQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY discount_price DESC LIMIT 8");
+
+      while($sp = $similarQuery->fetch_assoc()) {
+        echo '<div class="product-card" style="background:#fff; border:1px solid #eee; border-radius:10px; padding:15px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                <a href="product_detail.php?id='.$sp['id'].'" style="text-decoration:none; color:inherit;">
+                  <img src="'.$sp['product_image'].'" alt="'.$sp['product_name'].'" style="max-width:180px; height:180px; object-fit:contain;">
+                  <h4 style="margin:10px 0;">'.$sp['product_name'].'</h4>
+                  <p style="color:#3a86ff; font-weight:700;">₹'.$sp['discount_price'].'</p>
+                  <p style="color:#6c757d; text-decoration:line-through;">₹'.$sp['original_price'].'</p>
+                </a>
+              </div>';
+      }
+    ?>
+  </div>
+</div>
 
 
 <script>
