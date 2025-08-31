@@ -130,7 +130,7 @@ $product = $result->fetch_assoc();
 
     <!-- Tab Contents -->
     <div id="details" class="tab-content active">
-      <table border="">
+      <table >
         <tr>
           <th>Name</th>
           <td><?php echo $product['product_name']; ?></td>
