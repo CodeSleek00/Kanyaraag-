@@ -1357,4 +1357,28 @@
         font-size: 24px;
       }
     }
-  
+    .sizes { margin-bottom: 24px; }
+  .sizes h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  .size-options { display: flex; gap: 10px; flex-wrap: wrap; }
+  .size-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--light-gray);
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    border: 2px solid transparent;
+  }
+  .size-circle:hover { border-color: var(--primary); transform: scale(1.1); }
+  .size-circle.selected { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .size-circle.disabled {
+    background: #ddd;
+    color: #888;
+    cursor: not-allowed;
+    pointer-events: none;
+  }

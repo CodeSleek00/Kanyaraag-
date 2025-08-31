@@ -97,79 +97,9 @@ $product = $result->fetch_assoc();
       </div>
 </div>
 
-<style>
-  .sizes { margin-bottom: 24px; }
-  .sizes h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
-  .size-options { display: flex; gap: 10px; flex-wrap: wrap; }
-  .size-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--light-gray);
-    color: var(--dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.3s;
-    border: 2px solid transparent;
-  }
-  .size-circle:hover { border-color: var(--primary); transform: scale(1.1); }
-  .size-circle.selected { background: var(--primary); color: #fff; border-color: var(--primary); }
-  .size-circle.disabled {
-    background: #ddd;
-    color: #888;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-</style>
 
 <script>
-  const sizeCircles = document.querySelectorAll('.size-circle');
-  let selectedSize = null;
-
-  sizeCircles.forEach(circle => {
-    circle.addEventListener('click', () => {
-      // remove previous selection
-      sizeCircles.forEach(c => c.classList.remove('selected'));
-      // add selection to clicked
-      circle.classList.add('selected');
-      selectedSize = circle.getAttribute('data-size');
-      console.log("Selected Size:", selectedSize);
-    });
-  });
-
-  // Optional: integrate with Add to Cart
-  document.querySelector('.add-cart').addEventListener('click', function() {
-    if(!selectedSize) {
-      alert("Please select a size before adding to cart!");
-      return;
-    }
-
-    let product = {
-      id: "<?php echo $product['id']; ?>",
-      name: "<?php echo addslashes($product['product_name']); ?>",
-      price: "<?php echo $product['discount_price']; ?>",
-      image: "<?php echo $product['product_image']; ?>",
-      qty: 1,
-      size: selectedSize
-    };
-
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let existing = cart.find(p => p.id == product.id && p.size == selectedSize);
-    if (existing) {
-      existing.qty++;
-    } else {
-      cart.push(product);
-    }
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    const toast = document.getElementById('addedToCart');
-    toast.querySelector('span').innerText = product.name + " ("+product.size+") added to cart!";
-    toast.classList.add('show');
-    setTimeout(() => { toast.classList.remove('show'); }, 3000);
-  });
+  
 </script>
 
       
@@ -507,6 +437,50 @@ document.querySelector('.add-cart').addEventListener('click', function() {
         document.getElementById(tab.dataset.tab).classList.add("active");
       });
     });
+    const sizeCircles = document.querySelectorAll('.size-circle');
+  let selectedSize = null;
+
+  sizeCircles.forEach(circle => {
+    circle.addEventListener('click', () => {
+      // remove previous selection
+      sizeCircles.forEach(c => c.classList.remove('selected'));
+      // add selection to clicked
+      circle.classList.add('selected');
+      selectedSize = circle.getAttribute('data-size');
+      console.log("Selected Size:", selectedSize);
+    });
+  });
+
+  // Optional: integrate with Add to Cart
+  document.querySelector('.add-cart').addEventListener('click', function() {
+    if(!selectedSize) {
+      alert("Please select a size before adding to cart!");
+      return;
+    }
+
+    let product = {
+      id: "<?php echo $product['id']; ?>",
+      name: "<?php echo addslashes($product['product_name']); ?>",
+      price: "<?php echo $product['discount_price']; ?>",
+      image: "<?php echo $product['product_image']; ?>",
+      qty: 1,
+      size: selectedSize
+    };
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let existing = cart.find(p => p.id == product.id && p.size == selectedSize);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push(product);
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    const toast = document.getElementById('addedToCart');
+    toast.querySelector('span').innerText = product.name + " ("+product.size+") added to cart!";
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); }, 3000);
+  });
 </script>
 </body>
 </html>
