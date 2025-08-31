@@ -8,13 +8,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $review_text = $conn->real_escape_string($_POST['review_text']);
     $review_image = null;
 
-    // Handle image upload
    if(isset($_FILES['review_image']) && $_FILES['review_image']['error'] == 0){
     $ext = pathinfo($_FILES['review_image']['name'], PATHINFO_EXTENSION);
-    $filename = '../uploads/review_'.time().'.'.$ext;
-    move_uploaded_file($_FILES['review_image']['tmp_name'], '../'.$filename); 
-    // "../" because script is in submit_review.php, folder uploads is one level above
-    $review_image = $filename; // save relative path
+    $filename = 'uploads/review_'.time().'.'.$ext;
+
+    // Move uploaded file to correct location
+    move_uploaded_file($_FILES['review_image']['tmp_name'], '../'.$filename); // "../" adjust based on submit_review.php location
+
+    // Save relative URL from root, for browser
+    $review_image = '/'.$filename; // start from root
 }
 
 
