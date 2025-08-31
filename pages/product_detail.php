@@ -114,7 +114,7 @@ $product = $result->fetch_assoc();
       
       <div class="shipping-info">
         <i class="fas fa-truck"></i>
-        <div class="shipping-text">Free delivery on orders above ₹499. Order within 5 hrs 32 mins for same day dispatch.</div>
+        <div class="shipping-text"> Order within 5 hrs 32 mins for same day dispatch.</div>
       </div>
     </div>
   </div>
