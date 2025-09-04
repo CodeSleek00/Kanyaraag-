@@ -886,21 +886,7 @@ $product = $result->fetch_assoc();
         <p><?php echo $product['description']; ?></p>
       </div>
       
-      <div class="details-grid">
-        <div class="detail-item">
-          <span class="detail-label">Color:</span>
-          <span class="detail-value"><?php echo $product['color']; ?></span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Fabric:</span>
-          <span class="detail-value"><?php echo $product['fabric']; ?></span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Stock:</span>
-          <span class="detail-value"><?php echo $product['stock']; ?> units available</span>
-        </div>
-      </div>
-      
+     
       <!-- Size Selector -->
       <div class="size-selector">
         <h3 class="size-title">Select Size:</h3>
