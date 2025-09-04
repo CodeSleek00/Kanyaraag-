@@ -13,90 +13,719 @@ $product = $result->fetch_assoc();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo $product['product_name']; ?> - Product Details</title>
-  <link rel="stylesheet" href="product-style.css?v=6.1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   
-
+  <style>
+    :root {
+      --primary: #3a86ff;
+      --secondary: #ff006e;
+      --accent: #8338ec;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #28a745;
+      --warning: #ffc107;
+      --gray: #6c757d;
+      --light-gray: #e9ecef;
+      --border-radius: 12px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #f9fafb;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .header button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+    
+    .header button:hover {
+      background: var(--light-gray);
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    
+    .raag {
+      color: var(--accent);
+    }
+    
+    /* Product Layout */
+    .product-detail-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin: 40px 0;
+    }
+    
+    @media (max-width: 992px) {
+      .product-detail-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Image Gallery */
+    .gallery-container {
+      position: sticky;
+      top: 80px;
+    }
+    
+    .main-image {
+      width: 100%;
+      height: 500px;
+      object-fit: contain;
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 15px;
+    }
+    
+    .thumbnail-container {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 5px 0;
+    }
+    
+    .thumbnail {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: var(--transition);
+      border: 2px solid transparent;
+    }
+    
+    .thumbnail:hover, .thumbnail.active {
+      opacity: 1;
+      border-color: var(--primary);
+    }
+    
+    /* Product Info */
+    .product-info {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+    }
+    
+    .product-title {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+    
+    .stock-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+    
+    .in-stock {
+      background: rgba(40, 167, 69, 0.15);
+      color: var(--success);
+    }
+    
+    .out-of-stock {
+      background: rgba(220, 53, 69, 0.15);
+      color: #dc3545;
+    }
+    
+    /* Pricing */
+    .pricing-container {
+      margin: 20px 0;
+      padding: 15px;
+      background: var(--light);
+      border-radius: var(--border-radius);
+    }
+    
+    .current-price {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    
+    .original-price {
+      font-size: 1.2rem;
+      text-decoration: line-through;
+      color: var(--gray);
+      margin: 0 10px;
+    }
+    
+    .discount-badge {
+      background: var(--secondary);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    .tax-text {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-top: 5px;
+    }
+    
+    /* Description */
+    .description {
+      margin: 20px 0;
+      line-height: 1.8;
+    }
+    
+    /* Details */
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .detail-label {
+      font-weight: 600;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    .detail-value {
+      font-weight: 500;
+    }
+    
+    /* Size Selector */
+    .size-selector {
+      margin: 25px 0;
+    }
+    
+    .size-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    
+    .size-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .size-option {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--light-gray);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    
+    .size-option:hover {
+      border-color: var(--primary);
+    }
+    
+    .size-option.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .size-option.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+    
+    /* Action Buttons */
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 25px 0;
+    }
+    
+    .btn {
+      padding: 15px;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #2a75f0;
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background: var(--secondary);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: #e0005f;
+      transform: translateY(-2px);
+    }
+    
+    /* Shipping Info */
+    .shipping-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      background: rgba(56, 134, 255, 0.1);
+      border-radius: var(--border-radius);
+      color: var(--primary);
+      font-weight: 500;
+    }
+    
+    /* Tabs */
+    .tabs-container {
+      background: white;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      margin: 40px 0;
+    }
+    
+    .tab-headers {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .tab-header {
+      padding: 15px 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border-bottom: 3px solid transparent;
+    }
+    
+    .tab-header.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    
+    .tab-content {
+      padding: 25px;
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .tab-content table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .tab-content table tr {
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .tab-content table th,
+    .tab-content table td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+    
+    .tab-content table th {
+      width: 30%;
+      color: var(--gray);
+      font-weight: 500;
+    }
+    
+    .tab-content ul {
+      padding-left: 20px;
+    }
+    
+    .tab-content li {
+      margin-bottom: 10px;
+    }
+    
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 15px 20px;
+      border-radius: var(--border-radius);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 1000;
+    }
+    
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    /* Section Headers */
+    .section-header {
+      font-size: 1.5rem;
+      margin: 40px 0 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .section-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    /* Product Cards */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+    
+    .product-card {
+      background: white;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .product-image {
+      width: 100%;
+      height: 250px;
+      object-fit: contain;
+      padding: 15px;
+      background: white;
+    }
+    
+    .product-card-content {
+      padding: 15px;
+    }
+    
+    .product-card-title {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .product-card-price {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    
+    .product-card-original-price {
+      color: var(--gray);
+      text-decoration: line-through;
+      font-size: 0.9rem;
+      margin-left: 8px;
+    }
+    
+    /* FBT Section */
+    .fbt-container {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+      margin: 40px 0;
+    }
+    
+    .fbt-products {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 20px;
+      margin: 25px 0;
+    }
+    
+    @media (max-width: 768px) {
+      .fbt-products {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .fbt-plus {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gray);
+      text-align: center;
+    }
+    
+    .fbt-item {
+      text-align: center;
+      padding: 15px;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--border-radius);
+    }
+    
+    .fbt-item-image {
+      max-width: 150px;
+      height: 150px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    
+    .fbt-total {
+      background: var(--light);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    /* Review Form */
+    .review-form {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+      margin: 40px 0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    
+    .form-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .star-rating {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .star {
+      font-size: 1.8rem;
+      color: var(--warning);
+      cursor: pointer;
+    }
+    
+    /* Reviews List */
+    .reviews-container {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+      margin: 40px 0;
+    }
+    
+    .review-item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .review-item:last-child {
+      border-bottom: none;
+    }
+    
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .reviewer-name {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .share-review-btn {
+      background: none;
+      border: none;
+      color: var(--gray);
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    
+    .review-stars {
+      color: var(--warning);
+      margin-bottom: 10px;
+    }
+    
+    .review-image {
+      max-width: 150px;
+      max-height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 <header class="header">
-  <button onclick="history.back()"><img width="25" height="25" src="https://img.icons8.com/puffy-filled/50/left.png" alt="left"/></button>
+  <button onclick="history.back()"><i class="fas fa-arrow-left"></i></button>
   <div class="logo">कन्या<span class="raag">Raag</span></div>
-  <a href="cart.php"><button><img width="28" height="28" src="https://img.icons8.com/parakeet-line/50/shopping-cart-loaded.png" alt="shopping-cart-loaded"/></button></a>
+  <a href="cart.php"><button><i class="fas fa-shopping-cart"></i></button></a>
 </header>
+
 <div class="container">
-  <div class="product-detail">
-    <div class="gallery">
-      <div class="gallery-main">
-        <img id="mainImg" src="<?php echo $product['product_image']; ?>" alt="<?php echo $product['product_name']; ?>">
-      </div>
-      <div class="gallery-thumbs">
-        <div class="gallery-thumb active">
-          <img src="<?php echo $product['product_image']; ?>" onclick="showImage(this)" alt="Thumbnail 1">
-        </div>
+  <div class="product-detail-container">
+    <!-- Image Gallery -->
+    <div class="gallery-container">
+      <img id="mainImage" src="<?php echo $product['product_image']; ?>" alt="<?php echo $product['product_name']; ?>" class="main-image">
+      
+      <div class="thumbnail-container">
+        <img src="<?php echo $product['product_image']; ?>" onclick="changeImage(this)" class="thumbnail active" alt="Thumbnail 1">
         <?php
           if (!empty($product['images'])) {
-              $extra = json_decode($product['images'], true);
-              foreach ($extra as $index => $img) {
-                  echo '<div class="gallery-thumb">
-                          <img src="'.$img.'" onclick="showImage(this)" alt="Thumbnail '.($index+2).'">
-                        </div>';
-              }
+            $extra = json_decode($product['images'], true);
+            foreach ($extra as $index => $img) {
+              echo '<img src="'.$img.'" onclick="changeImage(this)" class="thumbnail" alt="Thumbnail '.($index+2).'">';
+            }
           }
         ?>
       </div>
-  </div>
+    </div>
+    
+    <!-- Product Info -->
     <div class="product-info">
-      <h1><?php echo $product['product_name']; ?></h1>
-      <div class="product-meta">
-        <div class="stock in-stock"><?php echo $product['stock'] > 0 ? 'In Stock' : 'Out of Stock'; ?></div>
+      <h1 class="product-title"><?php echo $product['product_name']; ?></h1>
+      <div class="stock-badge <?php echo $product['stock'] > 0 ? 'in-stock' : 'out-of-stock'; ?>">
+        <?php echo $product['stock'] > 0 ? 'In Stock' : 'Out of Stock'; ?>
       </div>
-      <div class="pricing">
-        <div class="price-container">
+      
+      <div class="pricing-container">
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">
           <div class="current-price">₹<?php echo $product['discount_price']; ?></div>
           <div class="original-price">₹<?php echo $product['original_price']; ?></div>
-          <div class="discount"><?php echo round($product['discount_percent']); ?>% OFF</div>
+          <div class="discount-badge"><?php echo round($product['discount_percent']); ?>% OFF</div>
         </div>
-        <div class="tax">Inclusive of all taxes</div>
+        <div class="tax-text">Inclusive of all taxes</div>
       </div>
       
       <div class="description">
         <p><?php echo $product['description']; ?></p>
       </div>
-      <div class="details">
+      
+      <div class="details-grid">
         <div class="detail-item">
-          <div class="detail-label">Color:</div>
-          <div class="detail-value"><?php echo $product['color']; ?></div>
+          <span class="detail-label">Color:</span>
+          <span class="detail-value"><?php echo $product['color']; ?></span>
         </div>
         <div class="detail-item">
-          <div class="detail-label">Fabric:</div>
-          <div class="detail-value"><?php echo $product['fabric']; ?></div>
+          <span class="detail-label">Fabric:</span>
+          <span class="detail-value"><?php echo $product['fabric']; ?></span>
         </div>
         <div class="detail-item">
-          <div class="detail-label">Stock:</div>
-          <div class="detail-value"><?php echo $product['stock']; ?> units available</div>
+          <span class="detail-label">Stock:</span>
+          <span class="detail-value"><?php echo $product['stock']; ?> units available</span>
         </div>
       </div>
-      <!-- Sizes Selection -->
-      <div class="sizes">
-        <h3>Select Size:</h3>
-      <div class="size-options">
-        <?php
-          $all_sizes = ['XS','S','M','L','XL','XXL','XXXL'];
-          $available_sizes = explode(',', $product['sizes']); // from DB
-          foreach($all_sizes as $size) {
-          $isAvailable = in_array($size, $available_sizes);
-          echo '<div class="size-circle '.($isAvailable ? '' : 'disabled').'" 
-                  data-size="'.$size.'">'.$size.'</div>';
+      
+      <!-- Size Selector -->
+      <div class="size-selector">
+        <h3 class="size-title">Select Size:</h3>
+        <div class="size-options">
+          <?php
+            $all_sizes = ['XS','S','M','L','XL','XXL','XXXL'];
+            $available_sizes = explode(',', $product['sizes']);
+            foreach($all_sizes as $size) {
+              $isAvailable = in_array($size, $available_sizes);
+              echo '<div class="size-option '.($isAvailable ? '' : 'disabled').'" data-size="'.$size.'">'.$size.'</div>';
             }
-        ?>
+          ?>
+        </div>
       </div>
-</div>
-
       
       <div class="action-buttons">
         <button class="btn btn-primary add-cart">
@@ -109,26 +738,19 @@ $product = $result->fetch_assoc();
       
       <div class="shipping-info">
         <i class="fas fa-truck"></i>
-        <div class="shipping-text"> Order Dispatch the same day </div>
+        <span>Order Dispatch the same day</span>
       </div>
     </div>
   </div>
-</div>
-
-<div class="toast" id="addedToCart">
-  <i class="fas fa-check-circle"></i>
-  <span>Product added to cart successfully!</span>
-</div>
-<div class="tabs-container">
-
-    <!-- Tab Headers -->
+  
+  <!-- Product Tabs -->
+  <div class="tabs-container">
     <div class="tab-headers">
-      <div class="tab-link active" data-tab="details">Product Details</div>
-      <div class="tab-link" data-tab="shipping">Shipping Details</div>
-      <div class="tab-link" data-tab="style">Style & Fit Tips</div>
+      <div class="tab-header active" data-tab="details">Product Details</div>
+      <div class="tab-header" data-tab="shipping">Shipping & Returns</div>
+      <div class="tab-header" data-tab="style">Style Tips</div>
     </div>
-
-    <!-- Tab Contents -->
+    
     <div id="details" class="tab-content active">
       <table>
         <tr>
@@ -155,10 +777,9 @@ $product = $result->fetch_assoc();
           <th>Description</th>
           <td><?php echo $product['description']; ?></td>
         </tr>
-
       </table>
     </div>
-
+    
     <div id="shipping" class="tab-content">
       <ul>
         <li>Free shipping on orders above ₹499</li>
@@ -167,328 +788,334 @@ $product = $result->fetch_assoc();
         <li>Easy returns within 15 days</li>
       </ul>
     </div>
-
+    
     <div id="style" class="tab-content">
       <p>
         Perfect for casual outings, pair with jeans, chinos, or shorts. Slim-fit design; consider sizing up for a relaxed fit. Layer under jackets for a trendy look.
       </p>
     </div>
-
   </div>
+  
   <!-- Frequently Bought Together -->
-<!-- Frequently Bought Together -->
-<div class="container" style="margin-top:50px;">
-  <h2 style="margin-bottom:20px;">Frequently Bought Together</h2>
-  <div class="fbt-products" style="display:flex; gap:20px; flex-wrap:wrap;">
-    <?php
-      $fbtQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 2");
-      $fbtProducts = [];
-      $totalPrice = 0;
-
-      while($p = $fbtQuery->fetch_assoc()) {
-        $fbtProducts[] = $p;
-        $totalPrice += $p['discount_price'];
-        echo '<div class="fbt-item" style="flex:1; min-width:200px; background:#fff; border:1px solid #eee; border-radius:10px; padding:15px; text-align:center;">
-                <img src="'.$p['product_image'].'" alt="'.$p['product_name'].'" style="max-width:150px; height:150px; object-fit:contain;">
-                <h4 style="margin:10px 0;">'.$p['product_name'].'</h4>
-                <p style="font-weight:600; color:#3a86ff;">₹'.$p['discount_price'].'</p>
-              </div>';
-      }
-
-      $discountedTotal = $totalPrice - ($totalPrice * 0.10);
-    ?>
-  </div>
-
-  <!-- Add All to Cart Button -->
-  <div style="margin-top:20px; text-align:center;">
-    <button id="addAllFBT" 
-            style="padding:12px 25px; background:#28a745; color:white; font-size:16px; border:none; border-radius:8px; cursor:pointer;">
-      <i class="fas fa-shopping-cart"></i> Add Both to Cart (10% OFF Applied)
+  <h2 class="section-header">Frequently Bought Together</h2>
+  <div class="fbt-container">
+    <div class="fbt-products">
+      <?php
+        $fbtQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 2");
+        $fbtProducts = [];
+        $totalPrice = 0;
+        
+        while($p = $fbtQuery->fetch_assoc()) {
+          $fbtProducts[] = $p;
+          $totalPrice += $p['discount_price'];
+          echo '<div class="fbt-item">
+                  <img src="'.$p['product_image'].'" alt="'.$p['product_name'].'" class="fbt-item-image">
+                  <h4>'.$p['product_name'].'</h4>
+                  <p class="product-card-price">₹'.$p['discount_price'].'</p>
+                </div>';
+          
+          if (count($fbtProducts) < 2) {
+            echo '<div class="fbt-plus">+</div>';
+          }
+        }
+        
+        $discountedTotal = $totalPrice - ($totalPrice * 0.10);
+      ?>
+    </div>
+    
+    <button id="addAllFBT" class="btn btn-primary" style="display: block; width: 100%; margin: 20px 0;">
+      <i class="fas fa-shopping-cart"></i> Add Both to Cart (Save ₹<?php echo number_format($totalPrice - $discountedTotal, 2); ?>)
     </button>
+    
+    <div class="fbt-total">
+      <h3>Total: ₹<?php echo number_format($discountedTotal, 2); ?> <span style="text-decoration: line-through; color: var(--gray); font-size: 1rem;">₹<?php echo number_format($totalPrice, 2); ?></span></h3>
+      <p>You save ₹<?php echo number_format($totalPrice - $discountedTotal, 2); ?> with this bundle</p>
+    </div>
   </div>
-
-  <div class="fbt-total" style="margin-top:20px; padding:15px; background:#f8f9fa; border-radius:8px; text-align:center;">
-    <h3>Total Price for 2 Products:  
-      <span style="color:#28a745;">₹<?php echo $discountedTotal; ?> (10% OFF Applied)</span>
-    </h3>
-  </div>
-</div>
-
-
-
-
-<!-- Similar Products -->
-<!-- Similar Products -->
-<div class="container" style="margin-top:50px;">
-  <h2 style="margin-bottom:20px;">Similar Products</h2>
-  <div class="similar-products" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px;">
+  
+  <!-- Similar Products -->
+  <h2 class="section-header">You Might Also Like</h2>
+  <div class="products-grid">
     <?php
-      // Shuffle products every page load
-      $similarQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 8");
-
+      $similarQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 4");
       while($sp = $similarQuery->fetch_assoc()) {
-        echo '<div class="product-card" style="background:#fff; border:1px solid #eee; border-radius:10px; padding:15px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
-                <a href="product_detail.php?id='.$sp['id'].'" style="text-decoration:none; color:inherit;">
-                  <img src="'.$sp['product_image'].'" alt="'.$sp['product_name'].'" style="max-width:180px; height:180px; object-fit:contain;">
-                  <h4 style="margin:10px 0;">'.$sp['product_name'].'</h4>
-                  <p style="color:#3a86ff; font-weight:700;">₹'.$sp['discount_price'].'</p>
-                  <p style="color:#6c757d; text-decoration:line-through;">₹'.$sp['original_price'].'</p>
-                </a>
-              </div>';
-      }
-    ?>
-  </div>
-</div>
-<!-- Review Submission Form -->
-<div class="container" style="margin-top:50px;">
-  <h2>Write a Review</h2>
-  <form id="reviewForm" action="submit_review.php" method="POST" enctype="multipart/form-data" style="background:#fff; padding:20px; border-radius:10px; border:1px solid #eee; max-width:600px;">
-    <input type="hidden" name="product_id" value="<?php echo $id; ?>">
-
-    <div style="margin-bottom:15px;">
-      <label for="user_name" style="font-weight:600;">Your Name:</label>
-      <input type="text" name="user_name" id="user_name" required style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;">
-    </div>
-
-    <div style="margin-bottom:15px;">
-      <label style="font-weight:600;">Rating:</label>
-      <div id="ratingStars" style="display:flex; gap:5px; cursor:pointer;">
-        <?php for($i=1;$i<=5;$i++){ ?>
-          <i class="far fa-star" data-value="<?php echo $i; ?>" style="font-size:20px; color:#ffc107;"></i>
-        <?php } ?>
-      </div>
-      <input type="hidden" name="rating" id="ratingValue" required>
-    </div>
-
-    <div style="margin-bottom:15px;">
-      <label for="review_text" style="font-weight:600;">Review:</label>
-      <textarea name="review_text" id="review_text" rows="4" required style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;"></textarea>
-    </div>
-
-    <div style="margin-bottom:15px;">
-      <label for="review_image" style="font-weight:600;">Upload Image (optional):</label>
-      <input type="file" name="review_image" id="review_image" accept="image/*">
-    </div>
-
-    <button type="submit" style="padding:10px 20px; border:none; background:#3a86ff; color:white; border-radius:6px; cursor:pointer;">
-      Submit Review
-    </button>
-  </form>
-</div>
-
-
-<!-- Reviews Section -->
-<div class="container" style="margin-top:50px;">
-  <h2>Reviews</h2>
-  <?php
-    // Fetch reviews for current product
-    $reviewQuery = $conn->query("SELECT * FROM reviews WHERE product_id = $id ORDER BY created_at DESC");
-    $reviewCount = $reviewQuery->num_rows;
-  ?>
-  <p style="margin-bottom:20px; color:#6c757d;"><?php echo $reviewCount; ?> review<?php echo $reviewCount != 1 ? 's' : ''; ?> for this product</p>
-
-  <div class="reviews-list" style="display:flex; flex-direction:column; gap:20px;">
-    <?php
-      while($review = $reviewQuery->fetch_assoc()) {
-        echo '<div class="review-item" style="background:#fff; padding:15px; border-radius:10px; border:1px solid #eee; position:relative; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <div style="font-weight:600; color:#3a86ff;">'.$review['user_name'].'</div>
-                  <button class="share-review" 
-                          data-url="'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'#review'.$review['review_id'].'" 
-                          style="border:none; background:transparent; cursor:pointer; color:#555;">
-                    <i class="fas fa-share-alt"></i>
-                  </button>
+        echo '<a href="product_detail.php?id='.$sp['id'].'" class="product-card">
+                <img src="'.$sp['product_image'].'" alt="'.$sp['product_name'].'" class="product-image">
+                <div class="product-card-content">
+                  <h3 class="product-card-title">'.$sp['product_name'].'</h3>
+                  <div>
+                    <span class="product-card-price">₹'.$sp['discount_price'].'</span>
+                    <span class="product-card-original-price">₹'.$sp['original_price'].'</span>
+                  </div>
                 </div>
-                <div style="margin:5px 0; color:#ffc107;">';
-                  for($i=1;$i<=5;$i++){
-                    echo $i <= $review['rating'] ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
-                  }
-        echo '</div>
-                <p style="color:#212529;">'.htmlspecialchars($review['review_text']).'</p>';
-                
-                if(!empty($review['review_image'])) {
-                  echo '<img src="'.$review['review_image'].'" alt="Review Image" style="max-width:150px; max-height:150px; object-fit:cover; border-radius:8px; margin-top:8px;">';
-                }
-
-        echo '</div>';
-      }
-
-      if($reviewCount == 0){
-        echo '<p style="color:#6c757d;">No reviews yet for this product.</p>';
+              </a>';
       }
     ?>
   </div>
+  
+  <!-- Reviews -->
+  <h2 class="section-header">Customer Reviews</h2>
+  <div class="review-form">
+    <h3>Write a Review</h3>
+    <form id="reviewForm" action="submit_review.php" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="product_id" value="<?php echo $id; ?>">
+      
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input type="text" name="user_name" class="form-input" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Rating</label>
+        <div class="star-rating">
+          <?php for($i=1;$i<=5;$i++){ ?>
+            <i class="far fa-star star" data-value="<?php echo $i; ?>"></i>
+          <?php } ?>
+        </div>
+        <input type="hidden" name="rating" id="ratingValue" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Review</label>
+        <textarea name="review_text" class="form-textarea" required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Upload Image (optional)</label>
+        <input type="file" name="review_image" accept="image/*">
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Submit Review</button>
+    </form>
+  </div>
+  
+  <div class="reviews-container">
+    <?php
+      $reviewQuery = $conn->query("SELECT * FROM reviews WHERE product_id = $id ORDER BY created_at DESC");
+      $reviewCount = $reviewQuery->num_rows;
+    ?>
+    <h3><?php echo $reviewCount; ?> Review<?php echo $reviewCount != 1 ? 's' : ''; ?></h3>
+    
+    <div class="reviews-list">
+      <?php
+        if ($reviewCount > 0) {
+          while($review = $reviewQuery->fetch_assoc()) {
+            echo '<div class="review-item">
+                    <div class="review-header">
+                      <div class="reviewer-name">'.$review['user_name'].'</div>
+                      <button class="share-review-btn" data-url="'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'#review'.$review['review_id'].'">
+                        <i class="fas fa-share-alt"></i>
+                      </button>
+                    </div>
+                    <div class="review-stars">';
+                    for($i=1;$i<=5;$i++){
+                      echo $i <= $review['rating'] ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+                    }
+            echo '</div>
+                    <p>'.htmlspecialchars($review['review_text']).'</p>';
+                    
+            if(!empty($review['review_image'])) {
+              echo '<img src="'.$review['review_image'].'" class="review-image">';
+            }
+            
+            echo '</div>';
+          }
+        } else {
+          echo '<p>No reviews yet for this product.</p>';
+        }
+      ?>
+    </div>
+  </div>
 </div>
 
+<div class="toast" id="addedToCart">
+  <i class="fas fa-check-circle"></i>
+  <span>Product added to cart successfully!</span>
+</div>
 
 <script>
-  function showImage(img) {
-    document.getElementById("mainImg").src = img.src;
+  // Image Gallery
+  function changeImage(img) {
+    document.getElementById("mainImage").src = img.src;
     
     // Update active thumbnail
-    const thumbs = document.querySelectorAll('.gallery-thumb');
+    const thumbs = document.querySelectorAll('.thumbnail');
     thumbs.forEach(thumb => thumb.classList.remove('active'));
-    img.parentElement.classList.add('active');
+    img.classList.add('active');
   }
   
-// Add to Cart - using localStorage
-document.querySelector('.add-cart').addEventListener('click', function() {
-  // Get product details from PHP
-  let product = {
-    id: "<?php echo $product['id']; ?>",
-    name: "<?php echo addslashes($product['product_name']); ?>",
-    price: "<?php echo $product['discount_price']; ?>",
-    image: "<?php echo $product['product_image']; ?>",
-    qty: 1
-  };
-
-  // Get cart from localStorage or create new
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  // Check if product already in cart
-  let existing = cart.find(p => p.id == product.id);
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push(product);
-  }
-
-  // Save updated cart
-  localStorage.setItem("cart", JSON.stringify(cart));
-
-  // Show toast notification
-  const toast = document.getElementById('addedToCart');
-  toast.querySelector('span').innerText = product.name + " added to cart!";
-  toast.classList.add('show');
-
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
-});
-
-  // Buy now functionality
-  document.querySelector('.buy-now').addEventListener('click', function() {
-    alert('Proceeding to checkout...');
-    // In a real application, this would redirect to checkout page
+  // Size Selection
+  const sizeOptions = document.querySelectorAll('.size-option:not(.disabled)');
+  sizeOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      sizeOptions.forEach(opt => opt.classList.remove('selected'));
+      option.classList.add('selected');
+    });
   });
-  const tabs = document.querySelectorAll(".tab-link");
-    const contents = document.querySelectorAll(".tab-content");
-
-    tabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        // Remove active class from all tabs and contents
-        tabs.forEach(t => t.classList.remove("active"));
-        contents.forEach(c => c.classList.remove("active"));
-
-        // Add active to clicked tab and corresponding content
-        tab.classList.add("active");
-        document.getElementById(tab.dataset.tab).classList.add("active");
+  
+  // Tabs
+  const tabHeaders = document.querySelectorAll('.tab-header');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabHeaders.forEach(header => {
+    header.addEventListener('click', () => {
+      const tabId = header.getAttribute('data-tab');
+      
+      // Update active tab header
+      tabHeaders.forEach(h => h.classList.remove('active'));
+      header.classList.add('active');
+      
+      // Show corresponding content
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+        if (content.id === tabId) {
+          content.classList.add('active');
+        }
       });
     });
-    const sizeCircles = document.querySelectorAll('.size-circle');
-  let selectedSize = null;
-
-  sizeCircles.forEach(circle => {
-    circle.addEventListener('click', () => {
-      // remove previous selection
-      sizeCircles.forEach(c => c.classList.remove('selected'));
-      // add selection to clicked
-      circle.classList.add('selected');
-      selectedSize = circle.getAttribute('data-size');
-      console.log("Selected Size:", selectedSize);
-    });
   });
-
-  // Optional: integrate with Add to Cart
-  document.querySelector('.add-cart').addEventListener('click', function() {
-    if(!selectedSize) {
-      alert("Please select a size before adding to cart!");
-      return;
-    }
-
-    let product = {
-      id: "<?php echo $product['id']; ?>",
-      name: "<?php echo addslashes($product['product_name']); ?>",
-      price: "<?php echo $product['discount_price']; ?>",
-      image: "<?php echo $product['product_image']; ?>",
-      qty: 1,
-      size: selectedSize
-    };
-
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let existing = cart.find(p => p.id == product.id && p.size == selectedSize);
-    if (existing) {
-      existing.qty++;
-    } else {
-      cart.push(product);
-    }
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    const toast = document.getElementById('addedToCart');
-    toast.querySelector('span').innerText = product.name + " ("+product.size+") added to cart!";
-    toast.classList.add('show');
-    setTimeout(() => { toast.classList.remove('show'); }, 3000);
-  });
-    const fbtProducts = <?php echo json_encode($fbtProducts); ?>;
-
-  document.getElementById('addAllFBT').addEventListener('click', function() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    fbtProducts.forEach(p => {
-      let product = {
-        id: p.id,
-        name: p.product_name,
-        price: p.discount_price,
-        image: p.product_image,
-        qty: 1
-      };
-
-      let existing = cart.find(item => item.id == product.id);
-      if(existing) {
-        existing.qty++;
-      } else {
-        cart.push(product);
-      }
-    });
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    const toast = document.getElementById('addedToCart');
-    toast.querySelector('span').innerText = "Both products added to cart!";
-    toast.classList.add('show');
-    setTimeout(() => { toast.classList.remove('show'); }, 3000);
-  });
-  // Rating stars selection
-  const stars = document.querySelectorAll('#ratingStars i');
+  
+  // Star Rating
+  const stars = document.querySelectorAll('.star');
   const ratingInput = document.getElementById('ratingValue');
-
+  
   stars.forEach(star => {
     star.addEventListener('click', () => {
       const value = star.getAttribute('data-value');
       ratingInput.value = value;
-      stars.forEach(s => s.classList.replace('fas','far'));
-      for(let i=0; i<value; i++){
-        stars[i].classList.replace('far','fas');
-      }
+      
+      // Update star display
+      stars.forEach(s => {
+        if (s.getAttribute('data-value') <= value) {
+          s.classList.remove('far');
+          s.classList.add('fas');
+        } else {
+          s.classList.remove('fas');
+          s.classList.add('far');
+        }
+      });
     });
   });
-    // Share button functionality
-  document.querySelectorAll('.share-review').forEach(btn => {
-    btn.addEventListener('click', function() {
-      let url = this.getAttribute('data-url');
-      if (navigator.share) {
-        // Native share on mobile devices
-        navigator.share({
-          title: "Check out this review!",
-          url: "https://" + url
-        }).then(() => {
-          console.log('Shared successfully');
-        }).catch(console.error);
+  
+  // Add to Cart
+  document.querySelector('.add-cart').addEventListener('click', function() {
+    const selectedSize = document.querySelector('.size-option.selected');
+    
+    if (!selectedSize) {
+      alert('Please select a size before adding to cart.');
+      return;
+    }
+    
+    const product = {
+      id: "<?php echo $product['id']; ?>",
+      name: "<?php echo addslashes($product['product_name']); ?>",
+      price: "<?php echo $product['discount_price']; ?>",
+      image: "<?php echo $product['product_image']; ?>",
+      size: selectedSize.getAttribute('data-size'),
+      qty: 1
+    };
+    
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingIndex = cart.findIndex(item => item.id === product.id && item.size === product.size);
+    
+    if (existingIndex > -1) {
+      cart[existingIndex].qty += 1;
+    } else {
+      cart.push(product);
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Show toast
+    const toast = document.getElementById('addedToCart');
+    toast.querySelector('span').textContent = `${product.name} (Size: ${product.size}) added to cart!`;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  });
+  
+  // Buy Now
+  document.querySelector('.buy-now').addEventListener('click', function() {
+    const selectedSize = document.querySelector('.size-option.selected');
+    
+    if (!selectedSize) {
+      alert('Please select a size before proceeding.');
+      return;
+    }
+    
+    // Add to cart then redirect to checkout
+    const product = {
+      id: "<?php echo $product['id']; ?>",
+      name: "<?php echo addslashes($product['product_name']); ?>",
+      price: "<?php echo $product['discount_price']; ?>",
+      image: "<?php echo $product['product_image']; ?>",
+      size: selectedSize.getAttribute('data-size'),
+      qty: 1
+    };
+    
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingIndex = cart.findIndex(item => item.id === product.id && item.size === product.size);
+    
+    if (existingIndex > -1) {
+      cart[existingIndex].qty += 1;
+    } else {
+      cart.push(product);
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Redirect to checkout
+    window.location.href = 'checkout.php';
+  });
+  
+  // Frequently Bought Together
+  document.getElementById('addAllFBT').addEventListener('click', function() {
+    const fbtProducts = <?php echo json_encode($fbtProducts); ?>;
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    fbtProducts.forEach(product => {
+      const existingIndex = cart.findIndex(item => item.id == product.id);
+      
+      if (existingIndex > -1) {
+        cart[existingIndex].qty += 1;
       } else {
-        // Fallback: copy to clipboard
-        navigator.clipboard.writeText("https://" + url).then(() => {
-          alert("Review link copied to clipboard!");
+        cart.push({
+          id: product.id,
+          name: product.product_name,
+          price: product.discount_price,
+          image: product.product_image,
+          qty: 1
         });
+      }
+    });
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Show toast
+    const toast = document.getElementById('addedToCart');
+    toast.querySelector('span').textContent = 'Both products added to cart!';
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  });
+  
+  // Share Review
+  document.querySelectorAll('.share-review-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const url = this.getAttribute('data-url');
+      
+      if (navigator.share) {
+        navigator.share({
+          title: 'Check out this review!',
+          url: 'https://' + url
+        });
+      } else {
+        navigator.clipboard.writeText('https://' + url)
+          .then(() => alert('Review link copied to clipboard!'));
       }
     });
   });
