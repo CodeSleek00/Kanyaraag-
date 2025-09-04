@@ -1591,17 +1591,6 @@ document.querySelectorAll('.buy-now-btn').forEach(btn => {
   });
 });
 
-// Quick view functionality
-document.querySelectorAll('.quick-view-btn').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    const productId = this.getAttribute('data-id');
-    
-    // In a real implementation, you would show a quick view modal
-    alert('Quick view for product ID: ' + productId);
-  });
-});
 </script>
 </body>
 </html>
