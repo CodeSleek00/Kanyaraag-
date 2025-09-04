@@ -381,7 +381,7 @@ $product = $result->fetch_assoc();
     }
     
     .btn-secondary:hover {
-      background: #e0005f;
+      background: #C75D2c;
       transform: translateY(-2px);
     }
     
