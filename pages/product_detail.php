@@ -240,7 +240,7 @@ $product = $result->fetch_assoc();
   </div>
 </div>
 <!-- Review Submission Form -->
-<div class="container" style="margin-top:50px;">
+<div class="container-review" style="margin-top:50px;">
   <h2>Write a Review</h2>
   <form id="reviewForm" action="submit_review.php" method="POST" enctype="multipart/form-data" style="background:#fff; padding:20px; border-radius:10px; border:1px solid #eee; max-width:600px;">
     <input type="hidden" name="product_id" value="<?php echo $id; ?>">
