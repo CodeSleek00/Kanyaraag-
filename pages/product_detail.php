@@ -1249,9 +1249,7 @@ $product = $result->fetch_assoc();
                   </div>
                   <h4 class="fbt-item-title">'.$p['product_name'].'</h4>
                   <p class="fbt-item-price">₹'.$p['discount_price'].'</p>
-                  <button class="btn btn-primary add-fbt-item" data-id="'.$p['id'].'" style="padding: 8px 12px; font-size: 0.9rem;">
-                    <i class="fas fa-plus"></i> Add
-                  </button>
+                  
                 </div>';
           
           if (count($fbtProducts) < 2) {
