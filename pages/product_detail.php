@@ -522,63 +522,7 @@ $product = $result->fetch_assoc();
       border-radius: 3px;
     }
     
-    /* Product Cards */
-
-  
-    .product-card {
-      background: white;
-      border-radius: var(--border-radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
-    }
-    
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    
-    .product-image {
-      width: 100%;
-      height: 250px;
-      object-fit: contain;
-      padding: 15px;
-      background: white;
-    }
-    
-    @media (max-width: 640px) {
-      .product-image {
-        height: 180px;
-      }
-    }
-    
-    .product-card-content {
-      padding: 15px;
-    }
-    
-    .product-card-title {
-      font-size: 1rem;
-      margin-bottom: 8px;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    .product-card-price {
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-    
-    .product-card-original-price {
-      color: var(--gray);
-      text-decoration: line-through;
-      font-size: 0.9rem;
-      margin-left: 8px;
-    }
-    
-    /* FBT Section */
+    /* FBT Section - IMPROVED */
     .fbt-container {
       background: white;
       border-radius: var(--border-radius);
@@ -597,7 +541,15 @@ $product = $result->fetch_assoc();
     
     @media (max-width: 768px) {
       .fbt-products {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 15px;
+      }
+      
+      .fbt-plus {
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        margin: 10px 0;
       }
     }
     
@@ -613,13 +565,50 @@ $product = $result->fetch_assoc();
       padding: 15px;
       border: 1px solid var(--light-gray);
       border-radius: var(--border-radius);
+      transition: var(--transition);
+    }
+    
+    .fbt-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+    
+    .fbt-item-image-container {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      border-radius: 8px;
     }
     
     .fbt-item-image {
-      max-width: 150px;
-      height: 150px;
-      object-fit: contain;
-      margin-bottom: 10px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+    
+    .fbt-item:hover .fbt-item-image {
+      transform: scale(1.05);
+    }
+    
+    .fbt-item-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 48px;
+    }
+    
+    .fbt-item-price {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.1rem;
     }
     
     .fbt-total {
@@ -628,6 +617,178 @@ $product = $result->fetch_assoc();
       border-radius: var(--border-radius);
       text-align: center;
       margin-top: 20px;
+    }
+    
+    /* Product Cards - IMPROVED */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+    
+    @media (max-width: 640px) {
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+      }
+    }
+    
+    .product-card {
+      background: white;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .product-image-container {
+      position: relative;
+      overflow: hidden;
+      height: 280px;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .product-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      padding: 15px;
+      transition: var(--transition);
+    }
+    
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
+    
+    .product-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: var(--transition);
+    }
+    
+    .product-card:hover .product-overlay {
+      opacity: 1;
+    }
+    
+    .quick-view-btn {
+      background: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    
+    .quick-view-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+    
+    .product-card-content {
+      padding: 15px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .product-card-title {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--dark);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 48px;
+    }
+    
+    .price-container {
+      margin-bottom: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 5px 10px;
+    }
+    
+    .product-card-price {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    
+    .product-card-original-price {
+      color: var(--gray);
+      text-decoration: line-through;
+      font-size: 0.9rem;
+    }
+    
+    .discount-percent {
+      color: var(--secondary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(255, 0, 110, 0.1);
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+    
+    .buy-now-btn {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-top: auto;
+    }
+    
+    .buy-now-btn:hover {
+      background: #e0005f;
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 480px) {
+      .product-image-container {
+        height: 200px;
+      }
+      
+      .buy-now-btn {
+        font-size: 0.9rem;
+        padding: 8px;
+      }
     }
     
     /* Review Form */
@@ -646,7 +807,7 @@ $product = $result->fetch_assoc();
     .form-label {
       display: block;
       margin-bottom: 8px;
-      font-weight: 600;
+      font-weight: 6 00;
     }
     
     .form-input, .form-textarea {
@@ -821,172 +982,64 @@ $product = $result->fetch_assoc();
       background: var(--gray);
       color: white;
     }
-    .products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 25px;
-  margin: 30px 0;
-}
-
-@media (max-width: 640px) {
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 15px;
-  }
-}
-
-.product-card {
-  background: white;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-.product-image-container {
-  position: relative;
-  overflow: hidden;
-}
-
-.product-image {
-  width: 100%;
-  height: 250px;
-  object-fit: contain;
-  padding: 15px;
-  background: white;
-  transition: var(--transition);
-}
-
-.product-card:hover .product-image {
-  transform: scale(1.05);
-}
-
-.product-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: var(--transition);
-}
-
-.product-card:hover .product-overlay {
-  opacity: 1;
-}
-
-.quick-view-btn {
-  background: white;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-}
-
-.quick-view-btn:hover {
-  background: var(--primary);
-  color: white;
-  transform: scale(1.1);
-}
-
-.product-card-content {
-  padding: 15px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.product-card-title {
-  font-size: 1rem;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: var(--dark);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 48px;
-}
-
-.price-container {
-  margin-bottom: 15px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 5px 10px;
-}
-
-.product-card-price {
-  color: var(--primary);
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.product-card-original-price {
-  color: var(--gray);
-  text-decoration: line-through;
-  font-size: 0.9rem;
-}
-
-.discount-percent {
-  color: var(--secondary);
-  font-size: 0.8rem;
-  font-weight: 600;
-  background: rgba(255, 0, 110, 0.1);
-  padding: 2px 6px;
-  border-radius: 10px;
-}
-
-.buy-now-btn {
-  background: var(--secondary);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: var(--border-radius);
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  margin-top: auto;
-}
-
-.buy-now-btn:hover {
-  background: #e0005f;
-  transform: translateY(-2px);
-}
-
-@media (max-width: 480px) {
-  .product-image {
-    height: 180px;
-  }
-  
-  .buy-now-btn {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
-}
+    
+    /* New: Product Badges */
+    .product-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--secondary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      z-index: 5;
+    }
+    
+    /* New: Color Options */
+    .color-options {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    
+    .color-option {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: var(--transition);
+    }
+    
+    .color-option.selected {
+      border-color: var(--dark);
+      transform: scale(1.1);
+    }
+    
+    /* New: Wishlist Button */
+    .wishlist-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      z-index: 5;
+      transition: var(--transition);
+    }
+    
+    .wishlist-btn:hover, .wishlist-btn.active {
+      background: var(--secondary);
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -1005,6 +1058,14 @@ $product = $result->fetch_assoc();
         <div class="share-btn" id="shareProductBtn">
           <i class="fas fa-share-alt"></i>
         </div>
+        <!-- Wishlist Button -->
+        <div class="wishlist-btn" id="wishlistBtn">
+          <i class="far fa-heart"></i>
+        </div>
+        <!-- Product Badge -->
+        <?php if($product['discount_percent'] > 20): ?>
+          <div class="product-badge"><?php echo round($product['discount_percent']); ?>% OFF</div>
+        <?php endif; ?>
       </div>
       
       <div class="thumbnail-container">
@@ -1040,7 +1101,21 @@ $product = $result->fetch_assoc();
         <p><?php echo $product['description']; ?></p>
       </div>
       
-     
+      <!-- Color Options (if available) -->
+      <?php if(!empty($product['colors'])): ?>
+      <div class="color-selector">
+        <h3 class="size-title">Select Color:</h3>
+        <div class="color-options">
+          <?php
+            $colors = explode(',', $product['colors']);
+            foreach($colors as $color) {
+              echo '<div class="color-option" style="background-color: '.$color.';" data-color="'.$color.'"></div>';
+            }
+          ?>
+        </div>
+      </div>
+      <?php endif; ?>
+      
       <!-- Size Selector -->
       <div class="size-selector">
         <h3 class="size-title">Select Size:</h3>
@@ -1156,7 +1231,7 @@ $product = $result->fetch_assoc();
     </div>
   </div>
   
-  <!-- Frequently Bought Together -->
+  <!-- Frequently Bought Together - IMPROVED -->
   <h2 class="section-header">Frequently Bought Together</h2>
   <div class="fbt-container">
     <div class="fbt-products">
@@ -1169,9 +1244,14 @@ $product = $result->fetch_assoc();
           $fbtProducts[] = $p;
           $totalPrice += $p['discount_price'];
           echo '<div class="fbt-item">
-                  <img src="'.$p['product_image'].'" alt="'.$p['product_name'].'" class="fbt-item-image">
-                  <h4>'.$p['product_name'].'</h4>
-                  <p class="product-card-price">₹'.$p['discount_price'].'</p>
+                  <div class="fbt-item-image-container">
+                    <img src="'.$p['product_image'].'" alt="'.$p['product_name'].'" class="fbt-item-image">
+                  </div>
+                  <h4 class="fbt-item-title">'.$p['product_name'].'</h4>
+                  <p class="fbt-item-price">₹'.$p['discount_price'].'</p>
+                  <button class="btn btn-primary add-fbt-item" data-id="'.$p['id'].'" style="padding: 8px 12px; font-size: 0.9rem;">
+                    <i class="fas fa-plus"></i> Add
+                  </button>
                 </div>';
           
           if (count($fbtProducts) < 2) {
@@ -1194,30 +1274,41 @@ $product = $result->fetch_assoc();
   </div>
   
   <!-- Similar Products -->
-<h2 class="section-header">You Might Also Like</h2>
-<div class="products-grid">
-  <?php
-    $similarQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 4");
-    while($sp = $similarQuery->fetch_assoc()) {
-      echo '<div class="product-card">
-              <div class="product-image-container">
-                <img src="'.$sp['product_image'].'" alt="'.$sp['product_name'].'" class="product-image">
-              </div>
-              <div class="product-card-content">
-                <h3 class="product-card-title">'.$sp['product_name'].'</h3>
-                <div class="price-container">
-                  <span class="product-card-price">₹'.$sp['discount_price'].'</span>
-                  <span class="product-card-original-price">₹'.$sp['original_price'].'</span>
-                  <span class="discount-percent">'.round(($sp['original_price'] - $sp['discount_price']) / $sp['original_price'] * 100).'% off</span>
+  <h2 class="section-header">You Might Also Like</h2>
+  <div class="products-grid">
+    <?php
+      $similarQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 4");
+      while($sp = $similarQuery->fetch_assoc()) {
+        echo '<div class="product-card">
+                <div class="product-image-container">
+                  <img src="'.$sp['product_image'].'" alt="'.$sp['product_name'].'" class="product-image">
+                  <div class="product-overlay">
+                    <button class="quick-view-btn" data-id="'.$sp['id'].'">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>';
+        if($sp['discount_percent'] > 15) {
+          echo '<div class="product-badge">'.round($sp['discount_percent']).'% OFF</div>';
+        }
+        echo '<div class="wishlist-btn">
+                    <i class="far fa-heart"></i>
+                  </div>
                 </div>
-                <button class="buy-now-btn" data-id="'.$sp['id'].'">
-                  <i class="fas fa-bolt"></i> Buy Now
-                </button>
-              </div>
-            </div>';
-    }
-  ?>
-</div>
+                <div class="product-card-content">
+                  <h3 class="product-card-title">'.$sp['product_name'].'</h3>
+                  <div class="price-container">
+                    <span class="product-card-price">₹'.$sp['discount_price'].'</span>
+                    <span class="product-card-original-price">₹'.$sp['original_price'].'</span>
+                    <span class="discount-percent">'.round(($sp['original_price'] - $sp['discount_price']) / $sp['original_price'] * 100).'% off</span>
+                  </div>
+                  <button class="buy-now-btn" data-id="'.$sp['id'].'">
+                    <i class="fas fa-bolt"></i> Buy Now
+                  </button>
+                </div>
+              </div>';
+      }
+    ?>
+  </div>
   
   <!-- Reviews -->
   <h2 class="section-header">Customer Reviews</h2>
@@ -1353,6 +1444,15 @@ $product = $result->fetch_assoc();
     });
   });
   
+  // Color Selection
+  const colorOptions = document.querySelectorAll('.color-option');
+  colorOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      colorOptions.forEach(opt => opt.classList.remove('selected'));
+      option.classList.add('selected');
+    });
+  });
+  
   // Tabs
   const tabHeaders = document.querySelectorAll('.tab-header');
   const tabContents = document.querySelectorAll('.tab-content');
@@ -1400,6 +1500,7 @@ $product = $result->fetch_assoc();
   // Add to Cart
   document.querySelector('.add-cart').addEventListener('click', function() {
     const selectedSize = document.querySelector('.size-option.selected');
+    const selectedColor = document.querySelector('.color-option.selected');
     
     if (!selectedSize) {
       alert('Please select a size before adding to cart.');
@@ -1412,11 +1513,12 @@ $product = $result->fetch_assoc();
       price: "<?php echo $product['discount_price']; ?>",
       image: "<?php echo $product['product_image']; ?>",
       size: selectedSize.getAttribute('data-size'),
+      color: selectedColor ? selectedColor.getAttribute('data-color') : '',
       qty: 1
     };
     
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const existingIndex = cart.findIndex(item => item.id === product.id && item.size === product.size);
+    const existingIndex = cart.findIndex(item => item.id === product.id && item.size === product.size && item.color === product.color);
     
     if (existingIndex > -1) {
       cart[existingIndex].qty += 1;
@@ -1439,6 +1541,7 @@ $product = $result->fetch_assoc();
   // Buy Now
   document.querySelector('.buy-now').addEventListener('click', function() {
     const selectedSize = document.querySelector('.size-option.selected');
+    const selectedColor = document.querySelector('.color-option.selected');
     
     if (!selectedSize) {
       alert('Please select a size before proceeding.');
@@ -1452,11 +1555,12 @@ $product = $result->fetch_assoc();
       price: "<?php echo $product['discount_price']; ?>",
       image: "<?php echo $product['product_image']; ?>",
       size: selectedSize.getAttribute('data-size'),
+      color: selectedColor ? selectedColor.getAttribute('data-color') : '',
       qty: 1
     };
     
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const existingIndex = cart.findIndex(item => item.id === product.id && item.size === product.size);
+    const existingIndex = cart.findIndex(item => item.id === product.id && item.size === product.size && item.color === product.color);
     
     if (existingIndex > -1) {
       cart[existingIndex].qty += 1;
@@ -1501,6 +1605,43 @@ $product = $result->fetch_assoc();
     setTimeout(() => {
       toast.classList.remove('show');
     }, 3000);
+  });
+  
+  // Add individual FBT items
+  document.querySelectorAll('.add-fbt-item').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productId = this.getAttribute('data-id');
+      const fbtProducts = <?php echo json_encode($fbtProducts); ?>;
+      const product = fbtProducts.find(p => p.id == productId);
+      
+      if (product) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingIndex = cart.findIndex(item => item.id == product.id);
+        
+        if (existingIndex > -1) {
+          cart[existingIndex].qty += 1;
+        } else {
+          cart.push({
+            id: product.id,
+            name: product.product_name,
+            price: product.discount_price,
+            image: product.product_image,
+            qty: 1
+          });
+        }
+        
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Show toast
+        const toast = document.getElementById('addedToCart');
+        toast.querySelector('span').textContent = `${product.product_name} added to cart!`;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }
+    });
   });
   
   // Share Review
@@ -1574,18 +1715,65 @@ $product = $result->fetch_assoc();
       shareModal.classList.remove('show');
     });
   });
-  // Buy Now button functionality
-document.querySelectorAll('.buy-now-btn').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    const productId = this.getAttribute('data-id');
-    
-    // In a real implementation, you would add to cart and redirect
-    // For now, we'll redirect to the product detail page
-    window.location.href = 'product_detail.php?id=' + productId;
+  
+  // Buy Now button functionality for product cards
+  document.querySelectorAll('.buy-now-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const productId = this.getAttribute('data-id');
+      
+      // In a real implementation, you would add to cart and redirect
+      // For now, we'll redirect to the product detail page
+      window.location.href = 'product_detail.php?id=' + productId;
+    });
   });
-});
-
+  
+  // Quick view button functionality
+  document.querySelectorAll('.quick-view-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const productId = this.getAttribute('data-id');
+      alert('Quick view feature would show product ' + productId);
+      // Implement a modal with quick product details
+    });
+  });
+  
+  // Wishlist functionality
+  const wishlistBtn = document.getElementById('wishlistBtn');
+  const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+  
+  wishlistBtn.addEventListener('click', function() {
+    this.classList.toggle('active');
+    const icon = this.querySelector('i');
+    
+    if (this.classList.contains('active')) {
+      icon.classList.remove('far');
+      icon.classList.add('fas');
+      // Add to wishlist logic
+    } else {
+      icon.classList.remove('fas');
+      icon.classList.add('far');
+      // Remove from wishlist logic
+    }
+  });
+  
+  // Initialize product cards wishlist buttons
+  wishlistButtons.forEach(btn => {
+    if (btn !== wishlistBtn) {
+      btn.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const icon = this.querySelector('i');
+        
+        if (this.classList.contains('active')) {
+          icon.classList.remove('far');
+          icon.classList.add('fas');
+        } else {
+          icon.classList.remove('fas');
+          icon.classList.add('far');
+        }
+      });
+    }
+  });
 </script>
 </body>
 </html>
