@@ -21,7 +21,7 @@ $product = $result->fetch_assoc();
   <style>
     :root {
       --primary: #db7140ff;
-      --secondary: #ff006e;
+      --secondary: #ebc19bff;
       --accent: #d37f26ff;
       --light: #f8f9fa;
       --dark: #212529;
