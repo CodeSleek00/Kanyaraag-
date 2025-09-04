@@ -377,7 +377,7 @@ $product = $result->fetch_assoc();
     
     .btn-secondary {
       background: var(--secondary);
-      color: black;
+      color: white;
     }
     
     .btn-secondary:hover {
