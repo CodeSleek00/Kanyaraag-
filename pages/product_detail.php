@@ -100,13 +100,24 @@ $product = $result->fetch_assoc();
     @media (max-width: 992px) {
       .product-detail-container {
         grid-template-columns: 1fr;
+        gap: 20px;
       }
     }
     
     /* Image Gallery */
     .gallery-container {
-      position: sticky;
-      top: 80px;
+      position: relative;
+    }
+    
+    @media (min-width: 993px) {
+      .gallery-container {
+        position: sticky;
+        top: 80px;
+      }
+    }
+    
+    .main-image-container {
+      position: relative;
     }
     
     .main-image {
@@ -118,6 +129,34 @@ $product = $result->fetch_assoc();
       padding: 20px;
       box-shadow: var(--shadow);
       margin-bottom: 15px;
+    }
+    
+    @media (max-width: 768px) {
+      .main-image {
+        height: 350px;
+      }
+    }
+    
+    .share-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      z-index: 10;
+      transition: var(--transition);
+    }
+    
+    .share-btn:hover {
+      background: var(--primary);
+      color: white;
     }
     
     .thumbnail-container {
@@ -155,6 +194,12 @@ $product = $result->fetch_assoc();
       font-size: 1.8rem;
       margin-bottom: 10px;
       color: var(--dark);
+    }
+    
+    @media (max-width: 768px) {
+      .product-title {
+        font-size: 1.5rem;
+      }
     }
     
     .stock-badge {
@@ -226,6 +271,12 @@ $product = $result->fetch_assoc();
       margin: 20px 0;
     }
     
+    @media (max-width: 480px) {
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
     .detail-item {
       display: flex;
       flex-direction: column;
@@ -294,6 +345,12 @@ $product = $result->fetch_assoc();
       margin: 25px 0;
     }
     
+    @media (max-width: 480px) {
+      .action-buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+    
     .btn {
       padding: 15px;
       border-radius: var(--border-radius);
@@ -352,6 +409,12 @@ $product = $result->fetch_assoc();
     .tab-headers {
       display: flex;
       border-bottom: 1px solid var(--light-gray);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    
+    .tab-headers::-webkit-scrollbar {
+      display: none;
     }
     
     .tab-header {
@@ -360,6 +423,7 @@ $product = $result->fetch_assoc();
       cursor: pointer;
       transition: var(--transition);
       border-bottom: 3px solid transparent;
+      white-space: nowrap;
     }
     
     .tab-header.active {
@@ -403,6 +467,16 @@ $product = $result->fetch_assoc();
     
     .tab-content li {
       margin-bottom: 10px;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    .tab-content li:before {
+      content: "•";
+      color: var(--primary);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
     }
     
     /* Toast Notification */
@@ -456,6 +530,13 @@ $product = $result->fetch_assoc();
       margin: 30px 0;
     }
     
+    @media (max-width: 640px) {
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+      }
+    }
+    
     .product-card {
       background: white;
       border-radius: var(--border-radius);
@@ -475,6 +556,12 @@ $product = $result->fetch_assoc();
       object-fit: contain;
       padding: 15px;
       background: white;
+    }
+    
+    @media (max-width: 640px) {
+      .product-image {
+        height: 180px;
+      }
     }
     
     .product-card-content {
@@ -649,6 +736,103 @@ $product = $result->fetch_assoc();
       border-radius: 8px;
       margin-top: 10px;
     }
+    
+    /* Share Modal */
+    .share-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+    
+    .share-modal.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .share-modal-content {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 25px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: var(--shadow);
+    }
+    
+    .share-options {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    
+    .share-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      padding: 10px;
+      border-radius: 8px;
+    }
+    
+    .share-option:hover {
+      background: var(--light);
+    }
+    
+    .share-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+    }
+    
+    .share-whatsapp .share-icon {
+      background: #25D366;
+    }
+    
+    .share-facebook .share-icon {
+      background: #3b5998;
+    }
+    
+    .share-twitter .share-icon {
+      background: #1DA1F2;
+    }
+    
+    .share-link .share-icon {
+      background: var(--primary);
+    }
+    
+    .share-modal-close {
+      background: var(--light-gray);
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 15px;
+      width: 100%;
+      transition: var(--transition);
+    }
+    
+    .share-modal-close:hover {
+      background: var(--gray);
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -662,7 +846,12 @@ $product = $result->fetch_assoc();
   <div class="product-detail-container">
     <!-- Image Gallery -->
     <div class="gallery-container">
-      <img id="mainImage" src="<?php echo $product['product_image']; ?>" alt="<?php echo $product['product_name']; ?>" class="main-image">
+      <div class="main-image-container">
+        <img id="mainImage" src="<?php echo $product['product_image']; ?>" alt="<?php echo $product['product_name']; ?>" class="main-image">
+        <div class="share-btn" id="shareProductBtn">
+          <i class="fas fa-share-alt"></i>
+        </div>
+      </div>
       
       <div class="thumbnail-container">
         <img src="<?php echo $product['product_image']; ?>" onclick="changeImage(this)" class="thumbnail active" alt="Thumbnail 1">
@@ -781,18 +970,49 @@ $product = $result->fetch_assoc();
     </div>
     
     <div id="shipping" class="tab-content">
-      <ul>
-        <li>Free shipping on orders above ₹499</li>
-        <li>Estimated delivery: 3-7 business days</li>
-        <li>Cash on Delivery available</li>
-        <li>Easy returns within 15 days</li>
-      </ul>
+      <table>
+        <tr>
+          <th>Shipping</th>
+          <td>
+            <ul>
+              <li>Free shipping on orders above ₹499</li>
+              <li>Estimated delivery: 3-7 business days</li>
+              <li>Cash on Delivery available</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th>Returns</th>
+          <td>
+            <ul>
+              <li>Easy returns within 15 days</li>
+              <li>No questions asked return policy</li>
+              <li>Free return shipping for defective items</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
     </div>
     
     <div id="style" class="tab-content">
-      <p>
-        Perfect for casual outings, pair with jeans, chinos, or shorts. Slim-fit design; consider sizing up for a relaxed fit. Layer under jackets for a trendy look.
-      </p>
+      <table>
+        <tr>
+          <th>Occasion</th>
+          <td>Perfect for casual outings, parties, and festive occasions</td>
+        </tr>
+        <tr>
+          <th>Styling</th>
+          <td>Pair with jeans, chinos, or traditional bottoms. Accessorize with statement jewelry for a complete look.</td>
+        </tr>
+        <tr>
+          <th>Fit</th>
+          <td>Slim-fit design; consider sizing up for a relaxed fit. Layer under jackets for a trendy look.</td>
+        </tr>
+        <tr>
+          <th>Care</th>
+          <td>Hand wash recommended. Dry in shade. Iron at low temperature.</td>
+        </tr>
+      </table>
     </div>
   </div>
   
@@ -931,6 +1151,40 @@ $product = $result->fetch_assoc();
 <div class="toast" id="addedToCart">
   <i class="fas fa-check-circle"></i>
   <span>Product added to cart successfully!</span>
+</div>
+
+<!-- Share Modal -->
+<div class="share-modal" id="shareModal">
+  <div class="share-modal-content">
+    <h3>Share this product</h3>
+    <div class="share-options">
+      <div class="share-option share-whatsapp" data-platform="whatsapp">
+        <div class="share-icon">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <span>WhatsApp</span>
+      </div>
+      <div class="share-option share-facebook" data-platform="facebook">
+        <div class="share-icon">
+          <i class="fab fa-facebook-f"></i>
+        </div>
+        <span>Facebook</span>
+      </div>
+      <div class="share-option share-twitter" data-platform="twitter">
+        <div class="share-icon">
+          <i class="fab fa-twitter"></i>
+        </div>
+        <span>Twitter</span>
+      </div>
+      <div class="share-option share-link" data-platform="link">
+        <div class="share-icon">
+          <i class="fas fa-link"></i>
+        </div>
+        <span>Copy Link</span>
+      </div>
+    </div>
+    <button class="share-modal-close">Close</button>
+  </div>
 </div>
 
 <script>
@@ -1117,6 +1371,61 @@ $product = $result->fetch_assoc();
         navigator.clipboard.writeText('https://' + url)
           .then(() => alert('Review link copied to clipboard!'));
       }
+    });
+  });
+  
+  // Share Product Modal
+  const shareModal = document.getElementById('shareModal');
+  const shareProductBtn = document.getElementById('shareProductBtn');
+  const shareModalClose = document.querySelector('.share-modal-close');
+  
+  shareProductBtn.addEventListener('click', () => {
+    shareModal.classList.add('show');
+  });
+  
+  shareModalClose.addEventListener('click', () => {
+    shareModal.classList.remove('show');
+  });
+  
+  // Close modal when clicking outside
+  shareModal.addEventListener('click', (e) => {
+    if (e.target === shareModal) {
+      shareModal.classList.remove('show');
+    }
+  });
+  
+  // Share options functionality
+  const shareOptions = document.querySelectorAll('.share-option');
+  const productUrl = window.location.href;
+  const productTitle = "<?php echo addslashes($product['product_name']); ?>";
+  
+  shareOptions.forEach(option => {
+    option.addEventListener('click', function() {
+      const platform = this.getAttribute('data-platform');
+      let shareUrl = '';
+      
+      switch(platform) {
+        case 'whatsapp':
+          shareUrl = `https://wa.me/?text=${encodeURIComponent(productTitle + ' ' + productUrl)}`;
+          window.open(shareUrl, '_blank');
+          break;
+        case 'facebook':
+          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`;
+          window.open(shareUrl, '_blank', 'width=600,height=400');
+          break;
+        case 'twitter':
+          shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(productTitle)}&url=${encodeURIComponent(productUrl)}`;
+          window.open(shareUrl, '_blank', 'width=600,height=400');
+          break;
+        case 'link':
+          navigator.clipboard.writeText(productUrl)
+            .then(() => {
+              alert('Product link copied to clipboard!');
+            });
+          break;
+      }
+      
+      shareModal.classList.remove('show');
     });
   });
 </script>
