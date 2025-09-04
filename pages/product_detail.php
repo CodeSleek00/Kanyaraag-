@@ -20,7 +20,7 @@ $product = $result->fetch_assoc();
   
   <style>
     :root {
-      --primary: #C75D2c;
+      --primary: #db7140ff;
       --secondary: #ff006e;
       --accent: #8338ec;
       --light: #f8f9fa;
