@@ -1202,11 +1202,7 @@ $product = $result->fetch_assoc();
       echo '<div class="product-card">
               <div class="product-image-container">
                 <img src="'.$sp['product_image'].'" alt="'.$sp['product_name'].'" class="product-image">
-                <div class="product-overlay">
-                  <button class="quick-view-btn" data-id="'.$sp['id'].'">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                </div>
+               >
               </div>
               <div class="product-card-content">
                 <h3 class="product-card-title">'.$sp['product_name'].'</h3>
