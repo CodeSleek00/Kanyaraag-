@@ -585,7 +585,7 @@ $product = $result->fetch_assoc();
     .fbt-item-image {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       transition: var(--transition);
     }
     
