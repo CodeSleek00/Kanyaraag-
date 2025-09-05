@@ -1276,7 +1276,7 @@ $product = $result->fetch_assoc();
   <?php
     $similarQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 4");
     while($sp = $similarQuery->fetch_assoc()) {
-      echo '<a href="product.php?id='.$sp['id'].'" class="product-card-link">
+      echo '<a href="product_detail.php?id='.$sp['id'].'" class="product-card-link">
               <div class="product-card">
                 <div class="product-image-container">
                   <img src="'.$sp['product_image'].'" alt="'.$sp['product_name'].'" class="product-image">
