@@ -1272,38 +1272,39 @@ $product = $result->fetch_assoc();
   </div>
   
   <!-- Similar Products -->
-  <h2 class="section-header">You Might Also Like</h2>
-  <div class="products-grid">
-    <?php
-      $similarQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 4");
-      while($sp = $similarQuery->fetch_assoc()) {
-        echo '<div class="product-card">
+<div class="products-grid">
+  <?php
+    $similarQuery = $conn->query("SELECT * FROM products WHERE id != $id ORDER BY RAND() LIMIT 4");
+    while($sp = $similarQuery->fetch_assoc()) {
+      echo '<a href="product.php?id='.$sp['id'].'" class="product-card-link">
+              <div class="product-card">
                 <div class="product-image-container">
                   <img src="'.$sp['product_image'].'" alt="'.$sp['product_name'].'" class="product-image">
-                  <div class="product-overlay">
-                  </div>';
-        if($sp['discount_percent'] > 15) {
-          echo '<div class="product-badge">'.round($sp['discount_percent']).'% OFF</div>';
-        }
-        echo '<div class="wishlist-btn">
-                    <i class="far fa-heart"></i>
-                  </div>
-                </div>
-                <div class="product-card-content">
-                  <h3 class="product-card-title">'.$sp['product_name'].'</h3>
-                  <div class="price-container">
-                    <span class="product-card-price">₹'.$sp['discount_price'].'</span>
-                    <span class="product-card-original-price">₹'.$sp['original_price'].'</span>
-                    <span class="discount-percent">'.round(($sp['original_price'] - $sp['discount_price']) / $sp['original_price'] * 100).'% off</span>
-                  </div>
-                  <button class="buy-now-btn" data-id="'.$sp['id'].'">
-                    <i class="fas fa-bolt"></i> Buy Now
-                  </button>
-                </div>
-              </div>';
+                  <div class="product-overlay"></div>';
+      if($sp['discount_percent'] > 15) {
+        echo '<div class="product-badge">'.round($sp['discount_percent']).'% OFF</div>';
       }
-    ?>
-  </div>
+      echo   '<div class="wishlist-btn">
+                  <i class="far fa-heart"></i>
+                </div>
+              </div>
+              <div class="product-card-content">
+                <h3 class="product-card-title">'.$sp['product_name'].'</h3>
+                <div class="price-container">
+                  <span class="product-card-price">₹'.$sp['discount_price'].'</span>
+                  <span class="product-card-original-price">₹'.$sp['original_price'].'</span>
+                  <span class="discount-percent">'.round(($sp['original_price'] - $sp['discount_price']) / $sp['original_price'] * 100).'% off</span>
+                </div>
+                <button class="buy-now-btn" data-id="'.$sp['id'].'">
+                  <i class="fas fa-bolt"></i> Buy Now
+                </button>
+              </div>
+            </div>
+          </a>';
+    }
+  ?>
+</div>
+
   
   <!-- Reviews -->
   <h2 class="section-header">Customer Reviews</h2>
