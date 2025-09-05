@@ -531,6 +531,12 @@ $product = $result->fetch_assoc();
       margin: 40px 0;
     }
     
+    .product-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
     .fbt-products {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
