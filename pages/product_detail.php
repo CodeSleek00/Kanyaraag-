@@ -1281,9 +1281,6 @@ $product = $result->fetch_assoc();
                 <div class="product-image-container">
                   <img src="'.$sp['product_image'].'" alt="'.$sp['product_name'].'" class="product-image">
                   <div class="product-overlay">
-                    <button class="quick-view-btn" data-id="'.$sp['id'].'">
-                      <i class="fas fa-eye"></i>
-                    </button>
                   </div>';
         if($sp['discount_percent'] > 15) {
           echo '<div class="product-badge">'.round($sp['discount_percent']).'% OFF</div>';
