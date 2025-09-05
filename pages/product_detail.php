@@ -760,7 +760,7 @@ $product = $result->fetch_assoc();
     }
     
     .buy-now-btn {
-      background: var(--secondary);
+      background: #db7140ff ;
       color: white;
       border: none;
       padding: 10px;
@@ -776,7 +776,7 @@ $product = $result->fetch_assoc();
     }
     
     .buy-now-btn:hover {
-      background: #e0005f;
+      background: #8e4929ff;
       transform: translateY(-2px);
     }
     
