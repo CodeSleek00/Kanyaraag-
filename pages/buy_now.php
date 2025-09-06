@@ -27,7 +27,7 @@ if (!$product) {
     .product-details { flex: 1; }
     .price { font-size: 20px; font-weight: bold; color: #e63946; }
     .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
     input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
     button { background: #e63946; color: #fff; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
     button:hover { background: #d62828; }
@@ -55,6 +55,25 @@ if (!$product) {
       <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
       <input type="hidden" name="price" value="<?php echo $product['discount_price']; ?>">
 
+      <!-- Size Selection -->
+      <div class="form-group">
+        <label>Size</label>
+        <select name="size" required>
+          <option value="">Select Size</option>
+          <option value="S">Small (S)</option>
+          <option value="M">Medium (M)</option>
+          <option value="L">Large (L)</option>
+          <option value="XL">Extra Large (XL)</option>
+        </select>
+      </div>
+
+      <!-- Quantity Selection -->
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="number" name="quantity" value="1" min="1" required>
+      </div>
+
+      <!-- Customer Details -->
       <div class="form-group">
         <label>Your Name</label>
         <input type="text" name="customer_name" required>
@@ -70,6 +89,7 @@ if (!$product) {
         <textarea name="customer_address" rows="3" required></textarea>
       </div>
 
+      <!-- Payment Method -->
       <div class="form-group">
         <label>Payment Method</label>
         <select name="payment_method" required>
@@ -78,12 +98,13 @@ if (!$product) {
         </select>
       </div>
 
+      <!-- Order Summary -->
       <div class="order-summary">
         <h4>Order Summary</h4>
         <p>Product: <?php echo $product['product_name']; ?></p>
-        <p>Price: ₹<?php echo $product['discount_price']; ?></p>
+        <p>Price (per item): ₹<?php echo $product['discount_price']; ?></p>
         <p>Delivery: Free</p>
-        <p><strong>Total: ₹<?php echo $product['discount_price']; ?></strong></p>
+        <p><strong>Total: ₹<?php echo $product['discount_price']; ?> x Qty</strong></p>
       </div>
 
       <button type="submit"><i class="fas fa-check-circle"></i> Confirm Purchase</button>

@@ -13,12 +13,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Order ID generate (unique string)
     $order_id = "ORDER_" . time() . "_" . rand(1000, 9999);
+    $size = $conn->real_escape_string($_POST['size']);
+$quantity = (int) $_POST['quantity'];
 
-    // Insert into orders table
-    $sql = "INSERT INTO orders 
-            (order_id, product_id, customer_name, customer_mobile, customer_address, total_amount, payment_method, status, created_at) 
-            VALUES 
-            ('$order_id', '$product_id', '$name', '$mobile', '$address', '$price', '$payment_method', 'Pending', NOW())";
+// total price calculate
+$total = $price * $quantity;
+
+$sql = "INSERT INTO orders 
+(order_id, product_id, customer_name, customer_mobile, customer_address, size, quantity, total_amount, payment_method, status, created_at) 
+VALUES 
+('$order_id', '$product_id', '$name', '$mobile', '$address', '$size', '$quantity', '$total', '$payment_method', 'Pending', NOW())";
 
     if ($conn->query($sql) === TRUE) {
         // Redirect to thank you page with order id
