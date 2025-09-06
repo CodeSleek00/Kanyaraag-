@@ -1572,7 +1572,7 @@ $product = $result->fetch_assoc();
     localStorage.setItem('cart', JSON.stringify(cart));
     
     // Redirect to checkout
-    window.location.href = 'checkout.php';
+    window.location.href = 'buy_now.php';
   });
   
   // Frequently Bought Together
