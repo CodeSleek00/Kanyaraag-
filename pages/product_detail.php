@@ -1065,7 +1065,9 @@ $product = $result->fetch_assoc();
           <i class="fas fa-share-alt"></i>
         </div>
         <!-- Wishlist Button -->
-       
+        <div class="wishlist-btn" id="wishlistBtn">
+          <i class="far fa-heart"></i>
+        </div>
         <!-- Product Badge -->
         <?php if($product['discount_percent'] > 20): ?>
           <div class="product-badge"><?php echo round($product['discount_percent']); ?>% OFF</div>
@@ -1143,13 +1145,6 @@ $product = $result->fetch_assoc();
           <i class="fas fa-bolt"></i> Buy Now
         </button>
       </div>
-      <!-- Hidden form for Buy Now -->
-<form id="buyNowForm" method="POST" action="buy_now.php" style="display: none;">
-    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-    <input type="hidden" name="size" id="buyNowSize">
-    <input type="hidden" name="color" id="buyNowColor">
-    <input type="hidden" name="quantity" value="1">
-</form>
       
       <div class="shipping-info">
         <i class="fas fa-truck"></i>
@@ -1781,23 +1776,6 @@ $product = $result->fetch_assoc();
       });
     }
   });
-  // Buy Now
-document.querySelector('.buy-now').addEventListener('click', function() {
-    const selectedSize = document.querySelector('.size-option.selected');
-    const selectedColor = document.querySelector('.color-option.selected');
-    
-    if (!selectedSize) {
-        alert('Please select a size before proceeding.');
-        return;
-    }
-    
-    // Set values in hidden form
-    document.getElementById('buyNowSize').value = selectedSize.getAttribute('data-size');
-    document.getElementById('buyNowColor').value = selectedColor ? selectedColor.getAttribute('data-color') : '';
-    
-    // Submit the form
-    document.getElementById('buyNowForm').submit();
-});
 </script>
 </body>
 </html>
