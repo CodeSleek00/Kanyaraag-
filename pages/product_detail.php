@@ -1138,11 +1138,9 @@ $product = $result->fetch_assoc();
         <button class="btn btn-primary add-cart">
           <i class="fas fa-shopping-cart"></i> Add to Cart
         </button>
-       <button class="btn btn-secondary buy-now"
-        onclick="window.location.href='buy_now.php?id=<?php echo $product['id']; ?>'">
-  <i class="fas fa-bolt"></i> Buy Now
-</button>
-
+        <button class="btn btn-secondary buy-now">
+          <i class="fas fa-bolt"></i> Buy Now
+        </button>
       </div>
       
       <div class="shipping-info">
@@ -1572,7 +1570,7 @@ $product = $result->fetch_assoc();
     localStorage.setItem('cart', JSON.stringify(cart));
     
     // Redirect to checkout
-    window.location.href = 'buy_now.php';
+    window.location.href = 'checkout.php';
   });
   
   // Frequently Bought Together
