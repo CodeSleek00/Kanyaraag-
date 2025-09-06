@@ -1304,9 +1304,10 @@ $product = $result->fetch_assoc();
                   <span class="product-card-original-price">₹'.$sp['original_price'].'</span>
                   <span class="discount-percent">'.round(($sp['original_price'] - $sp['discount_price']) / $sp['original_price'] * 100).'% off</span>
                 </div>
-                <button class="buy-now-btn" data-id="'.$sp['id'].'">
-                  <i class="fas fa-bolt"></i> Buy Now
-                </button>
+               <a href="checkout.php?id=<?php echo $product['id']; ?>" class="btn btn-secondary">
+  <i class="fas fa-bolt"></i> Buy Now
+</a>
+
               </div>
             </div>
           </a>';
