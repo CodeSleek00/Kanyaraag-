@@ -2,13 +2,6 @@
 session_start();
 include '../db/db_connect.php';
 
-// Check if user is logged in, if not redirect to login
-if (!isset($_SESSION['user_id'])) {
-    $_SESSION['redirect_url'] = $_SERVER['HTTP_REFERER'] ?? 'index.php';
-    header('Location: login.php');
-    exit();
-}
-
 // Process the buy now request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_id = $_POST['product_id'] ?? 0;
@@ -23,25 +16,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows > 0) {
         $product = $result->fetch_assoc();
         
-        // Create a temporary cart for the buy now process
-        $temp_cart = [
-            'items' => [
-                [
-                    'id' => $product['id'],
-                    'name' => $product['product_name'],
-                    'price' => $product['discount_price'],
-                    'image' => $product['product_image'],
-                    'size' => $size,
-                    'color' => $color,
-                    'quantity' => $quantity
-                ]
-            ],
-            'total' => $product['discount_price'] * $quantity,
-            'is_buy_now' => true
+        // Store product info in session for checkout
+        $_SESSION['buy_now_product'] = [
+            'id' => $product['id'],
+            'name' => $product['product_name'],
+            'price' => $product['discount_price'],
+            'image' => $product['product_image'],
+            'size' => $size,
+            'color' => $color,
+            'quantity' => $quantity
         ];
-        
-        // Store in session
-        $_SESSION['temp_cart'] = $temp_cart;
         
         // Redirect to checkout
         header('Location: checkout.php');
