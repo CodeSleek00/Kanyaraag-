@@ -1065,9 +1065,7 @@ $product = $result->fetch_assoc();
           <i class="fas fa-share-alt"></i>
         </div>
         <!-- Wishlist Button -->
-        <div class="wishlist-btn" id="wishlistBtn">
-
-        </div>
+       
         <!-- Product Badge -->
         <?php if($product['discount_percent'] > 20): ?>
           <div class="product-badge"><?php echo round($product['discount_percent']); ?>% OFF</div>
@@ -1136,18 +1134,15 @@ $product = $result->fetch_assoc();
           ?>
         </div>
       </div>
+      
       <div class="action-buttons">
-  <!-- Add to Cart -->
-  <a href="add_to_cart.php?id=<?php echo $row['id']; ?>" class="btn btn-primary add-cart">
-    <i class="fas fa-shopping-cart"></i> Add to Cart
-  </a>
-
-  <!-- Buy Now -->
-  <a href="buy_now.php?id=<?php echo $row['id']; ?>" class="btn btn-secondary buy-now">
-    <i class="fas fa-bolt"></i> Buy Now
-  </a>
-</div>
-
+        <button class="btn btn-primary add-cart">
+          <i class="fas fa-shopping-cart"></i> Add to Cart
+        </button>
+        <button class="btn btn-secondary buy-now">
+          <i class="fas fa-bolt"></i> Buy Now
+        </button>
+      </div>
       
       <div class="shipping-info">
         <i class="fas fa-truck"></i>
@@ -1304,10 +1299,9 @@ $product = $result->fetch_assoc();
                   <span class="product-card-original-price">₹'.$sp['original_price'].'</span>
                   <span class="discount-percent">'.round(($sp['original_price'] - $sp['discount_price']) / $sp['original_price'] * 100).'% off</span>
                 </div>
-               <a href="checkout.php?id=<?php echo $product['id']; ?>" class="btn btn-secondary">
-  <i class="fas fa-bolt"></i> Buy Now
-</a>
-
+                <button class="buy-now-btn" data-id="'.$sp['id'].'">
+                  <i class="fas fa-bolt"></i> Buy Now
+                </button>
               </div>
             </div>
           </a>';
