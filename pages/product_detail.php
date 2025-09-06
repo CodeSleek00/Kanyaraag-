@@ -1064,10 +1064,7 @@ $product = $result->fetch_assoc();
         <div class="share-btn" id="shareProductBtn">
           <i class="fas fa-share-alt"></i>
         </div>
-        <!-- Wishlist Button -->
-        <div class="wishlist-btn" id="wishlistBtn">
-          <i class="far fa-heart"></i>
-        </div>
+        
         <!-- Product Badge -->
         <?php if($product['discount_percent'] > 20): ?>
           <div class="product-badge"><?php echo round($product['discount_percent']); ?>% OFF</div>
