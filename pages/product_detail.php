@@ -1066,7 +1066,7 @@ $product = $result->fetch_assoc();
         </div>
         <!-- Wishlist Button -->
         <div class="wishlist-btn" id="wishlistBtn">
-          <i class="far fa-heart"></i>
+
         </div>
         <!-- Product Badge -->
         <?php if($product['discount_percent'] > 20): ?>
@@ -1136,15 +1136,18 @@ $product = $result->fetch_assoc();
           ?>
         </div>
       </div>
-      
       <div class="action-buttons">
-        <button class="btn btn-primary add-cart">
-          <i class="fas fa-shopping-cart"></i> Add to Cart
-        </button>
-        <button class="btn btn-secondary buy-now">
-          <i class="fas fa-bolt"></i> Buy Now
-        </button>
-      </div>
+  <!-- Add to Cart -->
+  <a href="add_to_cart.php?id=<?php echo $row['id']; ?>" class="btn btn-primary add-cart">
+    <i class="fas fa-shopping-cart"></i> Add to Cart
+  </a>
+
+  <!-- Buy Now -->
+  <a href="buy_now.php?id=<?php echo $row['id']; ?>" class="btn btn-secondary buy-now">
+    <i class="fas fa-bolt"></i> Buy Now
+  </a>
+</div>
+
       
       <div class="shipping-info">
         <i class="fas fa-truck"></i>
