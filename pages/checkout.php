@@ -1,90 +1,84 @@
 <?php
-include '../db/db_connect.php';
 session_start();
+include '../db/db_connect.php';
 
-$id = $_GET['id'] ?? 0;
-$size = $_GET['size'] ?? '';
-$color = $_GET['color'] ?? '';
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
 
-$sql = "SELECT * FROM products WHERE id = $id";
-$result = $conn->query($sql);
-$product = $result->fetch_assoc();
+// Check if we have a temporary cart from buy now
+if (isset($_SESSION['temp_cart']) && $_SESSION['temp_cart']['is_buy_now']) {
+    $cart_items = $_SESSION['temp_cart']['items'];
+    $total = $_SESSION['temp_cart']['total'];
+    
+    // Clear the temporary cart after use
+    unset($_SESSION['temp_cart']);
+} else {
+    // Regular cart from localStorage (you'll need to implement this)
+    // This would typically involve converting the JavaScript cart to PHP
+    $cart_items = []; // Your regular cart implementation
+    $total = 0;
+}
 
-if (!$product) {
-    die("Product not found!");
+// Process the checkout form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Handle the checkout process
+    // Insert order into database, process payment, etc.
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Checkout - <?php echo $product['product_name']; ?></title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f4f4f4;}
-    .container {max-width: 1000px; margin:30px auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-    h2 {margin-bottom:20px;}
-    .checkout-wrapper {display:flex; gap:20px; flex-wrap:wrap;}
-    .product-summary, .checkout-form {flex:1; min-width:300px;}
-    .product-summary img {width:100%; max-width:200px; border-radius:10px;}
-    .summary-box {border:1px solid #ddd; padding:15px; border-radius:10px;}
-    .summary-box h3 {margin:0 0 10px;}
-    .form-group {margin-bottom:15px;}
-    label {display:block; margin-bottom:5px; font-weight:600;}
-    input, textarea {width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;}
-    button {background:#28a745; color:#fff; padding:12px 20px; border:none; border-radius:8px; cursor:pointer; font-size:16px;}
-    button:hover {background:#218838;}
-  </style>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <!-- Your checkout page styling and content -->
 </head>
 <body>
-<div class="container">
-  <h2>Checkout</h2>
-  <div class="checkout-wrapper">
-
-    <!-- Product Summary -->
-    <div class="product-summary">
-      <div class="summary-box">
-        <h3>Order Summary</h3>
-        <img src="<?php echo $product['product_image']; ?>" alt="<?php echo $product['product_name']; ?>">
-        <p><strong><?php echo $product['product_name']; ?></strong></p>
-        <p>Price: ₹<?php echo $product['discount_price']; ?></p>
-        <?php if ($size): ?><p>Size: <?php echo htmlspecialchars($size); ?></p><?php endif; ?>
-        <?php if ($color): ?><p>Color: <?php echo htmlspecialchars($color); ?></p><?php endif; ?>
-        <p>Quantity: 1</p>
-        <hr>
-        <p><strong>Total: ₹<?php echo $product['discount_price']; ?></strong></p>
-      </div>
-    </div>
-
-    <!-- Checkout Form -->
-    <div class="checkout-form">
-      <form action="place_order.php" method="POST">
-        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-        <input type="hidden" name="size" value="<?php echo htmlspecialchars($size); ?>">
-        <input type="hidden" name="color" value="<?php echo htmlspecialchars($color); ?>">
-        <input type="hidden" name="price" value="<?php echo $product['discount_price']; ?>">
-
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" name="customer_name" required>
+    <!-- Checkout form -->
+    <h1>Checkout</h1>
+    
+    <?php if (!empty($cart_items)): ?>
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <?php foreach ($cart_items as $item): ?>
+                <div class="checkout-item">
+                    <img src="<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" width="80">
+                    <h3><?php echo $item['name']; ?></h3>
+                    <p>Size: <?php echo $item['size']; ?></p>
+                    <p>Color: <?php echo $item['color']; ?></p>
+                    <p>Quantity: <?php echo $item['quantity']; ?></p>
+                    <p>Price: ₹<?php echo $item['price']; ?></p>
+                </div>
+            <?php endforeach; ?>
+            
+            <div class="total">
+                <h3>Total: ₹<?php echo $total; ?></h3>
+            </div>
         </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" name="customer_email" required>
-        </div>
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="text" name="customer_phone" required>
-        </div>
-        <div class="form-group">
-          <label>Address</label>
-          <textarea name="customer_address" required></textarea>
-        </div>
-
-        <button type="submit">Place Order</button>
-      </form>
-    </div>
-  </div>
-</div>
+        
+        <form method="POST" action="checkout.php">
+            <!-- Shipping and payment details form -->
+            <h2>Shipping Information</h2>
+            <input type="text" name="full_name" placeholder="Full Name" required>
+            <input type="text" name="address" placeholder="Address" required>
+            <input type="text" name="city" placeholder="City" required>
+            <input type="text" name="zip" placeholder="ZIP Code" required>
+            <input type="tel" name="phone" placeholder="Phone Number" required>
+            
+            <h2>Payment Method</h2>
+            <select name="payment_method" required>
+                <option value="cod">Cash on Delivery</option>
+                <option value="card">Credit/Debit Card</option>
+                <option value="upi">UPI</option>
+            </div>
+            
+            <button type="submit">Place Order</button>
+        </form>
+    <?php else: ?>
+        <p>Your cart is empty. <a href="products.php">Continue shopping</a></p>
+    <?php endif; ?>
 </body>
 </html>
