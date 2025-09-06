@@ -2,89 +2,89 @@
 include '../db/db_connect.php';
 session_start();
 
-// If product bought directly via "Buy Now"
-if(isset($_GET['id'])){
-    $id = intval($_GET['id']);
-    $sql = "SELECT * FROM products WHERE id=$id";
-    $result = $conn->query($sql);
-    if($result->num_rows == 0){ die("Product not found"); }
-    $product = $result->fetch_assoc();
-    $cart = [ [
-        "id"=>$product['id'],
-        "name"=>$product['product_name'],
-        "price"=>$product['discount_price'],
-        "qty"=>1
-    ]];
-} 
-// Else, we can populate cart from session/localStorage
-else {
-    // We'll handle cart from localStorage using JS
+$id = $_GET['id'] ?? 0;
+$size = $_GET['size'] ?? '';
+$color = $_GET['color'] ?? '';
+
+$sql = "SELECT * FROM products WHERE id = $id";
+$result = $conn->query($sql);
+$product = $result->fetch_assoc();
+
+if (!$product) {
+    die("Product not found!");
 }
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Checkout</title>
-<style>
-body { font-family:Arial; padding:20px; background:#fafafa; }
-table { width:100%; border-collapse: collapse; margin-bottom:20px; }
-th, td { border:1px solid #ccc; padding:10px; text-align:center; }
-button { padding:10px 20px; background:#ff3f6c; color:#fff; border:none; cursor:pointer; border-radius:5px; margin-right:10px; }
-button:hover { background:#e91e63; }
-</style>
+  <meta charset="UTF-8">
+  <title>Checkout - <?php echo $product['product_name']; ?></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f4f4f4;}
+    .container {max-width: 1000px; margin:30px auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+    h2 {margin-bottom:20px;}
+    .checkout-wrapper {display:flex; gap:20px; flex-wrap:wrap;}
+    .product-summary, .checkout-form {flex:1; min-width:300px;}
+    .product-summary img {width:100%; max-width:200px; border-radius:10px;}
+    .summary-box {border:1px solid #ddd; padding:15px; border-radius:10px;}
+    .summary-box h3 {margin:0 0 10px;}
+    .form-group {margin-bottom:15px;}
+    label {display:block; margin-bottom:5px; font-weight:600;}
+    input, textarea {width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;}
+    button {background:#28a745; color:#fff; padding:12px 20px; border:none; border-radius:8px; cursor:pointer; font-size:16px;}
+    button:hover {background:#218838;}
+  </style>
 </head>
 <body>
+<div class="container">
+  <h2>Checkout</h2>
+  <div class="checkout-wrapper">
 
-<h2>Checkout</h2>
+    <!-- Product Summary -->
+    <div class="product-summary">
+      <div class="summary-box">
+        <h3>Order Summary</h3>
+        <img src="<?php echo $product['product_image']; ?>" alt="<?php echo $product['product_name']; ?>">
+        <p><strong><?php echo $product['product_name']; ?></strong></p>
+        <p>Price: ₹<?php echo $product['discount_price']; ?></p>
+        <?php if ($size): ?><p>Size: <?php echo htmlspecialchars($size); ?></p><?php endif; ?>
+        <?php if ($color): ?><p>Color: <?php echo htmlspecialchars($color); ?></p><?php endif; ?>
+        <p>Quantity: 1</p>
+        <hr>
+        <p><strong>Total: ₹<?php echo $product['discount_price']; ?></strong></p>
+      </div>
+    </div>
 
-<table id="cart-table">
-<tr><th>Product</th><th>Price</th><th>Qty</th><th>Total</th></tr>
-<?php foreach($cart as $item){ ?>
-<tr>
-    <td><?= $item['name'] ?></td>
-    <td>₹<?= $item['price'] ?></td>
-    <td><?= $item['qty'] ?></td>
-    <td>₹<?= $item['price']*$item['qty'] ?></td>
-</tr>
-<?php $total += $item['price']*$item['qty']; } ?>
-<tr><td colspan="3"><strong>Total</strong></td><td>₹<?= $total ?></td></tr>
-</table>
+    <!-- Checkout Form -->
+    <div class="checkout-form">
+      <form action="place_order.php" method="POST">
+        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+        <input type="hidden" name="size" value="<?php echo htmlspecialchars($size); ?>">
+        <input type="hidden" name="color" value="<?php echo htmlspecialchars($color); ?>">
+        <input type="hidden" name="price" value="<?php echo $product['discount_price']; ?>">
 
-<h3>Select Payment Method</h3>
-<form method="POST" action="place_order.php">
-    <input type="hidden" name="total" value="<?= $total ?>">
-    <input type="radio" name="payment_method" value="COD" checked> Cash on Delivery
-    <input type="radio" name="payment_method" value="RAZORPAY"> Razorpay
-    <br><br>
-    <button type="submit">Place Order</button>
-</form>
- <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<button id="rzp-button">Pay with Razorpay</button>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="customer_name" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="customer_email" required>
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" name="customer_phone" required>
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <textarea name="customer_address" required></textarea>
+        </div>
 
-<script>
-var options = {
-    "key": "",
-    "amount": <?= $total*100 ?>, // in paise
-    "currency": "INR",
-    "name": "Your Store",
-    "description": "Order #<?= $order_id ?>",
-    "handler": function (response){
-        // After payment success, call PHP to mark order completed
-        fetch('payment_success.php', {
-            method: 'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body: 'order_id=<?= $order_id ?>&razorpay_payment_id='+response.razorpay_payment_id
-        }).then(res=>res.text()).then(alert);
-    },
-    "theme": { "color": "#ff3f6c" }
-};
-var rzp1 = new Razorpay(options);
-document.getElementById('rzp-button').onclick = function(e){
-    rzp1.open();
-    e.preventDefault();
-}
-</script>
-
+        <button type="submit">Place Order</button>
+      </form>
+    </div>
+  </div>
+</div>
 </body>
 </html>
