@@ -1,49 +1,33 @@
 <?php
 include '../db/db_connect.php';
+session_start();
 
-// Razorpay SDK
-require '../vendor/autoload.php';
-use Razorpay\Api\Api; // MUST be after require, at top
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Form data collect
+    $product_id = (int) $_POST['product_id'];
+    $price = (float) $_POST['price'];
+    $name = $conn->real_escape_string($_POST['customer_name']);
+    $mobile = $conn->real_escape_string($_POST['customer_mobile']);
+    $address = $conn->real_escape_string($_POST['customer_address']);
+    $payment_method = $conn->real_escape_string($_POST['payment_method']);
 
-$total = $_POST['total'];
-$payment_method = $_POST['payment_method'];
+    // Order ID generate (unique string)
+    $order_id = "ORDER_" . time() . "_" . rand(1000, 9999);
 
-// Generate unique order id
-$order_id = "ORDER_".time();
+    // Insert into orders table
+    $sql = "INSERT INTO orders 
+            (order_id, product_id, customer_name, customer_mobile, customer_address, total_amount, payment_method, status, created_at) 
+            VALUES 
+            ('$order_id', '$product_id', '$name', '$mobile', '$address', '$price', '$payment_method', 'Pending', NOW())";
 
-// For simplicity, using single product example
-$product_id = 1; 
-$product_name = "Test Product";
-$product_price = $total;
-$qty = 1;
-
-// Insert order in DB
-$stmt = $conn->prepare("INSERT INTO orders(order_id, product_id, product_name, product_price, qty, total_price, payment_method) VALUES (?,?,?,?,?,?,?)");
-$stmt->bind_param("siidids", $order_id, $product_id, $product_name, $product_price, $qty, $total, $payment_method);
-$stmt->execute();
-
-if($payment_method=="COD"){
-    $stmt->close();
-    echo "✅ Order placed successfully! Order ID: $order_id. Payment: Cash on Delivery.";
+    if ($conn->query($sql) === TRUE) {
+        // Redirect to thank you page with order id
+        header("Location: thank_you.php?order_id=" . urlencode($order_id));
+        exit;
+    } else {
+        echo "Error while placing order: " . $conn->error;
+    }
 } else {
-    // Razorpay Payment Integration
-    $keyId = "rzp_test_TMaKHOLutXGYTH";
-    $keySecret = "eyvkr7ljPXve2MnuDjHXZQVE";
-
-    $api = new Api($keyId, $keySecret);
-
-    $orderData = [
-        'receipt'         => $order_id,
-        'amount'          => $total*100, // in paise
-        'currency'        => 'INR',
-        'payment_capture' => 1
-    ];
-
-    $razorpayOrder = $api->order->create($orderData);
-
-    $razorpayOrderId = $razorpayOrder['id'];
-
-    // Redirect to payment page
-    header("Location: razorpay_payment.php?order_id=$order_id&razorpay_order_id=$razorpayOrderId&amount=$total");
+    echo "Invalid Request!";
 }
 ?>
