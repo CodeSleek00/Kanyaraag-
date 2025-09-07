@@ -28,6 +28,20 @@ session_start();
     @media (max-width:900px) {
       .grid {grid-template-columns: 1fr;}
     }
+    .qty-btn {
+  width: 26px;
+  height: 26px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #f9fafb;
+  cursor: pointer;
+  font-weight: 600;
+}
+.qty-val {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 600;
+}
 
     /* left form */
     .card {background:var(--card-bg); border-radius:var(--radius); padding:20px; box-shadow:0 6px 18px rgba(15,23,42,0.06);}
@@ -210,57 +224,82 @@ session_start();
       }
     }
 
-    function renderOrderSummary() {
-      const cart = getCart();
-      const list = document.getElementById('itemsList');
-      const subtotalEl = document.getElementById('subtotalAmt');
-      const totalEl = document.getElementById('totalAmt');
-      const shippingEl = document.getElementById('shippingAmt');
+   function renderOrderSummary() {
+  const cart = getCart();
+  const list = document.getElementById('itemsList');
+  const subtotalEl = document.getElementById('subtotalAmt');
+  const totalEl = document.getElementById('totalAmt');
+  const shippingEl = document.getElementById('shippingAmt');
 
-      if(!cart.length) {
-        list.innerHTML = '<div class="empty">Your cart is empty. <a href="index.php">Shop now</a></div>';
-        subtotalEl.textContent = '₹0';
-        shippingEl.textContent = '₹0';
-        totalEl.textContent = '₹0';
-        document.getElementById('cart_payload').value = '';
-        return;
+  if(!cart.length) {
+    list.innerHTML = '<div class="empty">Your cart is empty. <a href="index.php">Shop now</a></div>';
+    subtotalEl.textContent = '₹0';
+    shippingEl.textContent = '₹0';
+    totalEl.textContent = '₹0';
+    document.getElementById('cart_payload').value = '';
+    return;
+  }
+
+  let html = '';
+  let subtotal = 0;
+  cart.forEach((item, idx) => {
+    const price = parseFloat(item.price) || 0;
+    const qty = parseInt(item.qty) || 1;
+    const itemSubtotal = price * qty;
+    subtotal += itemSubtotal;
+    html += `<div class="item" data-index="${idx}">
+              <img src="${item.image}" alt="${item.name}" />
+              <div class="meta">
+                <div style="font-weight:700">${item.name}</div>
+                <div class="muted small">${item.size || ''} ${item.color ? ' • ' + item.color : ''}</div>
+                <div class="muted small">₹${price.toFixed(2)} each</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="display:flex; align-items:center; gap:6px; justify-content:flex-end;">
+                  <button type="button" class="qty-btn" data-action="dec">-</button>
+                  <span class="qty-val">${qty}</span>
+                  <button type="button" class="qty-btn" data-action="inc">+</button>
+                </div>
+                <div class="muted small">₹${itemSubtotal.toFixed(2)}</div>
+              </div>
+            </div>`;
+  });
+
+  list.innerHTML = html;
+
+  // example shipping rules
+  const shipping = subtotal > 999 ? 0 : 49;
+  const total = subtotal + shipping;
+
+  subtotalEl.textContent = '₹' + subtotal.toFixed(2);
+  shippingEl.textContent = shipping === 0 ? 'Free' : '₹' + shipping.toFixed(2);
+  totalEl.textContent = '₹' + total.toFixed(2);
+
+  document.getElementById('cart_payload').value = JSON.stringify({
+    cart, subtotal: subtotal.toFixed(2), shipping: shipping.toFixed(2), total: total.toFixed(2)
+  });
+
+  // add qty button listeners
+  document.querySelectorAll('.qty-btn').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      const idx = this.closest('.item').getAttribute('data-index');
+      let cart = getCart();
+      if(!cart[idx]) return;
+      if(this.dataset.action === 'inc') {
+        cart[idx].qty = (parseInt(cart[idx].qty) || 1) + 1;
+      } else if(this.dataset.action === 'dec') {
+        cart[idx].qty = (parseInt(cart[idx].qty) || 1) - 1;
+        if(cart[idx].qty < 1) {
+          // remove item if qty < 1
+          cart.splice(idx,1);
+        }
       }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderOrderSummary();
+    });
+  });
+}
 
-      let html = '';
-      let subtotal = 0;
-      cart.forEach(item => {
-        const price = parseFloat(item.price) || 0;
-        const qty = parseInt(item.qty) || 1;
-        const itemSubtotal = price * qty;
-        subtotal += itemSubtotal;
-        html += `<div class="item">
-                  <img src="${item.image}" alt="${item.name}" />
-                  <div class="meta">
-                    <div style="font-weight:700">${item.name}</div>
-                    <div class="muted small">${item.size || ''} ${item.color ? ' • ' + item.color : ''}</div>
-                  </div>
-                  <div style="text-align:right;">
-                    <div>₹${price.toFixed(2)}</div>
-                    <div class="muted small">x ${qty}</div>
-                  </div>
-                </div>`;
-      });
-
-      list.innerHTML = html;
-      // example shipping rules (you can change)
-      const shipping = subtotal > 999 ? 0 : 49; // free above 999
-      const total = subtotal + shipping;
-
-      subtotalEl.textContent = '₹' + subtotal.toFixed(2);
-      shippingEl.textContent = shipping === 0 ? 'Free' : '₹' + shipping.toFixed(2);
-      totalEl.textContent = '₹' + total.toFixed(2);
-
-      document.getElementById('cart_payload').value = JSON.stringify({
-        cart, subtotal: subtotal.toFixed(2), shipping: shipping.toFixed(2), total: total.toFixed(2)
-      });
-    }
-
-    renderOrderSummary();
 
     // Payment selection
     document.querySelectorAll('.payment-card').forEach(card => {
