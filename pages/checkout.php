@@ -181,12 +181,6 @@ session_start();
               </div>
             </div>
           </div>
-          <div class="section">
-  <h2>Payment Method</h2>
-  <label><input type="radio" name="payment_method" value="razorpay" checked> Pay Online (Razorpay)</label><br>
-  <label><input type="radio" name="payment_method" value="cod"> Cash on Delivery (₹49 extra)</label>
-</div>
-
 
           <input type="hidden" id="payment_method" name="payment_method" value="RAZORPAY" />
           <input type="hidden" id="cart_payload" name="cart_payload" value="" />
@@ -422,30 +416,6 @@ session_start();
       const rzp1 = new Razorpay(options);
       rzp1.open();
     }
-      // get selected payment method
-  const method = document.querySelector('input[name="payment_method"]:checked')?.value || 'razorpay';
-
-  // shipping rules
-  let shipping = 0;
-  if(method === 'cod') {
-    shipping = 49;
-  } else if(method === 'razorpay') {
-    shipping = 0; // free delivery
-  }
-
-  const total = subtotal + shipping;
-
-  subtotalEl.textContent = '₹' + subtotal.toFixed(2);
-  shippingEl.textContent = shipping === 0 ? 'Free' : '₹' + shipping.toFixed(2);
-  totalEl.textContent = '₹' + total.toFixed(2);
-
-  document.getElementById('cart_payload').value = JSON.stringify({
-    cart, subtotal: subtotal.toFixed(2), shipping: shipping.toFixed(2), total: total.toFixed(2), method
-  });
-document.querySelectorAll('input[name="payment_method"]').forEach(radio=>{
-  radio.addEventListener('change', renderOrderSummary);
-});
-
   </script>
 </body>
 </html>
