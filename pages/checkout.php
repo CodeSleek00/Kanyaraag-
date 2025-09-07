@@ -56,7 +56,7 @@ session_start();
         <tr>
           <th>Product</th>
           <th>Size</th>
-          <th>Color</th>
+          
           <th>Price</th>
           <th>Quantity</th>
           <th>Subtotal</th>
