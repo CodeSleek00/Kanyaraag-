@@ -2,9 +2,6 @@
 // checkout.php
 include '../db/db_connect.php';
 session_start();
-
-// You can optionally get logged-in user info from session and prefill the form.
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,6 +56,23 @@ session_start();
     .muted {color:var(--muted); font-size:0.95rem;}
     .empty {text-align:center; padding:36px; color:var(--muted);}
     .small {font-size:0.9rem;}
+
+    /* quantity buttons */
+    .qty-btn {
+      width: 26px;
+      height: 26px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #f9fafb;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .qty-val {
+      min-width: 24px;
+      text-align: center;
+      font-weight: 600;
+      display:inline-block;
+    }
   </style>
 </head>
 <body>
@@ -199,9 +213,8 @@ session_start();
     </div>
   </div>
 
-  <!-- Razorpay script will be loaded only when needed -->
   <script>
-    // load cart from localStorage (same structure you use)
+    // load cart from localStorage
     function getCart() {
       try {
         return JSON.parse(localStorage.getItem('cart')) || [];
@@ -228,27 +241,32 @@ session_start();
 
       let html = '';
       let subtotal = 0;
-      cart.forEach(item => {
+      cart.forEach((item, idx) => {
         const price = parseFloat(item.price) || 0;
         const qty = parseInt(item.qty) || 1;
         const itemSubtotal = price * qty;
         subtotal += itemSubtotal;
-        html += `<div class="item">
+        html += `<div class="item" data-index="${idx}">
                   <img src="${item.image}" alt="${item.name}" />
                   <div class="meta">
                     <div style="font-weight:700">${item.name}</div>
                     <div class="muted small">${item.size || ''} ${item.color ? ' • ' + item.color : ''}</div>
+                    <div class="muted small">₹${price.toFixed(2)} each</div>
                   </div>
                   <div style="text-align:right;">
-                    <div>₹${price.toFixed(2)}</div>
-                    <div class="muted small">x ${qty}</div>
+                    <div style="display:flex; align-items:center; gap:6px; justify-content:flex-end;">
+                      <button type="button" class="qty-btn" data-action="dec">-</button>
+                      <span class="qty-val">${qty}</span>
+                      <button type="button" class="qty-btn" data-action="inc">+</button>
+                    </div>
+                    <div class="muted small">₹${itemSubtotal.toFixed(2)}</div>
                   </div>
                 </div>`;
       });
 
       list.innerHTML = html;
-      // example shipping rules (you can change)
-      const shipping = subtotal > 999 ? 0 : 49; // free above 999
+
+      const shipping = subtotal > 999 ? 0 : 49;
       const total = subtotal + shipping;
 
       subtotalEl.textContent = '₹' + subtotal.toFixed(2);
@@ -257,6 +275,25 @@ session_start();
 
       document.getElementById('cart_payload').value = JSON.stringify({
         cart, subtotal: subtotal.toFixed(2), shipping: shipping.toFixed(2), total: total.toFixed(2)
+      });
+
+      // qty buttons
+      document.querySelectorAll('.qty-btn').forEach(btn=>{
+        btn.addEventListener('click', function(){
+          const idx = this.closest('.item').getAttribute('data-index');
+          let cart = getCart();
+          if(!cart[idx]) return;
+          if(this.dataset.action === 'inc') {
+            cart[idx].qty = (parseInt(cart[idx].qty) || 1) + 1;
+          } else if(this.dataset.action === 'dec') {
+            cart[idx].qty = (parseInt(cart[idx].qty) || 1) - 1;
+            if(cart[idx].qty < 1) {
+              cart.splice(idx,1);
+            }
+          }
+          localStorage.setItem('cart', JSON.stringify(cart));
+          renderOrderSummary();
+        });
       });
     }
 
@@ -283,7 +320,6 @@ session_start();
       const form = document.getElementById('checkoutForm');
       const formData = new FormData(form);
 
-      // basic validation
       if(!formData.get('first') || !formData.get('contact') || !formData.get('city') || !formData.get('state') || !formData.get('pincode')) {
         alert('Please fill required fields.');
         return;
@@ -292,13 +328,11 @@ session_start();
       const paymentMethod = formData.get('payment_method');
 
       if(paymentMethod === 'COD') {
-        // send to create_order.php for COD
         fetch('create_order.php', {
           method:'POST',
           body: formData
         }).then(r=>r.json()).then(resp=>{
           if(resp.success) {
-            // clear cart and show confirmation
             localStorage.removeItem('cart');
             window.location.href = 'order_success.php?order_id=' + encodeURIComponent(resp.order_id);
           } else {
@@ -312,13 +346,11 @@ session_start();
       }
 
       if(paymentMethod === 'RAZORPAY') {
-        // create a razorpay order server-side
         fetch('create_razorpay_order.php', {
           method:'POST',
           body: formData
         }).then(r=>r.json()).then(data=>{
           if(data && data.success) {
-            // load Razorpay script and open checkout
             loadRazorpayAndOpen(data);
           } else {
             alert('Could not initiate payment: ' + (data.message || 'server error'));
@@ -330,7 +362,6 @@ session_start();
       }
     });
 
-    // Load Razorpay script dynamically
     function loadRazorpayAndOpen(orderData) {
       if(typeof Razorpay === 'undefined') {
         const s = document.createElement('script');
@@ -344,23 +375,19 @@ session_start();
     }
 
     function openRazorpay(orderData) {
-      // orderData must contain: razorpay_order_id, amount (in paise), currency, key
-      const cartPayload = JSON.parse(document.getElementById('cart_payload').value);
       const options = {
-        key: orderData.key, // RAZORPAY KEY
+        key: orderData.key,
         amount: orderData.amount,
         currency: orderData.currency || 'INR',
         name: 'कन्याRaag',
         description: 'Order #' + orderData.our_order_id,
         order_id: orderData.razorpay_order_id,
         handler: function (response) {
-          // Send response to server to verify and save
           const payload = new FormData();
           payload.append('razorpay_payment_id', response.razorpay_payment_id);
           payload.append('razorpay_order_id', response.razorpay_order_id);
           payload.append('razorpay_signature', response.razorpay_signature);
           payload.append('our_order_id', orderData.our_order_id);
-          // also send form fields so server can map
           const form = document.getElementById('checkoutForm');
           const formData = new FormData(form);
           for (const pair of formData.entries()) {
@@ -371,23 +398,23 @@ session_start();
             .then(r=>r.json()).then(res=>{
               if(res.success) {
                 localStorage.removeItem('cart');
-                window.location.href = 'order_success.php?order_id=' + encodeURIComponent(res.order_id);
+                window.location.href = 'order_success.php?order_id=' + encodeURIComponent(orderData.our_order_id);
               } else {
-                alert('Payment verification failed: ' + (res.message || 'Unable to verify'));
+                alert('Payment verification failed: ' + (res.message||''));
               }
             }).catch(err=>{
               console.error(err);
-              alert('Network error while verifying payment.');
+              alert('Error verifying payment.');
             });
         },
         prefill: {
           name: document.getElementById('first').value + ' ' + document.getElementById('last').value,
-          contact: document.getElementById('contact').value
+          contact: document.getElementById('contact').value,
         },
-        theme: {color: getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#ff4081'}
+        theme: { color: '#ff4081' }
       };
-      const rzp = new Razorpay(options);
-      rzp.open();
+      const rzp1 = new Razorpay(options);
+      rzp1.open();
     }
   </script>
 </body>
