@@ -399,7 +399,6 @@ include '../db/db_connect.php';
                 data-name='".$row['product_name']."'
                 data-price='".$row['discount_price']."'
                 data-image='".$row['product_image']."'
-                data-stock='".$row['stock']."'
                 ".($row['stock'] <= 0 ? "disabled" : "").">
                 ".($row['stock'] > 0 ? "<i class='fas fa-shopping-cart'></i> Add to Cart" : "Out of Stock")."
               </button>
