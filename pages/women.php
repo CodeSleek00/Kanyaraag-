@@ -210,8 +210,8 @@ include '../db/db_connect.php';
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      height: 32px;
-      line-height: 1.3;
+      line-height: 1.4;
+      min-height: 34px;
     }
     
     .price-container {
@@ -243,21 +243,21 @@ include '../db/db_connect.php';
     
     .card-actions {
       display: flex;
-      gap: 6px;
+      flex-direction: column;
+      gap: 8px;
       margin-top: 8px;
     }
     
     .add-to-cart, .buy-now {
-      flex: 1;
-      padding: 8px;
+      width: 100%;
+      padding: 10px;
       border: none;
       border-radius: 5px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
-      min-height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -356,7 +356,7 @@ include '../db/db_connect.php';
       
       .add-to-cart, .buy-now {
         font-size: 13px;
-        padding: 9px;
+        padding: 10px;
       }
     }
     
@@ -373,6 +373,15 @@ include '../db/db_connect.php';
       .page-title {
         font-size: 28px;
         margin: 25px 0;
+      }
+      
+      .card-actions {
+        flex-direction: row;
+      }
+      
+      .add-to-cart, .buy-now {
+        width: auto;
+        flex: 1;
       }
     }
     
