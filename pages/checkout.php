@@ -168,7 +168,7 @@ session_start();
                 <div class="pay-logo"><i class="fas fa-bolt"></i></div>
                 <div>
                   <div style="font-weight:700">Razorpay</div>
-                  <div class="muted small">Pay using card, UPI & wallets</div>
+                  <div class="muted small">Pay using card, UPI & wallets<br><span style="color:green">Free Delivery</span></div>
                 </div>
               </div>
 
@@ -176,7 +176,7 @@ session_start();
                 <div class="pay-logo"><i class="fas fa-truck"></i></div>
                 <div>
                   <div style="font-weight:700">Cash on Delivery</div>
-                  <div class="muted small">Pay when delivered</div>
+                  <div class="muted small">₹49 shipping if order ≤ ₹999</div>
                 </div>
               </div>
             </div>
@@ -207,14 +207,13 @@ session_start();
         </div>
 
         <div style="margin-top:12px;">
-          <div class="muted small">Payment methods: Razorpay, UPI, Cards, COD.</div>
+          <div class="muted small">Payment methods: Razorpay (Free delivery) or COD (₹49 if order ≤ ₹999).</div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // load cart from localStorage
     function getCart() {
       try {
         return JSON.parse(localStorage.getItem('cart')) || [];
@@ -229,6 +228,7 @@ session_start();
       const subtotalEl = document.getElementById('subtotalAmt');
       const totalEl = document.getElementById('totalAmt');
       const shippingEl = document.getElementById('shippingAmt');
+      const paymentMethod = document.getElementById('payment_method').value;
 
       if(!cart.length) {
         list.innerHTML = '<div class="empty">Your cart is empty. <a href="index.php">Shop now</a></div>';
@@ -266,7 +266,14 @@ session_start();
 
       list.innerHTML = html;
 
-      const shipping = subtotal > 999 ? 0 : 49;
+      // ✅ Shipping rules
+      let shipping = 0;
+      if(paymentMethod === 'COD') {
+        shipping = subtotal > 999 ? 0 : 49;
+      } else if(paymentMethod === 'RAZORPAY') {
+        shipping = 0;
+      }
+
       const total = subtotal + shipping;
 
       subtotalEl.textContent = '₹' + subtotal.toFixed(2);
@@ -306,10 +313,11 @@ session_start();
         this.classList.add('selected');
         const method = this.getAttribute('data-method');
         document.getElementById('payment_method').value = method;
+        renderOrderSummary(); // update shipping
       });
     });
 
-    // Place order click handler
+    // Place order click handler (same as your original)
     document.getElementById('placeOrderBtn').addEventListener('click', function(){
       const cartPayload = document.getElementById('cart_payload').value;
       if(!cartPayload) {
@@ -393,28 +401,29 @@ session_start();
           for (const pair of formData.entries()) {
             payload.append(pair[0], pair[1]);
           }
-
-          fetch('verify_payment.php', { method:'POST', body: payload })
-            .then(r=>r.json()).then(res=>{
-              if(res.success) {
-                localStorage.removeItem('cart');
-                window.location.href = 'order_success.php?order_id=' + encodeURIComponent(orderData.our_order_id);
-              } else {
-                alert('Payment verification failed: ' + (res.message||''));
-              }
-            }).catch(err=>{
-              console.error(err);
-              alert('Error verifying payment.');
-            });
+          fetch('verify_razorpay_payment.php', {
+            method:'POST',
+            body:payload
+          }).then(r=>r.json()).then(resp=>{
+            if(resp.success) {
+              localStorage.removeItem('cart');
+              window.location.href = 'order_success.php?order_id=' + encodeURIComponent(orderData.our_order_id);
+            } else {
+              alert('Payment verification failed: ' + (resp.message||'Unknown error'));
+            }
+          }).catch(err=>{
+            console.error(err);
+            alert('Network error. Payment may not be verified.');
+          });
         },
         prefill: {
           name: document.getElementById('first').value + ' ' + document.getElementById('last').value,
-          contact: document.getElementById('contact').value,
+          contact: document.getElementById('contact').value
         },
-        theme: { color: '#ff4081' }
+        theme: { color: "#ff4081" }
       };
-      const rzp1 = new Razorpay(options);
-      rzp1.open();
+      const rzp = new Razorpay(options);
+      rzp.open();
     }
   </script>
 </body>
