@@ -441,7 +441,7 @@ include '../db/db_connect.php';
     <button class="back-btn" onclick="history.back()">
       <i class="fas fa-arrow-left"></i>
     </button>
-    <a href="index.php" class="logo"><span style="color:#C75D2c;">कन्या</span>raag</a>
+    <a href="index.php" class="logo"><span style="color:#C75D2c;">कन्या</span>Raag</a>
     <a href="cart.php" class="cart-icon">
       <i class="fas fa-shopping-bag"></i>
       <span class="cart-count" id="cart-count">0</span>
