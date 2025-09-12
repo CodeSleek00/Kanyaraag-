@@ -168,7 +168,7 @@ session_start();
                 <div class="pay-logo"><i class="fas fa-bolt"></i></div>
                 <div>
                   <div style="font-weight:700">Razorpay</div>
-                  <div class="muted small">Pay using card, UPI & wallets<br><span style="color:green">Free Delivery</span></div>
+                  <div class="muted small"><span style="color:green">Free Delivery</span></div>
                 </div>
               </div>
 
