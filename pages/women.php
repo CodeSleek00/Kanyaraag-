@@ -481,7 +481,6 @@ include '../db/db_connect.php';
           </a>
           <div class='card-content'>
             <h3 class='card-title'>".$row['product_name']."</h3>
-            <p class='card-desc'>".$row['description']."</p>
             
             <div class='price-container'>
               <span class='current-price'>₹".$row['discount_price']."</span>";
