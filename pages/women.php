@@ -344,7 +344,7 @@ include '../db/db_connect.php';
   <!-- Products Grid -->
   <div class="products">
     <?php
-    $sql = "SELECT * FROM products WHERE ORDER BY RAND()";
+   $sql = "SELECT * FROM products ORDER BY RAND()";
     $result = $conn->query($sql);
     
     if ($result->num_rows > 0) {
