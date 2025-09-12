@@ -135,7 +135,7 @@ include '../db/db_connect.php';
     .card-image {
       position: relative;
       width: 100%;
-      height: 200px;
+      height: auto;
       overflow: hidden;
     }
     
