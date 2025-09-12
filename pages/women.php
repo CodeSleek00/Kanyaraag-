@@ -17,7 +17,7 @@ include '../db/db_connect.php';
       --white: #ffffff;
       --light-brown: #d7ccc8;
       --medium-brown: #a1887f;
-      --dark-brown: #5d4037;
+      --dark-brown: #C75D2c;
       --accent: #8d6e63;
       --text-dark: #333333;
       --text-light: #777777;
