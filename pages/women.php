@@ -1,6 +1,5 @@
 <?php
-// db_connect.php should contain your database connection code
-include '../db/db_connect.php'; 
+include '../db/db_connect.php';
 ?>
 
 <!DOCTYPE html>
@@ -9,9 +8,9 @@ include '../db/db_connect.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kanyaraag - Women's Collection</title>
-  <!-- Google Fonts for premium look -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-  <!-- Font Awesome for icons -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -35,7 +34,7 @@ include '../db/db_connect.php';
       font-family: 'Montserrat', sans-serif;
       background-color: #fafafa;
       color: var(--text-dark);
-      padding-top: 80px; /* Account for fixed header */
+      padding-top: 80px;
     }
     
     /* Sticky Header */
@@ -344,12 +343,16 @@ include '../db/db_connect.php';
   <!-- Products Grid -->
   <div class="products">
     <?php
-   $sql = "SELECT * FROM products ORDER BY RAND()";
+    // Fixed SQL query - removed the WHERE clause with non-existent 'category' column
+    $sql = "SELECT * FROM products ORDER BY RAND()";
     $result = $conn->query($sql);
     
-    if ($result->num_rows > 0) {
+    if ($result && $result->num_rows > 0) {
       while ($row = $result->fetch_assoc()) {
-        $discount_percent = round(($row['original_price'] - $row['discount_price']) / $row['original_price'] * 100);
+        $discount_percent = 0;
+        if ($row['original_price'] > 0 && $row['original_price'] > $row['discount_price']) {
+          $discount_percent = round(($row['original_price'] - $row['discount_price']) / $row['original_price'] * 100);
+        }
         
         echo "<div class='card'>
           <a href='product_detail.php?id=".$row['id']."'>
@@ -381,7 +384,7 @@ include '../db/db_connect.php';
             // Show extra images if available
             if (!empty($row['images'])) {
               $images = json_decode($row['images'], true);
-              if (!empty($images)) {
+              if (!empty($images) && is_array($images)) {
                 echo "<div class='thumbnails'>";
                 foreach ($images as $img) {
                   echo "<div class='thumb'><img src='".$img."' alt='Thumbnail'></div>";
@@ -416,6 +419,11 @@ include '../db/db_connect.php';
         <p>No products available in this category yet!</p>
       </div>";
     }
+    
+    // Close connection
+    if ($conn) {
+      $conn->close();
+    }
     ?>
   </div>
 
@@ -423,7 +431,7 @@ include '../db/db_connect.php';
     // Initialize cart count
     function updateCartCount() {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const totalItems = cart.reduce((total, item) => total + item.qty, 0);
+      const totalItems = cart.reduce((total, item) => total + (item.qty || 1), 0);
       document.getElementById('cart-count').textContent = totalItems;
     }
     
