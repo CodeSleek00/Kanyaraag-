@@ -33,7 +33,7 @@ include '../db/db_connect.php';
     }
     
     body {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'outfit', sans-serif;
       background-color: #fafafa;
       color: var(--text-dark);
       padding-top: 70px;
