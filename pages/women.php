@@ -223,7 +223,8 @@ include '../db/db_connect.php';
                                 <i class="far fa-heart" aria-hidden="true"></i>
                             </button>
 
-                           </div>
+                            <button class="quick-view-btn" data-id="<?= $id ?>" aria-label="Quick view <?= $name ?>">Quick View</button>
+                        </div>
 
                         <div class="card-content">
                             <h3 class="card-title"><?= $name ?></h3>
@@ -520,7 +521,73 @@ include '../db/db_connect.php';
 
         // Buy Now improvement: if user wants to go directly to checkout with selected item, you can implement a quick checkout flow that passes cart data
 
-       
+        // Quick view: tries to fetch quick_view.php?id=... . Fallback to placeholder if not available.
+        const quickModal = $('#quick-view-modal');
+        const modalContent = $('#modal-product-content');
+        const modalClose = document.querySelector('.modal-close');
+
+        $$('.quick-view-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const id = this.dataset.id;
+                openQuickView(id);
+            });
+        });
+
+        function openQuickView(productId) {
+            modalContent.innerHTML = `<div style="text-align:center;padding:40px 20px;"><div class="loading"></div><p style="margin-top:20px;">Loading product details...</p></div>`;
+            quickModal.classList.add('show');
+            quickModal.setAttribute('aria-hidden','false');
+
+            // try to fetch quick_view.php for server-rendered details (recommended).
+            fetch(`quick_view.php?id=${encodeURIComponent(productId)}`, {cache:'no-store'})
+                .then(resp => {
+                    if (!resp.ok) throw new Error('no-server-file');
+                    // try to parse as text (you might return HTML)
+                    return resp.text();
+                })
+                .then(html => {
+                    // if quick_view.php returns HTML snippet, render it.
+                    modalContent.innerHTML = html;
+                })
+                .catch(err => {
+                    // fallback content if quick_view.php not present or error
+                    modalContent.innerHTML = `
+                        <div style="display:flex;gap:20px;flex-wrap:wrap;">
+                            <div style="flex:1;min-width:240px;text-align:center;">
+                                <img src="" alt="Product image" id="fallback-quick-img" style="max-width:100%;height:auto;object-fit:cover;display:none;">
+                            </div>
+                            <div style="flex:1 1 320px;">
+                                <p style="font-weight:700;">Product ID: ${productId}</p>
+                                <p>Detailed product view would appear here. To enable fully dynamic quick view, create a <code>quick_view.php?id=${productId}</code> endpoint that returns an HTML snippet or JSON with product details (images gallery, description, size chart, reviews, shipping info).</p>
+                                <ul style="margin-top:10px;">
+                                    <li>Product images gallery</li>
+                                    <li>Full description</li>
+                                    <li>Available colors</li>
+                                    <li>Size chart</li>
+                                    <li>Customer reviews</li>
+                                    <li>Shipping information</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                });
+        }
+
+        function closeQuickView() {
+            quickModal.classList.remove('show');
+            quickModal.setAttribute('aria-hidden','true');
+            modalContent.innerHTML = '';
+        }
+
+        modalClose.addEventListener('click', closeQuickView);
+        quickModal.addEventListener('click', (e) => {
+            if (e.target === quickModal) closeQuickView();
+        });
+        // ESC closes modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && quickModal.classList.contains('show')) closeQuickView();
+        });
 
         // Initialize wishlist and cart UI states already done
         // Defensive: ensure cart-count is numeric
@@ -531,82 +598,6 @@ include '../db/db_connect.php';
         })();
 
     })();
-    // ... (your existing script above)
-
-    // Add to Cart
-    $$('.add-to-cart').forEach(btn => {
-        btn.addEventListener('click', function() {
-            if (this.disabled) return;
-
-            const card = this.closest('.card');
-            const hasSizes = this.dataset.hasSizes === 'true';
-            let selectedSize = null;
-
-            if (hasSizes) {
-                const sel = card.querySelector('.size-option.selected');
-                if (!sel) { 
-                    showToast('Please select a size before adding to cart'); 
-                    return; 
-                }
-                selectedSize = sel.dataset.size;
-            }
-
-            const id = String(this.dataset.id);
-            const name = this.dataset.name;
-            const price = parseFloat(this.dataset.price || '0');
-            const image = this.dataset.image;
-
-            let cart = getCart();
-            const existing = cart.find(it => it.id === id && it.size === selectedSize);
-
-            if (existing) {
-                existing.qty += 1;
-            } else {
-                cart.push({ id, name, price, image, size: selectedSize, qty: 1 });
-            }
-
-            setCart(cart);
-            updateCartCount();
-            showToast('Added to cart!', 'success');
-        });
-    });
-
-    // Buy Now (redirect to cart or checkout)
-    $$('.buy-now').forEach(btn => {
-        btn.addEventListener('click', function() {
-            if (this.disabled) return;
-
-            const card = this.closest('.card');
-            const hasSizes = this.dataset.hasSizes === 'true';
-            let selectedSize = null;
-
-            if (hasSizes) {
-                const sel = card.querySelector('.size-option.selected');
-                if (!sel) { 
-                    showToast('Please select a size before buying'); 
-                    return; 
-                }
-                selectedSize = sel.dataset.size;
-            }
-
-            const id = String(this.dataset.id);
-            const name = card.querySelector('.card-title').textContent;
-            const price = parseFloat(card.dataset.price || '0');
-            const image = card.querySelector('img').src;
-
-            // Clear cart, then add this product only
-            let cart = [];
-            cart.push({ id, name, price, image, size: selectedSize, qty: 1 });
-            setCart(cart);
-            updateCartCount();
-
-            // Redirect to checkout
-            window.location.href = 'checkout.php';
-        });
-    });
-
-})();
-
     </script>
 </body>
 </html>
