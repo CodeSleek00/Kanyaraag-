@@ -11,56 +11,465 @@ include '../db/db_connect.php';
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
       --white: #ffffff;
+      --cream: #f8f5f0;
       --light-brown: #d7ccc8;
       --medium-brown: #a1887f;
       --dark-brown: #5d4037;
       --accent: #8d6e63;
+      --terracotta: #C75D2c;
       --text-dark: #333333;
       --text-light: #777777;
-      --shadow: 0 4px 12px rgba(0,0,0,0.08);
-      --shadow-light: 0 2px 6px rgba(0,0,0,0.05);
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-light: 0 2px 10px rgba(0,0,0,0.04);
+      --transition: all 0.3s ease;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'outfit', sans-serif; background-color: #fafafa; color: var(--text-dark); padding-top: 70px; padding-bottom: 20px; }
-    .header { position: fixed; top: 0; left: 0; width: 100%; background: var(--white); box-shadow: var(--shadow-light); z-index: 1000; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; height: 70px; }
-    .back-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--dark-brown); padding: 8px; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
-    .back-btn:active { background-color: rgba(93, 64, 55, 0.1); }
-    .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dark-brown); text-decoration: none; max-width: 150px; text-align: center; line-height: 1.2; }
-    .cart-icon { position: relative; font-size: 20px; color: var(--dark-brown); text-decoration: none; padding: 8px; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
-    .cart-count { position: absolute; top: 2px; right: 2px; background: var(--dark-brown); color: white; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
-    .page-title { text-align: center; margin: 20px 16px; font-family: 'Playfair Display', serif; font-size: 24px; color: var(--dark-brown); position: relative; line-height: 1.3; }
-    .page-title:after { content: ''; display: block; width: 50px; height: 2px; background: var(--light-brown); margin: 8px auto; }
-    .products { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px; max-width: 1200px; margin: 0 auto; }
-    .card { background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-light); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-    .card:active { transform: scale(0.98); }
-    .card-image { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; }
-    .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-    .card-badge { position: absolute; top: 8px; left: 8px; background: var(--dark-brown); color: white; padding: 3px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; }
-    .card-content { padding: 12px; }
-    .card-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .price-container { display: flex; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
-    .current-price { font-weight: 600; font-size: 16px; color: var(--dark-brown); margin-right: 6px; }
-    .original-price { font-size: 12px; text-decoration: line-through; color: var(--text-light); margin-right: 6px; }
-    .discount { font-size: 12px; color: #388e3c; font-weight: 500; }
-    .card-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-    .add-to-cart, .buy-now { width: 100%; padding: 10px; border: none; border-radius: 5px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
-    .add-to-cart { background: var(--light-brown); color: var(--dark-brown); }
-    .buy-now { background: var(--dark-brown); color: white; text-decoration: none; }
-    .add-to-cart:disabled, .buy-now:disabled { background: #e0e0e0; color: #9e9e9e; cursor: not-allowed; }
-    .stock-info { font-size: 11px; color: var(--text-light); margin-top: 6px; }
-    .size-selector { margin: 10px 0; }
-    .size-title { font-size: 13px; margin-bottom: 5px; color: var(--text-dark); }
-    .size-options { display: flex; gap: 6px; flex-wrap: wrap; }
-    .size-option { border: 1px solid var(--light-brown); padding: 5px 10px; font-size: 12px; border-radius: 4px; cursor: pointer; user-select: none; transition: all 0.2s; }
-    .size-option.selected { background: var(--dark-brown); color: white; border-color: var(--dark-brown); }
-    .size-option.disabled { background: #eee; color: #aaa; cursor: not-allowed; border-style: dashed; }
-    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--dark-brown); color: white; padding: 12px 20px; border-radius: 8px; box-shadow: var(--shadow); z-index: 1001; opacity: 0; transition: opacity 0.3s ease; max-width: 80%; text-align: center; }
-    .toast.show { opacity: 1; }
+    
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent; 
+    }
+    
+    body { 
+      font-family: 'Outfit', sans-serif; 
+      background-color: var(--cream); 
+      color: var(--text-dark); 
+      padding-top: 80px; 
+      padding-bottom: 40px; 
+    }
+    
+    /* Header Styles */
+    .header { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      background: var(--white); 
+      box-shadow: var(--shadow-light); 
+      z-index: 1000; 
+      padding: 15px 20px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      height: 80px; 
+    }
+    
+    .back-btn { 
+      background: none; 
+      border: none; 
+      font-size: 20px; 
+      cursor: pointer; 
+      color: var(--terracotta); 
+      padding: 8px; 
+      border-radius: 50%; 
+      width: 45px; 
+      height: 45px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      transition: var(--transition);
+    }
+    
+    .back-btn:hover { 
+      background-color: rgba(199, 93, 44, 0.1); 
+    }
+    
+    .logo { 
+      font-family: 'Playfair Display', serif; 
+      font-size: 26px; 
+      font-weight: 700; 
+      color: var(--terracotta); 
+      text-decoration: none; 
+      text-align: center; 
+      line-height: 1.2; 
+      letter-spacing: 0.5px;
+    }
+    
+    .cart-icon { 
+      position: relative; 
+      font-size: 20px; 
+      color: var(--terracotta); 
+      text-decoration: none; 
+      padding: 8px; 
+      border-radius: 50%; 
+      width: 45px; 
+      height: 45px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      transition: var(--transition);
+    }
+    
+    .cart-icon:hover {
+      background-color: rgba(199, 93, 44, 0.1);
+    }
+    
+    .cart-count { 
+      position: absolute; 
+      top: 2px; 
+      right: 2px; 
+      background: var(--terracotta); 
+      color: white; 
+      font-size: 11px; 
+      width: 18px; 
+      height: 18px; 
+      border-radius: 50%; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-weight: 600; 
+    }
+    
+    /* Page Title */
+    .page-title { 
+      text-align: center; 
+      margin: 30px 20px; 
+      font-family: 'Playfair Display', serif; 
+      font-size: 32px; 
+      color: var(--dark-brown); 
+      position: relative; 
+      line-height: 1.3; 
+      font-weight: 600;
+    }
+    
+    .page-title:after { 
+      content: ''; 
+      display: block; 
+      width: 60px; 
+      height: 3px; 
+      background: var(--terracotta); 
+      margin: 12px auto; 
+      border-radius: 2px;
+    }
+    
+    /* Products Grid */
+    .products { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+      gap: 25px; 
+      padding: 0 20px; 
+      max-width: 1200px; 
+      margin: 0 auto; 
+    }
+    
+    /* Product Card */
+    .card { 
+      background: var(--white); 
+      border-radius: 12px; 
+      overflow: hidden; 
+      box-shadow: var(--shadow-light); 
+      transition: var(--transition);
+      position: relative;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+    
+    .card-image { 
+      position: relative; 
+      width: 100%; 
+      aspect-ratio: 3/4; 
+      overflow: hidden; 
+    }
+    
+    .card-image img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      transition: transform 0.5s ease; 
+    }
+    
+    .card:hover .card-image img {
+      transform: scale(1.05);
+    }
+    
+    .card-badge { 
+      position: absolute; 
+      top: 12px; 
+      left: 12px; 
+      background: var(--terracotta); 
+      color: white; 
+      padding: 4px 8px; 
+      border-radius: 4px; 
+      font-size: 12px; 
+      font-weight: 500; 
+      z-index: 2;
+    }
+    
+    .quick-view {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--terracotta);
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 2;
+    }
+    
+    .card:hover .quick-view {
+      opacity: 1;
+    }
+    
+    .card-content { 
+      padding: 16px; 
+    }
+    
+    .card-title { 
+      font-size: 16px; 
+      font-weight: 500; 
+      margin-bottom: 8px; 
+      color: var(--text-dark); 
+      line-height: 1.4;
+      height: 44px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    
+    .price-container { 
+      display: flex; 
+      align-items: center; 
+      margin-bottom: 12px; 
+      flex-wrap: wrap; 
+    }
+    
+    .current-price { 
+      font-weight: 600; 
+      font-size: 18px; 
+      color: var(--terracotta); 
+      margin-right: 8px; 
+    }
+    
+    .original-price { 
+      font-size: 14px; 
+      text-decoration: line-through; 
+      color: var(--text-light); 
+      margin-right: 8px; 
+    }
+    
+    .discount { 
+      font-size: 13px; 
+      color: #388e3c; 
+      font-weight: 500; 
+    }
+    
+    .stock-info { 
+      font-size: 13px; 
+      color: var(--text-light); 
+      margin-top: 6px; 
+    }
+    
+    .in-stock {
+      color: #388e3c;
+    }
+    
+    .low-stock {
+      color: #f57c00;
+    }
+    
+    .out-of-stock {
+      color: #d32f2f;
+    }
+    
+    /* Size Selector */
+    .size-selector { 
+      margin: 12px 0; 
+    }
+    
+    .size-title { 
+      font-size: 14px; 
+      margin-bottom: 8px; 
+      color: var(--text-dark); 
+      font-weight: 500;
+    }
+    
+    .size-options { 
+      display: flex; 
+      gap: 8px; 
+      flex-wrap: wrap; 
+    }
+    
+    .size-option { 
+      border: 1px solid var(--light-brown); 
+      padding: 6px 10px; 
+      font-size: 12px; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      user-select: none; 
+      transition: var(--transition);
+      min-width: 36px;
+      text-align: center;
+    }
+    
+    .size-option:hover {
+      border-color: var(--terracotta);
+    }
+    
+    .size-option.selected { 
+      background: var(--terracotta); 
+      color: white; 
+      border-color: var(--terracotta); 
+    }
+    
+    .size-option.disabled { 
+      background: #f5f5f5; 
+      color: #bdbdbd; 
+      cursor: not-allowed; 
+      border-style: dashed; 
+    }
+    
+    /* Card Actions */
+    .card-actions { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 10px; 
+      margin-top: 12px; 
+    }
+    
+    .add-to-cart, .buy-now { 
+      width: 100%; 
+      padding: 12px; 
+      border: none; 
+      border-radius: 6px; 
+      font-family: 'Outfit', sans-serif; 
+      font-size: 14px; 
+      font-weight: 500; 
+      cursor: pointer; 
+      transition: var(--transition); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 8px;
+    }
+    
+    .add-to-cart { 
+      background: var(--cream); 
+      color: var(--terracotta); 
+      border: 1px solid var(--light-brown);
+    }
+    
+    .add-to-cart:hover:not(:disabled) {
+      background: var(--terracotta);
+      color: white;
+    }
+    
+    .buy-now { 
+      background: var(--terracotta); 
+      color: white; 
+      text-decoration: none; 
+    }
+    
+    .buy-now:hover:not(:disabled) {
+      background: var(--dark-brown);
+    }
+    
+    .add-to-cart:disabled, .buy-now:disabled { 
+      background: #eeeeee; 
+      color: #9e9e9e; 
+      cursor: not-allowed; 
+      border: 1px solid #e0e0e0;
+    }
+    
+    /* Toast Notification */
+    .toast { 
+      position: fixed; 
+      bottom: 25px; 
+      left: 50%; 
+      transform: translateX(-50%); 
+      background: var(--terracotta); 
+      color: white; 
+      padding: 14px 24px; 
+      border-radius: 8px; 
+      box-shadow: var(--shadow); 
+      z-index: 1001; 
+      opacity: 0; 
+      transition: opacity 0.3s ease; 
+      max-width: 90%; 
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    .toast.show { 
+      opacity: 1; 
+    }
+    
+    /* Empty State */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light);
+    }
+    
+    .empty-state i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: var(--light-brown);
+    }
+    
+    .empty-state p {
+      font-size: 18px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .products {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+        padding: 0 15px;
+      }
+      
+      .header {
+        padding: 12px 15px;
+        height: 70px;
+      }
+      
+      .logo {
+        font-size: 22px;
+      }
+      
+      .page-title {
+        font-size: 28px;
+        margin: 25px 15px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .products {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .page-title {
+        font-size: 24px;
+      }
+      
+      .card-actions {
+        flex-direction: row;
+      }
+      
+      .add-to-cart, .buy-now {
+        padding: 10px;
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -84,25 +493,35 @@ include '../db/db_connect.php';
         if ($row['original_price'] > 0 && $row['original_price'] > $row['discount_price']) {
           $discount_percent = round(($row['original_price'] - $row['discount_price']) / $row['original_price'] * 100);
         }
+        
+        // Determine stock status class
+        $stock_class = 'in-stock';
+        if ($row['stock'] <= 0) {
+          $stock_class = 'out-of-stock';
+        } else if ($row['stock'] <= 5) {
+          $stock_class = 'low-stock';
+        }
+        
         echo "<div class='card'>
           <div class='card-image'>
             <a href='product_detail.php?id=".$row['id']."'><img src='".$row['product_image']."' alt='".$row['product_name']."'></a>";
             if ($discount_percent > 0) {
               echo "<div class='card-badge'>".$discount_percent."% OFF</div>";
             }
+            echo "<div class='quick-view' data-id='".$row['id']."'><i class='fas fa-eye'></i></div>
+        </div>
+        <div class='card-content'>
+          <h3 class='card-title'>".$row['product_name']."</h3>
+          <div class='price-container'>
+            <span class='current-price'>₹".number_format($row['discount_price'])."</span>";
+            if ($row['original_price'] > $row['discount_price']) {
+              echo "<span class='original-price'>₹".number_format($row['original_price'])."</span>
+              <span class='discount'>(".$discount_percent."% OFF)</span>";
+            }
         echo "</div>
-          <div class='card-content'>
-            <h3 class='card-title'>".$row['product_name']."</h3>
-            <div class='price-container'>
-              <span class='current-price'>₹".$row['discount_price']."</span>";
-              if ($row['original_price'] > $row['discount_price']) {
-                echo "<span class='original-price'>₹".$row['original_price']."</span>
-                <span class='discount'>(".$discount_percent."% OFF)</span>";
-              }
-        echo "</div>
-            <p class='stock-info'>Stock: ".$row['stock']."</p>";
+          <p class='stock-info $stock_class'>".($row['stock'] > 0 ? "In Stock (".$row['stock'].")" : "Out of Stock")."</p>";
             
-        // === Size Selector ===
+        // Size Selector
         if (!empty($row['sizes'])) {
           $all_sizes = ['XS','S','M','L','XL','XXL','XXXL'];
           $available_sizes = explode(',', $row['sizes']);
@@ -122,11 +541,17 @@ include '../db/db_connect.php';
                 data-name='".$row['product_name']."'
                 data-price='".$row['discount_price']."'
                 data-image='".$row['product_image']."'
-                data-stock='".$row['stock']."'
-                ".($row['stock'] <= 0 ? "disabled" : "").">
-                ".($row['stock'] > 0 ? "<i class='fas fa-shopping-cart'></i> Add to Cart" : "Out of Stock")."
+                                data-stock='".$row['stock']."'
+                disabled>
+                <i class='fas fa-shopping-cart'></i> Add to Cart
               </button>
-              <button class='buy-now' data-id='".$row['id']."' ".($row['stock'] <= 0 ? "disabled" : "").">
+              <button class='buy-now'
+                data-id='".$row['id']."'
+                data-name='".$row['product_name']."'
+                data-price='".$row['discount_price']."'
+                data-image='".$row['product_image']."'
+                data-stock='".$row['stock']."'
+                disabled>
                 <i class='fas fa-bolt'></i> Buy Now
               </button>
             </div>
@@ -134,69 +559,77 @@ include '../db/db_connect.php';
         </div>";
       }
     } else {
-      echo "<div class='empty-state'><i class='fas fa-heart'></i><p>No products available in this category yet!</p></div>";
+      echo "<div class='empty-state'>
+              <i class='fas fa-box-open'></i>
+              <p>No products available in this collection.</p>
+            </div>";
     }
-    if ($conn) { $conn->close(); }
     ?>
   </div>
 
+  <!-- JavaScript -->
   <script>
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const totalItems = cart.reduce((total, item) => total + (item.qty || 1), 0);
-      document.getElementById('cart-count').textContent = totalItems;
-    }
+    // Size selection
+    document.querySelectorAll('.size-option').forEach(option => {
+      option.addEventListener('click', () => {
+        if(option.classList.contains('disabled')) return;
+
+        const parent = option.closest('.card');
+        const allOptions = parent.querySelectorAll('.size-option');
+        allOptions.forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+
+        // Enable buttons only if size selected and stock available
+        const stock = parseInt(parent.querySelector('.add-to-cart').getAttribute('data-stock'));
+        if(stock > 0) {
+          parent.querySelector('.add-to-cart').disabled = false;
+          parent.querySelector('.buy-now').disabled = false;
+        }
+      });
+    });
+
+    // Toast function
     function showToast(message) {
       const toast = document.getElementById('toast');
       toast.textContent = message;
       toast.classList.add('show');
-      setTimeout(() => { toast.classList.remove('show'); }, 2000);
+      setTimeout(() => toast.classList.remove('show'), 2500);
     }
-    // Size Selection
-    document.querySelectorAll('.size-options').forEach(container => {
-      container.addEventListener('click', e => {
-        if (e.target.classList.contains('size-option') && !e.target.classList.contains('disabled')) {
-          container.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
-          e.target.classList.add('selected');
-        }
-      });
-    });
-    // Add to Cart
+
+    // Cart count
+    let cartCount = 0;
+    const cartCountEl = document.getElementById('cart-count');
+
+    // Add to cart
     document.querySelectorAll('.add-to-cart').forEach(btn => {
-      btn.addEventListener('click', function() {
-        if (this.disabled) return;
-        const card = this.closest('.card');
-        const selectedSize = card.querySelector('.size-option.selected');
-        if (!selectedSize) { showToast('Please select a size first!'); return; }
-        const product = {
-          id: this.getAttribute('data-id'),
-          name: this.getAttribute('data-name'),
-          price: this.getAttribute('data-price'),
-          image: this.getAttribute('data-image'),
-          size: selectedSize.getAttribute('data-size'),
-          qty: 1
-        };
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingItemIndex = cart.findIndex(item => item.id === product.id && item.size === product.size);
-        if (existingItemIndex > -1) { cart[existingItemIndex].qty += 1; }
-        else { cart.push(product); }
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount();
-        showToast('Added: ' + product.name + ' (' + product.size + ')');
+      btn.addEventListener('click', () => {
+        if(btn.disabled) return;
+        const size = btn.closest('.card').querySelector('.size-option.selected');
+        if(!size) {
+          showToast("Please select a size first!");
+          return;
+        }
+        cartCount++;
+        cartCountEl.textContent = cartCount;
+        showToast("Added to cart!");
       });
     });
-    // Buy Now
+
+    // Buy now
     document.querySelectorAll('.buy-now').forEach(btn => {
-      btn.addEventListener('click', function() {
-        if (this.disabled) return;
-        const card = this.closest('.card');
-        const selectedSize = card.querySelector('.size-option.selected');
-        if (!selectedSize) { showToast('Please select a size first!'); return; }
-        const id = this.getAttribute('data-id');
-        window.location.href = 'product_detail.php?id=' + id + '&size=' + selectedSize.getAttribute('data-size');
+      btn.addEventListener('click', () => {
+        if(btn.disabled) return;
+        const size = btn.closest('.card').querySelector('.size-option.selected');
+        if(!size) {
+          showToast("Please select a size first!");
+          return;
+        }
+        // Redirect to checkout with product id + size
+        const productId = btn.getAttribute('data-id');
+        const selectedSize = size.getAttribute('data-size');
+        window.location.href = "checkout.php?product_id=" + productId + "&size=" + selectedSize;
       });
     });
-    document.addEventListener('DOMContentLoaded', updateCartCount);
   </script>
 </body>
 </html>
