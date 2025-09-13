@@ -512,25 +512,7 @@ include '../db/db_connect.php';
         })();
 
     })();
-    // ✅ Buy Now Logic
-document.querySelectorAll('.buy-now-btn').forEach(btn=>{
-    btn.addEventListener('click', e=>{
-        e.stopPropagation();
-        if(btn.disabled) return;
-
-        const card = btn.closest('.card');
-        let selectedSize = null;
-
-        // agar size wali product hai to size select check karo
-
-
-        // checkout redirect
-        let url = "checkout.php?id=" + btn.dataset.id;
-        if(selectedSize) url += "&size=" + encodeURIComponent(selectedSize);
-        window.location.href = url;
-    });
-});
-
+    
     </script>
 </body>
 </html>
