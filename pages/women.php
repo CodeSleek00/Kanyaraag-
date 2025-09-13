@@ -155,14 +155,7 @@ include '../db/db_connect.php';
         <!-- Filter and Sort Bar -->
         <div class="filter-bar" role="region" aria-label="Filter and sort products">
             <div class="filter-group" aria-hidden="false">
-                <label class="filter-label" for="category-filter">Filter by:</label>
-                <select class="filter-select" id="category-filter" aria-label="Category filter">
-                    <option value="all">All Categories</option>
-                    <option value="dresses">Dresses</option>
-                    <option value="tops">Tops</option>
-                    <option value="bottoms">Bottoms</option>
-                    <option value="outerwear">Outerwear</option>
-                </select>
+                
 
                 <select class="filter-select" id="price-filter" aria-label="Price filter">
                     <option value="all">Price Range</option>
