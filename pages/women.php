@@ -219,11 +219,9 @@ include '../db/db_connect.php';
                             <?php if ($discount_percent > 0): ?>
                                 <div class="card-badge"><?= $discount_percent ?>% OFF</div>
                             <?php endif; ?>
-                            <button class="wishlist-btn" data-id="<?= $id ?>" aria-label="Add to wishlist" title="Add to wishlist">
-                                <i class="far fa-heart" aria-hidden="true"></i>
-                            </button>
+                            
 
-                            <button class="quick-view-btn" data-id="<?= $id ?>" aria-label="Quick view <?= $name ?>">Quick View</button>
+                         
                         </div>
 
                         <div class="card-content">
