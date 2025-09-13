@@ -257,6 +257,17 @@ include '../db/db_connect.php';
                                 <!-- if no sizes, keep a data marker so JS knows -->
                                 <div class="size-selector" data-has-sizes="false" style="display:none;"></div>
                             <?php endif; ?>
+                            <!-- ✅ Buy Now Button -->
+<button class="buy-now-btn" 
+    data-id="<?= $id ?>" 
+    data-name="<?= $name ?>"
+    data-price="<?= $discount_price ?>"
+    data-image="<?= $image ?>"
+    data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
+    <?= $stock <= 0 ? 'disabled' : '' ?>>
+    Buy Now
+</button>
+
                         </div>
                     </div>
                 <?php
