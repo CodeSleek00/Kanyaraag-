@@ -534,85 +534,82 @@ include '../db/db_connect.php';
             });
         });
 
-        function openQuickView(productId) {
-            modalContent.innerHTML = `<div style="text-align:center;padding:40px 20px;"><div class="loading"></div><p style="margin-top:20px;">Loading product details...</p></div>`;
-            quickModal.classList.add('show');
-            quickModal.setAttribute('aria-hidden','false');
+     function openQuickView(productId) {
+    modalContent.innerHTML = `
+        <div style="text-align:center;padding:40px 20px;">
+            <div class="loading"></div>
+            <p style="margin-top:20px;">Loading product details...</p>
+        </div>`;
+    quickModal.classList.add('show');
+    quickModal.setAttribute('aria-hidden', 'false');
 
-            // try to fetch quick_view.php for server-rendered details (recommended).
-            fetch(`quick_view.php?id=${encodeURIComponent(productId)}`, {cache:'no-store'})
-                .then(resp => {
-                    if (!resp.ok) throw new Error('no-server-file');
-                    // try to parse as text (you might return HTML)
-                    return resp.text();
-                })
-                .then(html => {
-                    // if quick_view.php returns HTML snippet, render it.
-                    modalContent.innerHTML = html;
-                })
-                .catch(err => {
-                    // fallback content if quick_view.php not present or error
-                    modalContent.innerHTML = `
-                      <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
-    <!-- Left Side: Product Image -->
-    <div style="flex:1;min-width:280px;text-align:center;">
-        <img src="${productImage}" alt="${productName}" id="fallback-quick-img" 
-             style="max-width:100%;height:auto;object-fit:cover;border-radius:10px;">
-    </div>
+    // Fetch quick_view.php for dynamic server-rendered details
+    fetch(`quick_view.php?id=${encodeURIComponent(productId)}`, { cache: 'no-store' })
+        .then(resp => {
+            if (!resp.ok) throw new Error('no-server-file');
+            return resp.text(); // server can return HTML
+        })
+        .then(html => {
+            modalContent.innerHTML = html;
+        })
+        .catch(err => {
+            // fallback content (static example)
+            modalContent.innerHTML = `
+                <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
+                    <!-- Left Side: Product Image -->
+                    <div style="flex:1;min-width:260px;text-align:center;">
+                        <img src="images/sample-product.jpg" 
+                             alt="Product ${productId}" 
+                             style="max-width:100%;height:auto;object-fit:cover;border-radius:10px;">
+                    </div>
 
-    <!-- Right Side: Product Details -->
-    <div style="flex:1 1 320px;">
-        <!-- Product Name -->
-        <h2 style="font-size:22px;font-weight:700;margin-bottom:10px;">${productName}</h2>
+                    <!-- Right Side: Product Details -->
+                    <div style="flex:1 1 320px;">
+                        <h2 style="font-size:22px;font-weight:700;margin-bottom:10px;">
+                            Sample Product ${productId}
+                        </h2>
 
-        <!-- Stock Info -->
-        <p style="color:green;font-weight:600;margin:5px 0;">
-            ${productStock > 0 ? 'In Stock' : 'Out of Stock'}
-        </p>
+                        <p style="color:green;font-weight:600;margin:5px 0;">
+                            In Stock
+                        </p>
 
-        <!-- Sizes -->
-        <div style="margin:10px 0;">
-            <label style="font-weight:600;">Available Sizes:</label><br>
-            ${productSizes.map(size => `
-                <button style="margin:5px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;
-                               background:#f9f9f9;cursor:pointer;">
-                    ${size}
-                </button>
-            `).join('')}
-        </div>
+                        <div style="margin:10px 0;">
+                            <label style="font-weight:600;">Available Sizes:</label><br>
+                            <button style="margin:5px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;background:#f9f9f9;cursor:pointer;">S</button>
+                            <button style="margin:5px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;background:#f9f9f9;cursor:pointer;">M</button>
+                            <button style="margin:5px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;background:#f9f9f9;cursor:pointer;">L</button>
+                            <button style="margin:5px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;background:#f9f9f9;cursor:pointer;">XL</button>
+                        </div>
 
-        <!-- Fabric -->
-        <p style="margin:10px 0;font-weight:500;">
-            <strong>Fabric:</strong> ${productFabric}
-        </p>
+                        <p style="margin:10px 0;font-weight:500;">
+                            <strong>Fabric:</strong> Cotton Blend
+                        </p>
 
-        <!-- Buy Now Button -->
-        <a href="product_detail.php?id=${productId}" 
-           style="display:inline-block;margin-top:15px;padding:12px 24px;background:#e91e63;
-                  color:#fff;text-decoration:none;border-radius:8px;font-weight:600;">
-            Buy Now
-        </a>
-    </div>
-</div>
-
-                    `;
-                });
-        }
-
-        function closeQuickView() {
-            quickModal.classList.remove('show');
-            quickModal.setAttribute('aria-hidden','true');
-            modalContent.innerHTML = '';
-        }
-
-        modalClose.addEventListener('click', closeQuickView);
-        quickModal.addEventListener('click', (e) => {
-            if (e.target === quickModal) closeQuickView();
+                        <a href="product_detail.php?id=${productId}" 
+                           style="display:inline-block;margin-top:15px;padding:12px 24px;background:#e91e63;
+                                  color:#fff;text-decoration:none;border-radius:8px;font-weight:600;">
+                            Buy Now
+                        </a>
+                    </div>
+                </div>
+            `;
         });
-        // ESC closes modal
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && quickModal.classList.contains('show')) closeQuickView();
-        });
+}
+
+function closeQuickView() {
+    quickModal.classList.remove('show');
+    quickModal.setAttribute('aria-hidden', 'true');
+    modalContent.innerHTML = '';
+}
+
+modalClose.addEventListener('click', closeQuickView);
+quickModal.addEventListener('click', (e) => {
+    if (e.target === quickModal) closeQuickView();
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && quickModal.classList.contains('show')) closeQuickView();
+});
+
 
         // Initialize wishlist and cart UI states already done
         // Defensive: ensure cart-count is numeric
