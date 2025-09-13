@@ -490,7 +490,7 @@ include '../db/db_connect.php';
     
     @media (max-width: 480px) {
       .products {
-        grid-template-columns: 1fr;
+        grid-template-columns: 2fr;
         gap: 20px;
       }
       
