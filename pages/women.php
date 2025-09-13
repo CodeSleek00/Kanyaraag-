@@ -531,6 +531,82 @@ include '../db/db_connect.php';
         })();
 
     })();
+    // ... (your existing script above)
+
+    // Add to Cart
+    $$('.add-to-cart').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (this.disabled) return;
+
+            const card = this.closest('.card');
+            const hasSizes = this.dataset.hasSizes === 'true';
+            let selectedSize = null;
+
+            if (hasSizes) {
+                const sel = card.querySelector('.size-option.selected');
+                if (!sel) { 
+                    showToast('Please select a size before adding to cart'); 
+                    return; 
+                }
+                selectedSize = sel.dataset.size;
+            }
+
+            const id = String(this.dataset.id);
+            const name = this.dataset.name;
+            const price = parseFloat(this.dataset.price || '0');
+            const image = this.dataset.image;
+
+            let cart = getCart();
+            const existing = cart.find(it => it.id === id && it.size === selectedSize);
+
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ id, name, price, image, size: selectedSize, qty: 1 });
+            }
+
+            setCart(cart);
+            updateCartCount();
+            showToast('Added to cart!', 'success');
+        });
+    });
+
+    // Buy Now (redirect to cart or checkout)
+    $$('.buy-now').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (this.disabled) return;
+
+            const card = this.closest('.card');
+            const hasSizes = this.dataset.hasSizes === 'true';
+            let selectedSize = null;
+
+            if (hasSizes) {
+                const sel = card.querySelector('.size-option.selected');
+                if (!sel) { 
+                    showToast('Please select a size before buying'); 
+                    return; 
+                }
+                selectedSize = sel.dataset.size;
+            }
+
+            const id = String(this.dataset.id);
+            const name = card.querySelector('.card-title').textContent;
+            const price = parseFloat(card.dataset.price || '0');
+            const image = card.querySelector('img').src;
+
+            // Clear cart, then add this product only
+            let cart = [];
+            cart.push({ id, name, price, image, size: selectedSize, qty: 1 });
+            setCart(cart);
+            updateCartCount();
+
+            // Redirect to checkout
+            window.location.href = 'checkout.php';
+        });
+    });
+
+})();
+
     </script>
 </body>
 </html>
