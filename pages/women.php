@@ -34,13 +34,13 @@ include '../db/db_connect.php';
     margin-top: 10px;
     width: 100%;
     padding: 10px;
-    background: #e53935;
+    background: #a54a22;
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
-    transition: background .2s;
+    transition:  .2s;
 }
 .buy-now-btn:hover {
     background: #c62828;
