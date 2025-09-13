@@ -364,6 +364,8 @@
         container.appendChild(cartItemElement);
       });
 
+      const shipping = 0;
+      const total = subtotal + shipping;
       
       document.getElementById("subtotal").innerText = "₹" + subtotal;
       document.getElementById("total").innerText = "₹" + total;
