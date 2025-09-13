@@ -74,8 +74,7 @@ include '../db/db_connect.php';
             background:var(--white); padding:15px 20px; border-radius:var(--radius-md); box-shadow:var(--shadow-light); }
         .filter-group{ display:flex; align-items:center; gap:15px; }
         .filter-label{ font-weight:600; font-size:14px; color:var(--text-dark); }
-        .filter-select{ padding:8px 12px; border:1px solid var(--border-color); border-radius:var(--radius-sm); background:var(--white);
-            font-size:14px; cursor:pointer; }
+        .filter-select{ display: none; }
         .filter-select:focus{ outline:none; border-color:var(--primary); }
         .view-toggle{ display:flex; gap:8px; }
         .view-btn{ background:var(--background); border:1px solid var(--border-color); width:36px; height:36px; border-radius:var(--radius-sm);
