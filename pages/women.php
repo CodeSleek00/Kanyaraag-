@@ -25,6 +25,7 @@ include '../db/db_connect.php';
             /* 70% White, 20% #C75D2c, 10% Neutrals */
             --white: #ffffff;
             --primary: #C75D2c; /* Main Accent Color */
+            --primary-dark: #a54a22; /* Darker shade for hover states */
             --background: #f8f8f8; /* Light gray for body background */
             --text-dark: #2c2c2c; /* For headings and important text */
             --text-light: #757575; /* For secondary text */
@@ -42,6 +43,7 @@ include '../db/db_connect.php';
             background-color: var(--background);
             color: var(--text-dark);
             padding-top: 70px; /* Space for fixed header */
+            line-height: 1.5;
         }
 
         /* Header */
@@ -79,7 +81,7 @@ include '../db/db_connect.php';
         }
 
         .logo {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 22px;
             color: var(--text-dark);
             text-decoration: none;
@@ -113,14 +115,14 @@ include '../db/db_connect.php';
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 24px 16px;
+            padding: 20px 16px;
         }
 
         .page-title {
             text-align: center;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 600;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             position: relative;
         }
 
@@ -128,27 +130,48 @@ include '../db/db_connect.php';
         .products {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            gap: 14px;
         }
 
         /* Tablet and larger */
-        @media (min-width: 768px) {
+        @media (min-width: 640px) {
             .products {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 20px;
+                gap: 18px;
             }
         }
+        
+        /* Larger tablets */
+        @media (min-width: 768px) {
+            .products {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+            .page-title {
+                font-size: 28px;
+                margin-bottom: 24px;
+            }
+        }
+        
         /* Desktop */
         @media (min-width: 1024px) {
             .products {
                 grid-template-columns: repeat(4, 1fr);
+                gap: 24px;
+            }
+        }
+        
+        /* Large Desktop */
+        @media (min-width: 1280px) {
+            .products {
+                grid-template-columns: repeat(5, 1fr);
             }
         }
 
         /* Product Card */
         .card {
             background: var(--white);
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
             box-shadow: var(--shadow-light);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -156,7 +179,7 @@ include '../db/db_connect.php';
             flex-direction: column;
         }
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow);
         }
 
@@ -178,13 +201,13 @@ include '../db/db_connect.php';
         
         .card-badge {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 8px;
+            left: 8px;
             background: var(--primary);
             color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 10px;
             font-weight: 600;
         }
 
@@ -196,55 +219,64 @@ include '../db/db_connect.php';
         }
 
         .card-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500;
             margin-bottom: 6px;
             color: var(--text-dark);
-            white-space: nowrap;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            text-overflow: ellipsis;
+            height: 40px;
+            line-height: 1.3;
         }
 
         .price-container {
             display: flex;
-            align-items: baseline;
-            gap: 8px;
-            margin-bottom: 10px;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
         }
         .current-price {
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
             color: var(--primary);
         }
         .original-price {
-            font-size: 13px;
+            font-size: 12px;
             text-decoration: line-through;
             color: var(--text-light);
+        }
+        .discount-percent {
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 600;
         }
 
         /* Size Selector */
         .size-selector {
             margin-top: auto; /* Pushes selector to the bottom */
-            padding-top: 10px;
+            padding-top: 8px;
         }
         .size-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: var(--text-dark);
         }
         .size-options {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
         .size-option {
             border: 1px solid var(--border-color);
-            min-width: 36px;
-            height: 36px;
-            font-size: 13px;
+            min-width: 32px;
+            height: 32px;
+            font-size: 12px;
             font-weight: 500;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             user-select: none;
             transition: all 0.2s ease;
@@ -276,18 +308,18 @@ include '../db/db_connect.php';
 
         .action-btn {
             flex: 1;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid;
-            border-radius: 8px;
+            border-radius: 6px;
             font-family: 'Outfit', sans-serif;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
         }
         
@@ -307,8 +339,8 @@ include '../db/db_connect.php';
             border-color: var(--primary);
         }
         .buy-now:hover:not(:disabled) {
-            background: #af4d22; /* Darker shade of primary */
-            border-color: #af4d22;
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
         }
 
         .action-btn:disabled {
@@ -326,17 +358,35 @@ include '../db/db_connect.php';
             transform: translateX(-50%) translateY(100px);
             background: var(--text-dark);
             color: white;
-            padding: 14px 22px;
+            padding: 12px 20px;
             border-radius: 8px;
             box-shadow: var(--shadow);
             z-index: 1001;
             opacity: 0;
             transition: transform 0.4s ease, opacity 0.4s ease;
             font-size: 14px;
+            max-width: 90%;
+            text-align: center;
         }
         .toast.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .empty-state p {
+            font-size: 16px;
         }
     </style>
 </head>
@@ -383,9 +433,10 @@ include '../db/db_connect.php';
                         <div class='card-content'>
                             <h3 class='card-title'><?= htmlspecialchars($row['product_name']) ?></h3>
                             <div class='price-container'>
-                                <span class='current-price'>₹<?= $row['discount_price'] ?></span>
+                                <span class='current-price'>₹<?= number_format($row['discount_price']) ?></span>
                                 <?php if ($discount_percent > 0): ?>
-                                    <span class='original-price'>₹<?= $row['original_price'] ?></span>
+                                    <span class='original-price'>₹<?= number_format($row['original_price']) ?></span>
+                                    <span class='discount-percent'>(<?= $discount_percent ?>% off)</span>
                                 <?php endif; ?>
                             </div>
                             
@@ -429,7 +480,10 @@ include '../db/db_connect.php';
                 <?php
                 }
             } else {
-                echo "<p>No products available yet.</p>";
+                echo "<div class='empty-state'>
+                    <i class='fas fa-tshirt'></i>
+                    <p>No products available yet.</p>
+                </div>";
             }
             if ($conn) { $conn->close(); }
             ?>
