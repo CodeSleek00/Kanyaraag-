@@ -223,8 +223,7 @@ include '../db/db_connect.php';
                                 <i class="far fa-heart" aria-hidden="true"></i>
                             </button>
 
-                            <button class="quick-view-btn" data-id="<?= $id ?>" aria-label="Quick view <?= $name ?>">Quick View</button>
-                        </div>
+                           </div>
 
                         <div class="card-content">
                             <h3 class="card-title"><?= $name ?></h3>
@@ -521,94 +520,7 @@ include '../db/db_connect.php';
 
         // Buy Now improvement: if user wants to go directly to checkout with selected item, you can implement a quick checkout flow that passes cart data
 
-        // Quick view: tries to fetch quick_view.php?id=... . Fallback to placeholder if not available.
-        const quickModal = $('#quick-view-modal');
-        const modalContent = $('#modal-product-content');
-        const modalClose = document.querySelector('.modal-close');
-
-        $$('.quick-view-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const id = this.dataset.id;
-                openQuickView(id);
-            });
-        });
-
-     function openQuickView(productId) {
-    modalContent.innerHTML = `
-        <div style="text-align:center;padding:40px 20px;">
-            <div class="loading"></div>
-            <p style="margin-top:20px;">Loading product details...</p>
-        </div>`;
-    quickModal.classList.add('show');
-    quickModal.setAttribute('aria-hidden', 'false');
-
-    // Fetch quick_view.php for dynamic server-rendered details
-    fetch(`quick_view.php?id=${encodeURIComponent(productId)}`, { cache: 'no-store' })
-        .then(resp => {
-            if (!resp.ok) throw new Error('no-server-file');
-            return resp.text(); // server can return HTML
-        })
-        .then(html => {
-            modalContent.innerHTML = html;
-        })
-        .catch(err => {
-            // fallback content (static example)
-            modalContent.innerHTML = `
-                <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
-                    <!-- Left Side: Product Image -->
-                    <div style="flex:1;min-width:260px;text-align:center;">
-                         <img src="<?php echo $product['product_image']; ?>" onclick="changeImage(this)" class="thumbnail active" alt="Thumbnail 1"> 
-    
-                    </div>
-
-                    <!-- Right Side: Product Details -->
-                    <div style="flex:1 1 320px;">
-                        <h2 style="font-size:22px;font-weight:700;margin-bottom:10px;">
-                            Sample Product ${productId}
-                        </h2>
-
-                        <p style="color:green;font-weight:600;margin:5px 0;">
-                            In Stock
-                        </p>
-
-                        <div style="margin:10px 0;">
-                            <label style="font-weight:600;">Available Sizes:</label><br>
-                            <button style="margin:5px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;background:#f9f9f9;cursor:pointer;">S</button>
-                            <button style="margin:5px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;background:#f9f9f9;cursor:pointer;">M</button>
-                            <button style="margin:5px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;background:#f9f9f9;cursor:pointer;">L</button>
-                            <button style="margin:5px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;background:#f9f9f9;cursor:pointer;">XL</button>
-                        </div>
-
-                        <p style="margin:10px 0;font-weight:500;">
-                            <strong>Fabric:</strong> Cotton Blend
-                        </p>
-
-                        <a href="product_detail.php?id=${productId}" 
-                           style="display:inline-block;margin-top:15px;padding:12px 24px;background:#e91e63;
-                                  color:#fff;text-decoration:none;border-radius:8px;font-weight:600;">
-                            Buy Now
-                        </a>
-                    </div>
-                </div>
-            `;
-        });
-}
-
-function closeQuickView() {
-    quickModal.classList.remove('show');
-    quickModal.setAttribute('aria-hidden', 'true');
-    modalContent.innerHTML = '';
-}
-
-modalClose.addEventListener('click', closeQuickView);
-quickModal.addEventListener('click', (e) => {
-    if (e.target === quickModal) closeQuickView();
-});
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && quickModal.classList.contains('show')) closeQuickView();
-});
-
+       
 
         // Initialize wishlist and cart UI states already done
         // Defensive: ensure cart-count is numeric
