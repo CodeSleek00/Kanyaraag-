@@ -522,14 +522,7 @@ document.querySelectorAll('.buy-now-btn').forEach(btn=>{
         let selectedSize = null;
 
         // agar size wali product hai to size select check karo
-        if(btn.dataset.hasSizes === 'true'){
-            const sel = card.querySelector('.size-option.selected');
-            if(!sel){
-                alert("Please select a size first!");
-                return;
-            }
-            selectedSize = sel.dataset.size;
-        }
+
 
         // checkout redirect
         let url = "checkout.php?id=" + btn.dataset.id;
