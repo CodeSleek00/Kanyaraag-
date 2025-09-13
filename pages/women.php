@@ -30,6 +30,26 @@ include '../db/db_connect.php';
             padding-top:80px;
             line-height:1.6;
         }
+        .buy-now-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background: #e53935;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background .2s;
+}
+.buy-now-btn:hover {
+    background: #c62828;
+}
+.buy-now-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
         .header{
             position:fixed; top:0; left:0; width:100%;
             background:var(--white); border-bottom:1px solid var(--border-color);
@@ -492,6 +512,32 @@ include '../db/db_connect.php';
         })();
 
     })();
+    // ✅ Buy Now Logic
+document.querySelectorAll('.buy-now-btn').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+        e.stopPropagation();
+        if(btn.disabled) return;
+
+        const card = btn.closest('.card');
+        let selectedSize = null;
+
+        // agar size wali product hai to size select check karo
+        if(btn.dataset.hasSizes === 'true'){
+            const sel = card.querySelector('.size-option.selected');
+            if(!sel){
+                alert("Please select a size first!");
+                return;
+            }
+            selectedSize = sel.dataset.size;
+        }
+
+        // checkout redirect
+        let url = "checkout.php?id=" + btn.dataset.id;
+        if(selectedSize) url += "&size=" + encodeURIComponent(selectedSize);
+        window.location.href = url;
+    });
+});
+
     </script>
 </body>
 </html>
