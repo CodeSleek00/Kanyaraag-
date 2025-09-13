@@ -553,23 +553,48 @@ include '../db/db_connect.php';
                 .catch(err => {
                     // fallback content if quick_view.php not present or error
                     modalContent.innerHTML = `
-                        <div style="display:flex;gap:20px;flex-wrap:wrap;">
-                            <div style="flex:1;min-width:240px;text-align:center;">
-                                <img src="" alt="Product image" id="fallback-quick-img" style="max-width:100%;height:auto;object-fit:cover;display:none;">
-                            </div>
-                            <div style="flex:1 1 320px;">
-                                <p style="font-weight:700;">Product ID: ${productId}</p>
-                                <p>Detailed product view would appear here. To enable fully dynamic quick view, create a <code>quick_view.php?id=${productId}</code> endpoint that returns an HTML snippet or JSON with product details (images gallery, description, size chart, reviews, shipping info).</p>
-                                <ul style="margin-top:10px;">
-                                    <li>Product images gallery</li>
-                                    <li>Full description</li>
-                                    <li>Available colors</li>
-                                    <li>Size chart</li>
-                                    <li>Customer reviews</li>
-                                    <li>Shipping information</li>
-                                </ul>
-                            </div>
-                        </div>
+                      <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
+    <!-- Left Side: Product Image -->
+    <div style="flex:1;min-width:280px;text-align:center;">
+        <img src="${productImage}" alt="${productName}" id="fallback-quick-img" 
+             style="max-width:100%;height:auto;object-fit:cover;border-radius:10px;">
+    </div>
+
+    <!-- Right Side: Product Details -->
+    <div style="flex:1 1 320px;">
+        <!-- Product Name -->
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:10px;">${productName}</h2>
+
+        <!-- Stock Info -->
+        <p style="color:green;font-weight:600;margin:5px 0;">
+            ${productStock > 0 ? 'In Stock' : 'Out of Stock'}
+        </p>
+
+        <!-- Sizes -->
+        <div style="margin:10px 0;">
+            <label style="font-weight:600;">Available Sizes:</label><br>
+            ${productSizes.map(size => `
+                <button style="margin:5px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;
+                               background:#f9f9f9;cursor:pointer;">
+                    ${size}
+                </button>
+            `).join('')}
+        </div>
+
+        <!-- Fabric -->
+        <p style="margin:10px 0;font-weight:500;">
+            <strong>Fabric:</strong> ${productFabric}
+        </p>
+
+        <!-- Buy Now Button -->
+        <a href="product_detail.php?id=${productId}" 
+           style="display:inline-block;margin-top:15px;padding:12px 24px;background:#e91e63;
+                  color:#fff;text-decoration:none;border-radius:8px;font-weight:600;">
+            Buy Now
+        </a>
+    </div>
+</div>
+
                     `;
                 });
         }
