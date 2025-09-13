@@ -156,7 +156,13 @@ include '../db/db_connect.php';
         <div class="filter-bar" role="region" aria-label="Filter and sort products">
             <div class="filter-group" aria-hidden="false">
                 <label class="filter-label" for="category-filter">Filter by:</label>
-               
+                <select class="filter-select" id="category-filter" aria-label="Category filter">
+                    <option value="all">All Categories</option>
+                    <option value="dresses">Dresses</option>
+                    <option value="tops">Tops</option>
+                    <option value="bottoms">Bottoms</option>
+                    <option value="outerwear">Outerwear</option>
+                </select>
 
                 <select class="filter-select" id="price-filter" aria-label="Price filter">
                     <option value="all">Price Range</option>
@@ -348,55 +354,42 @@ include '../db/db_connect.php';
             gridViewBtn.classList.remove('active'); gridViewBtn.setAttribute('aria-pressed','false');
         });
 
-       // Remove categoryFilter usage
-const priceFilter = $('#price-filter');
-const sortBy = $('#sort-by');
+        // Filtering and sorting
+        const categoryFilter = $('#category-filter');
+        const priceFilter = $('#price-filter');
+        const sortBy = $('#sort-by');
 
-[priceFilter, sortBy].forEach(el => el.addEventListener('change', applyFilters));
+        [categoryFilter, priceFilter, sortBy].forEach(el => el.addEventListener('change', applyFilters));
 
-function applyFilters() {
-    const priceValue = priceFilter.value;
-    const sortValue = sortBy.value;
+        function applyFilters() {
+            const categoryValue = categoryFilter.value;
+            const priceValue = priceFilter.value;
+            const sortValue = sortBy.value;
 
-    // First, reset all
-    $$('.card').forEach(card => card.style.display = '');
+            const cards = $$('.card').filter(c => c.style.display !== 'none'); // all cards
+            // First, show all then apply filters
+            $$('.card').forEach(card => card.style.display = '');
 
-    // Price filter
-    if (priceValue !== 'all') {
-        $$('.card').forEach(card => {
-            const price = parseFloat(card.dataset.price || '0');
-            let visible = true;
-            if (priceValue === '0-1000') visible = price <= 1000;
-            else if (priceValue === '1000-2500') visible = price >= 1000 && price <= 2500;
-            else if (priceValue === '2500-5000') visible = price >= 2500 && price <= 5000;
-            else if (priceValue === '5000+') visible = price > 5000;
-            card.style.display = visible ? '' : 'none';
-        });
-    }
+            // Category filter
+            if (categoryValue !== 'all') {
+                $$('.card').forEach(card => {
+                    const productCategory = (card.dataset.category || '').toLowerCase();
+                    card.style.display = productCategory.includes(categoryValue) ? '' : 'none';
+                });
+            }
 
-    // Sorting logic (same as before)
-    if (sortValue !== 'default') {
-        const parent = $('#products-container');
-        const visibleCards = Array.from(parent.querySelectorAll('.card')).filter(c => c.style.display !== 'none');
-
-        let sorted;
-        if (sortValue === 'price-asc') {
-            sorted = visibleCards.sort((a,b)=> parseFloat(a.dataset.price||0) - parseFloat(b.dataset.price||0));
-        } else if (sortValue === 'price-desc') {
-            sorted = visibleCards.sort((a,b)=> parseFloat(b.dataset.price||0) - parseFloat(a.dataset.price||0));
-        } else if (sortValue === 'newest') {
-            sorted = visibleCards.sort((a,b)=>{
-                const da = a.dataset.created ? Date.parse(a.dataset.created) : 0;
-                const db = b.dataset.created ? Date.parse(b.dataset.created) : 0;
-                return db - da;
-            });
-        } else {
-            sorted = visibleCards;
-        }
-
-        sorted.forEach(c => parent.appendChild(c));
-    }
-}
+            // Price filter
+            if (priceValue !== 'all') {
+                $$('.card').forEach(card => {
+                    const price = parseFloat(card.dataset.price || '0');
+                    let visible = true;
+                    if (priceValue === '0-1000') visible = price <= 1000;
+                    else if (priceValue === '1000-2500') visible = price >= 1000 && price <= 2500;
+                    else if (priceValue === '2500-5000') visible = price >= 2500 && price <= 5000;
+                    else if (priceValue === '5000+') visible = price > 5000;
+                    card.style.display = visible ? '' : 'none';
+                });
+            }
 
             // Sorting (do only on visible items)
             if (sortValue !== 'default') {
