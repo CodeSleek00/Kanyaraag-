@@ -348,42 +348,55 @@ include '../db/db_connect.php';
             gridViewBtn.classList.remove('active'); gridViewBtn.setAttribute('aria-pressed','false');
         });
 
-        // Filtering and sorting
-        const categoryFilter = $('#category-filter');
-        const priceFilter = $('#price-filter');
-        const sortBy = $('#sort-by');
+       // Remove categoryFilter usage
+const priceFilter = $('#price-filter');
+const sortBy = $('#sort-by');
 
-        [categoryFilter, priceFilter, sortBy].forEach(el => el.addEventListener('change', applyFilters));
+[priceFilter, sortBy].forEach(el => el.addEventListener('change', applyFilters));
 
-        function applyFilters() {
-            const categoryValue = categoryFilter.value;
-            const priceValue = priceFilter.value;
-            const sortValue = sortBy.value;
+function applyFilters() {
+    const priceValue = priceFilter.value;
+    const sortValue = sortBy.value;
 
-            const cards = $$('.card').filter(c => c.style.display !== 'none'); // all cards
-            // First, show all then apply filters
-            $$('.card').forEach(card => card.style.display = '');
+    // First, reset all
+    $$('.card').forEach(card => card.style.display = '');
 
-            // Category filter
-            if (categoryValue !== 'all') {
-                $$('.card').forEach(card => {
-                    const productCategory = (card.dataset.category || '').toLowerCase();
-                    card.style.display = productCategory.includes(categoryValue) ? '' : 'none';
-                });
-            }
+    // Price filter
+    if (priceValue !== 'all') {
+        $$('.card').forEach(card => {
+            const price = parseFloat(card.dataset.price || '0');
+            let visible = true;
+            if (priceValue === '0-1000') visible = price <= 1000;
+            else if (priceValue === '1000-2500') visible = price >= 1000 && price <= 2500;
+            else if (priceValue === '2500-5000') visible = price >= 2500 && price <= 5000;
+            else if (priceValue === '5000+') visible = price > 5000;
+            card.style.display = visible ? '' : 'none';
+        });
+    }
 
-            // Price filter
-            if (priceValue !== 'all') {
-                $$('.card').forEach(card => {
-                    const price = parseFloat(card.dataset.price || '0');
-                    let visible = true;
-                    if (priceValue === '0-1000') visible = price <= 1000;
-                    else if (priceValue === '1000-2500') visible = price >= 1000 && price <= 2500;
-                    else if (priceValue === '2500-5000') visible = price >= 2500 && price <= 5000;
-                    else if (priceValue === '5000+') visible = price > 5000;
-                    card.style.display = visible ? '' : 'none';
-                });
-            }
+    // Sorting logic (same as before)
+    if (sortValue !== 'default') {
+        const parent = $('#products-container');
+        const visibleCards = Array.from(parent.querySelectorAll('.card')).filter(c => c.style.display !== 'none');
+
+        let sorted;
+        if (sortValue === 'price-asc') {
+            sorted = visibleCards.sort((a,b)=> parseFloat(a.dataset.price||0) - parseFloat(b.dataset.price||0));
+        } else if (sortValue === 'price-desc') {
+            sorted = visibleCards.sort((a,b)=> parseFloat(b.dataset.price||0) - parseFloat(a.dataset.price||0));
+        } else if (sortValue === 'newest') {
+            sorted = visibleCards.sort((a,b)=>{
+                const da = a.dataset.created ? Date.parse(a.dataset.created) : 0;
+                const db = b.dataset.created ? Date.parse(b.dataset.created) : 0;
+                return db - da;
+            });
+        } else {
+            sorted = visibleCards;
+        }
+
+        sorted.forEach(c => parent.appendChild(c));
+    }
+}
 
             // Sorting (do only on visible items)
             if (sortValue !== 'default') {
