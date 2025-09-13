@@ -34,7 +34,7 @@ include '../db/db_connect.php';
     margin-top: 10px;
     width: 100%;
     padding: 10px;
-    background: #a54a22;
+    background: #C75D2c;
     color: white;
     border: none;
     border-radius: 6px;
@@ -43,7 +43,7 @@ include '../db/db_connect.php';
     transition:  .2s;
 }
 .buy-now-btn:hover {
-    background: #c62828;
+    background: #a54a22;
 }
 .buy-now-btn:disabled {
     background: #ccc;
