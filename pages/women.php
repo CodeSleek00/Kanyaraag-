@@ -130,7 +130,9 @@ include '../db/db_connect.php';
         .empty-state{ grid-column:1 / -1; text-align:center; padding:60px 20px; color:var(--text-light); }
         .empty-state i{ font-size:64px; margin-bottom:20px; opacity:.3; }
         .empty-state p{ font-size:18px; margin-bottom:25px; }
-
+          .cat {
+            display: none;
+          }
         .loading{ display:inline-block; width:20px; height:20px; border:3px solid rgba(255,255,255,.3); border-radius:50%; border-top-color:#fff; animation:spin 1s ease-in-out infinite; }
         @keyframes spin{ to{ transform:rotate(360deg); } }
 
@@ -156,13 +158,15 @@ include '../db/db_connect.php';
         <div class="filter-bar" role="region" aria-label="Filter and sort products">
             <div class="filter-group" aria-hidden="false">
                 <label class="filter-label" for="category-filter">Filter by:</label>
-                <select class="filter-select" id="category-filter" aria-label="Category filter">
+                <div class="cat">
+                <select class="filter-select"  id="category-filter" aria-label="Category filter">
                     <option value="all">All Categories</option>
                     <option value="dresses">Dresses</option>
                     <option value="tops">Tops</option>
                     <option value="bottoms">Bottoms</option>
                     <option value="outerwear">Outerwear</option>
                 </select>
+                </div>
 
                 <select class="filter-select" id="price-filter" aria-label="Price filter">
                     <option value="all">Price Range</option>
