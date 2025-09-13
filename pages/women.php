@@ -13,7 +13,6 @@ include '../db/db_connect.php';
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        /* (same CSS as you provided with minor cleanliness tweaks) */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root{
             --white:#fff; --primary:#C75D2c; --primary-light:#fdf0eb;
@@ -66,7 +65,7 @@ include '../db/db_connect.php';
         .products{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:25px; }
         .products.list-view{ grid-template-columns:1fr; }
         .card{ background:var(--white); border-radius:var(--radius-md); overflow:hidden; box-shadow:var(--shadow-light);
-            transition:all .3s; display:flex; flex-direction:column; height:100%; position:relative; }
+            transition:all .3s; display:flex; flex-direction:column; height:100%; position:relative; cursor: pointer; }
         .card:hover{ transform:translateY(-5px); box-shadow:var(--shadow); }
         .card-image{ position:relative; width:100%; aspect-ratio:3/4; overflow:hidden; background:#fff; display:flex; align-items:center; justify-content:center; }
         .card-image img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease; display:block; }
@@ -75,6 +74,10 @@ include '../db/db_connect.php';
         .wishlist-btn{ position:absolute; top:12px; right:12px; width:36px; height:36px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; color:var(--text-light); transition:all .2s; z-index:2; }
         .wishlist-btn:hover{ color:var(--primary); background:var(--primary-light); }
         .wishlist-btn.active{ color:var(--primary); }
+        
+        /* New cart button on image */
+        .cart-btn{ position:absolute; top:56px; right:12px; width:36px; height:36px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; color:var(--text-light); transition:all .2s; z-index:2; box-shadow: var(--shadow-light); }
+        .cart-btn:hover{ color:var(--primary); background:var(--primary-light); }
 
         .card-content{ padding:18px; display:flex; flex-direction:column; flex-grow:1; }
         .card-title{ font-size:16px; font-weight:600; margin-bottom:8px; color:var(--text-dark); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; height:44px; line-height:1.4; }
@@ -100,16 +103,6 @@ include '../db/db_connect.php';
         .buy-now:hover:not(:disabled){ background:var(--primary-dark); border-color:var(--primary-dark); }
         .action-btn:disabled{ background:#e0e0e0; color:#9e9e9e; cursor:not-allowed; border-color:#e0e0e0; }
 
-        .modal{ position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.7); display:flex; align-items:center; justify-content:center; z-index:2000; opacity:0; visibility:hidden; transition:all .3s; }
-        .modal.show{ opacity:1; visibility:visible; }
-        .modal-content{ background:var(--white); width:90%; max-width:900px; border-radius:var(--radius-md); overflow:hidden; display:flex; flex-direction:column; max-height:90vh; transform:translateY(30px); transition:transform .3s; }
-        .modal.show .modal-content{ transform:translateY(0); }
-        .modal-header{ display:flex; justify-content:space-between; align-items:center; padding:20px; border-bottom:1px solid var(--border-color); }
-        .modal-title{ font-size:20px; font-weight:600; }
-        .modal-close{ background:none; border:none; font-size:24px; cursor:pointer; color:var(--text-light); transition:color .2s; }
-        .modal-close:hover{ color:var(--primary); }
-        .modal-body{ padding:20px; overflow-y:auto; }
-
         .toast{ position:fixed; bottom:25px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--text-dark); color:white; padding:14px 24px; border-radius:var(--radius-md); box-shadow:var(--shadow); z-index:1001; opacity:0; transition:all .4s; font-size:15px; max-width:90%; text-align:center; display:flex; align-items:center; gap:10px; }
         .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
         .toast.success{ background:var(--primary); color:#fff; }
@@ -117,9 +110,6 @@ include '../db/db_connect.php';
         .empty-state{ grid-column:1 / -1; text-align:center; padding:60px 20px; color:var(--text-light); }
         .empty-state i{ font-size:64px; margin-bottom:20px; opacity:.3; }
         .empty-state p{ font-size:18px; margin-bottom:25px; }
-
-        .quick-view-btn{ position:absolute; bottom:-40px; left:0; width:100%; background:var(--primary); color:white; border:none; padding:12px; font-weight:600; cursor:pointer; transition:bottom .3s; z-index:2; }
-        .card-image:hover .quick-view-btn{ bottom:0; }
 
         .loading{ display:inline-block; width:20px; height:20px; border:3px solid rgba(255,255,255,.3); border-radius:50%; border-top-color:#fff; animation:spin 1s ease-in-out infinite; }
         @keyframes spin{ to{ transform:rotate(360deg); } }
@@ -213,15 +203,28 @@ include '../db/db_connect.php';
                          data-original-price="<?= htmlspecialchars($original_price) ?>"
                          data-created="<?= htmlspecialchars($created_at) ?>"
                          data-stock="<?= $stock ?>"
-                         data-id="<?= $id ?>">
+                         data-id="<?= $id ?>"
+                         onclick="window.location.href='product_detail.php?id=<?= $id ?>'">
                         <div class="card-image" aria-hidden="false">
                             <img src="<?= $image ?>" alt="<?= $name ?>" loading="lazy">
                             <?php if ($discount_percent > 0): ?>
                                 <div class="card-badge"><?= $discount_percent ?>% OFF</div>
                             <?php endif; ?>
                             
-
-                         
+                            <button class="wishlist-btn" data-id="<?= $id ?>" aria-label="Add to wishlist">
+                                <i class="far fa-heart" aria-hidden="true"></i>
+                            </button>
+                            
+                            <!-- New cart button on image -->
+                            <button class="cart-btn" data-id="<?= $id ?>" 
+                                data-name="<?= $name ?>"
+                                data-price="<?= htmlspecialchars($discount_price) ?>"
+                                data-image="<?= $image ?>"
+                                data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
+                                <?= $stock <= 0 ? 'disabled' : '' ?>
+                                aria-label="Add to cart">
+                                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                            </button>
                         </div>
 
                         <div class="card-content">
@@ -254,27 +257,6 @@ include '../db/db_connect.php';
                                 <!-- if no sizes, keep a data marker so JS knows -->
                                 <div class="size-selector" data-has-sizes="false" style="display:none;"></div>
                             <?php endif; ?>
-
-                            <div class="card-actions">
-                                <button class="action-btn add-to-cart"
-                                    data-id="<?= $id ?>"
-                                    data-name="<?= $name ?>"
-                                    data-price="<?= htmlspecialchars($discount_price) ?>"
-                                    data-image="<?= $image ?>"
-                                    data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
-                                    <?= $stock <= 0 ? 'disabled' : '' ?>>
-                                    <i class="fas fa-shopping-cart" aria-hidden="true"></i>
-                                    <?= $stock > 0 ? 'Add to Cart' : 'Out of Stock' ?>
-                                </button>
-
-                                <button class="action-btn buy-now"
-                                    data-id="<?= $id ?>"
-                                    data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
-                                    <?= $stock <= 0 ? 'disabled' : '' ?>>
-                                    <i class="fas fa-bolt" aria-hidden="true"></i>
-                                    Buy Now
-                                </button>
-                            </div>
                         </div>
                     </div>
                 <?php
@@ -291,19 +273,6 @@ include '../db/db_connect.php';
             ?>
         </div>
     </main>
-
-    <!-- Quick View Modal -->
-    <div class="modal" id="quick-view-modal" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="modal-content" role="document">
-            <div class="modal-header">
-                <h3 class="modal-title">Product Quick View</h3>
-                <button class="modal-close" aria-label="Close quick view">&times;</button>
-            </div>
-            <div class="modal-body" id="modal-product-content">
-                <!-- loaded dynamically -->
-            </div>
-        </div>
-    </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -461,6 +430,7 @@ include '../db/db_connect.php';
         // Size selection (auto-disable logic already handled on server)
         $$('.size-options').forEach(container => {
             container.addEventListener('click', e => {
+                e.stopPropagation();
                 const target = e.target;
                 if (!target.classList.contains('size-option') || target.classList.contains('disabled')) return;
                 // de-select siblings
@@ -473,9 +443,10 @@ include '../db/db_connect.php';
             });
         });
 
-        // Add to Cart
-        $$('.add-to-cart').forEach(btn => {
-            btn.addEventListener('click', function() {
+        // Add to Cart from the cart button on image
+        $$('.cart-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
                 if (this.disabled) return;
                 const card = this.closest('.card');
                 const hasSizes = this.dataset.hasSizes === 'true';
@@ -499,92 +470,6 @@ include '../db/db_connect.php';
                 updateCartCount();
                 showToast('Added to cart!', 'success');
             });
-        });
-
-        // Buy Now -> redirect to product detail page; require size if needed
-        $$('.buy-now').forEach(btn => {
-            btn.addEventListener('click', function() {
-                if (this.disabled) return;
-                const card = this.closest('.card');
-                const hasSizes = this.dataset.hasSizes === 'true';
-                if (hasSizes) {
-                    const sel = card.querySelector('.size-option.selected');
-                    if (!sel) { showToast('Please select a size before buying'); return; }
-                }
-                const id = this.dataset.id;
-                // navigate to product detail (you already had this behavior)
-                window.location.href = "product_detail.php?id=" + encodeURIComponent(id);
-            });
-        });
-
-        // Buy Now improvement: if user wants to go directly to checkout with selected item, you can implement a quick checkout flow that passes cart data
-
-        // Quick view: tries to fetch quick_view.php?id=... . Fallback to placeholder if not available.
-        const quickModal = $('#quick-view-modal');
-        const modalContent = $('#modal-product-content');
-        const modalClose = document.querySelector('.modal-close');
-
-        $$('.quick-view-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const id = this.dataset.id;
-                openQuickView(id);
-            });
-        });
-
-        function openQuickView(productId) {
-            modalContent.innerHTML = `<div style="text-align:center;padding:40px 20px;"><div class="loading"></div><p style="margin-top:20px;">Loading product details...</p></div>`;
-            quickModal.classList.add('show');
-            quickModal.setAttribute('aria-hidden','false');
-
-            // try to fetch quick_view.php for server-rendered details (recommended).
-            fetch(`quick_view.php?id=${encodeURIComponent(productId)}`, {cache:'no-store'})
-                .then(resp => {
-                    if (!resp.ok) throw new Error('no-server-file');
-                    // try to parse as text (you might return HTML)
-                    return resp.text();
-                })
-                .then(html => {
-                    // if quick_view.php returns HTML snippet, render it.
-                    modalContent.innerHTML = html;
-                })
-                .catch(err => {
-                    // fallback content if quick_view.php not present or error
-                    modalContent.innerHTML = `
-                        <div style="display:flex;gap:20px;flex-wrap:wrap;">
-                            <div style="flex:1;min-width:240px;text-align:center;">
-                                <img src="" alt="Product image" id="fallback-quick-img" style="max-width:100%;height:auto;object-fit:cover;display:none;">
-                            </div>
-                            <div style="flex:1 1 320px;">
-                                <p style="font-weight:700;">Product ID: ${productId}</p>
-                                <p>Detailed product view would appear here. To enable fully dynamic quick view, create a <code>quick_view.php?id=${productId}</code> endpoint that returns an HTML snippet or JSON with product details (images gallery, description, size chart, reviews, shipping info).</p>
-                                <ul style="margin-top:10px;">
-                                    <li>Product images gallery</li>
-                                    <li>Full description</li>
-                                    <li>Available colors</li>
-                                    <li>Size chart</li>
-                                    <li>Customer reviews</li>
-                                    <li>Shipping information</li>
-                                </ul>
-                            </div>
-                        </div>
-                    `;
-                });
-        }
-
-        function closeQuickView() {
-            quickModal.classList.remove('show');
-            quickModal.setAttribute('aria-hidden','true');
-            modalContent.innerHTML = '';
-        }
-
-        modalClose.addEventListener('click', closeQuickView);
-        quickModal.addEventListener('click', (e) => {
-            if (e.target === quickModal) closeQuickView();
-        });
-        // ESC closes modal
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && quickModal.classList.contains('show')) closeQuickView();
         });
 
         // Initialize wishlist and cart UI states already done
