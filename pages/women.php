@@ -231,9 +231,6 @@ include '../db/db_connect.php';
                                 <div class="card-badge"><?= $discount_percent ?>% OFF</div>
                             <?php endif; ?>
                             
-                            <button class="wishlist-btn" data-id="<?= $id ?>" aria-label="Add to wishlist">
-                                <i class="far fa-heart" aria-hidden="true"></i>
-                            </button>
                             
                             <!-- New cart button on image -->
                             <button class="cart-btn" data-id="<?= $id ?>" 
