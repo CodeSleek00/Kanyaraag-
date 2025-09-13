@@ -306,10 +306,7 @@
         <span class="total-label">Subtotal</span>
         <span id="subtotal">₹0</span>
       </div>
-      <div class="summary-row">
-        <span class="total-label">Shipping</span>
-        <span>₹50</span>
-      </div>
+
       <div class="summary-row">
         <span class="total-label">Total</span>
         <span class="total-amount" id="total">₹0</span>
@@ -367,8 +364,6 @@
         container.appendChild(cartItemElement);
       });
 
-      const shipping = 50;
-      const total = subtotal + shipping;
       
       document.getElementById("subtotal").innerText = "₹" + subtotal;
       document.getElementById("total").innerText = "₹" + total;
