@@ -558,7 +558,7 @@ include '../db/db_connect.php';
                 <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
                     <!-- Left Side: Product Image -->
                     <div style="flex:1;min-width:260px;text-align:center;">
-                        <img src="images/sample-product.jpg" 
+                         <img src="<?php echo $product['product_image']; ?>" onclick="changeImage(this)" class="thumbnail active" alt="Thumbnail 1"> 
                              alt="Product ${productId}" 
                              style="max-width:100%;height:auto;object-fit:cover;border-radius:10px;">
                     </div>
