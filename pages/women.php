@@ -13,7 +13,7 @@ include '../db/db_connect.php';
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root{
             --white:#fff; --primary:#C75D2c; --primary-light:#fdf0eb;
             --primary-dark:#a54a22; --background:#f8f8f8; --text-dark:#2c2c2c;
@@ -116,27 +116,15 @@ include '../db/db_connect.php';
 
         @media (max-width:768px){ .filter-bar{ flex-direction:column; align-items:flex-start; } .filter-group{ width:100%; justify-content:space-between; } .products.list-view .card{ flex-direction:column; } .products.list-view .card-image{ width:100%; } .products.list-view .card-actions{ flex-direction:column; } }
         @media (max-width:480px){ .header{ padding:0 15px; height:70px; } .logo{ font-size:20px; } .page-title{ font-size:26px; } .products{ grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:15px; } }
-    
-        /* --- Your existing styles remain --- */
-        .buy-btn{ 
-            position:absolute; top:100px; right:12px; 
-            width:36px; height:36px; border-radius:50%; 
-            background:var(--primary); color:white; 
-            display:flex; align-items:center; justify-content:center; 
-            border:none; cursor:pointer; 
-            transition:all .2s; z-index:2; 
-            box-shadow: var(--shadow-light); 
-        }
-        .buy-btn:hover{ background:var(--primary-dark); }
     </style>
 </head>
 <body>
 
     <header class="header" role="banner">
-        <button class="header-btn" onclick="history.back()" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
-        <a href="index.php" class="logo"><span>कन्या</span>Raag</a>
-        <a href="cart.php" class="cart-icon header-btn">
-            <i class="fas fa-shopping-bag"></i>
+        <button class="header-btn" onclick="history.back()" aria-label="Back"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+        <a href="index.php" class="logo" aria-label="Home"><span>कन्या</span>Raag</a>
+        <a href="cart.php" class="cart-icon header-btn" aria-label="Cart">
+            <i class="fas fa-shopping-bag" aria-hidden="true"></i>
             <span class="cart-count" id="cart-count">0</span>
         </a>
     </header>
@@ -144,13 +132,52 @@ include '../db/db_connect.php';
     <main class="container" role="main">
         <h1 class="page-title">Women's Collection</h1>
 
-        <div class="products" id="products-container">
+        <!-- Filter and Sort Bar -->
+        <div class="filter-bar" role="region" aria-label="Filter and sort products">
+            <div class="filter-group" aria-hidden="false">
+                <label class="filter-label" for="category-filter">Filter by:</label>
+                <select class="filter-select" id="category-filter" aria-label="Category filter">
+                    <option value="all">All Categories</option>
+                    <option value="dresses">Dresses</option>
+                    <option value="tops">Tops</option>
+                    <option value="bottoms">Bottoms</option>
+                    <option value="outerwear">Outerwear</option>
+                </select>
+
+                <select class="filter-select" id="price-filter" aria-label="Price filter">
+                    <option value="all">Price Range</option>
+                    <option value="0-1000">Under ₹1000</option>
+                    <option value="1000-2500">₹1000 - ₹2500</option>
+                    <option value="2500-5000">₹2500 - ₹5000</option>
+                    <option value="5000+">Over ₹5000</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label" for="sort-by">Sort by:</label>
+                <select class="filter-select" id="sort-by" aria-label="Sort products">
+                    <option value="default">Recommended</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                    <option value="popular">Most Popular</option>
+                </select>
+
+                <div class="view-toggle" role="toolbar" aria-label="Change view">
+                    <button class="view-btn active" id="grid-view" title="Grid view" aria-pressed="true"><i class="fas fa-th" aria-hidden="true"></i></button>
+                    <button class="view-btn" id="list-view" title="List view" aria-pressed="false"><i class="fas fa-list" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="products" id="products-container" aria-live="polite">
             <?php
             $sql = "SELECT * FROM products ORDER BY RAND()";
             $result = $conn->query($sql);
 
             if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
+                    // Safe outputs
                     $id = (int) $row['id'];
                     $name = htmlspecialchars($row['product_name']);
                     $image = htmlspecialchars($row['product_image']);
@@ -161,143 +188,298 @@ include '../db/db_connect.php';
                     $sizes_string = trim($row['sizes'] ?? '');
                     $has_sizes = !empty($sizes_string);
                     $available_sizes = $has_sizes ? array_map('trim', explode(',', $sizes_string)) : [];
-
+                    // Calculate discount percent
                     $discount_percent = 0;
                     if ($original_price > 0 && $original_price > $discount_price) {
                         $discount_percent = round((($original_price - $discount_price) / $original_price) * 100);
                     }
-            ?>
-                <div class="card"
-                     data-category="<?= $category ?>"
-                     data-price="<?= $discount_price ?>"
-                     data-id="<?= $id ?>"
-                     onclick="window.location.href='product_detail.php?id=<?= $id ?>'">
-                    <div class="card-image">
-                        <img src="<?= $image ?>" alt="<?= $name ?>" loading="lazy">
-                        <?php if ($discount_percent > 0): ?>
-                            <div class="card-badge"><?= $discount_percent ?>% OFF</div>
-                        <?php endif; ?>
-
-                        <!-- Cart button -->
-                        <button class="cart-btn" data-id="<?= $id ?>" 
-                            data-name="<?= $name ?>"
-                            data-price="<?= $discount_price ?>"
-                            data-image="<?= $image ?>"
-                            data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
-                            <?= $stock <= 0 ? 'disabled' : '' ?>>
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-
-                        <!-- Buy Now button -->
-                        <button class="buy-btn" data-id="<?= $id ?>" 
-                            data-name="<?= $name ?>"
-                            data-price="<?= $discount_price ?>"
-                            data-image="<?= $image ?>"
-                            data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
-                            <?= $stock <= 0 ? 'disabled' : '' ?>>
-                            <i class="fas fa-bolt"></i>
-                        </button>
-                    </div>
-
-                    <div class="card-content">
-                        <h3 class="card-title"><?= $name ?></h3>
-                        <div class="price-container">
-                            <span class="current-price">₹<?= number_format($discount_price) ?></span>
+                    // created_at fallback if exists
+                    $created_at = $row['created_at'] ?? null;
+                    // print the card
+                    ?>
+                    <div class="card"
+                         data-category="<?= $category ?>"
+                         data-price="<?= htmlspecialchars($discount_price) ?>"
+                         data-original-price="<?= htmlspecialchars($original_price) ?>"
+                         data-created="<?= htmlspecialchars($created_at) ?>"
+                         data-stock="<?= $stock ?>"
+                         data-id="<?= $id ?>"
+                         onclick="window.location.href='product_detail.php?id=<?= $id ?>'">
+                        <div class="card-image" aria-hidden="false">
+                            <img src="<?= $image ?>" alt="<?= $name ?>" loading="lazy">
                             <?php if ($discount_percent > 0): ?>
-                                <span class="original-price">₹<?= number_format($original_price) ?></span>
-                                <span class="discount-percent"><?= $discount_percent ?>% off</span>
+                                <div class="card-badge"><?= $discount_percent ?>% OFF</div>
                             <?php endif; ?>
+                            
+                            <button class="wishlist-btn" data-id="<?= $id ?>" aria-label="Add to wishlist">
+                                <i class="far fa-heart" aria-hidden="true"></i>
+                            </button>
+                            
+                            <!-- New cart button on image -->
+                            <button class="cart-btn" data-id="<?= $id ?>" 
+                                data-name="<?= $name ?>"
+                                data-price="<?= htmlspecialchars($discount_price) ?>"
+                                data-image="<?= $image ?>"
+                                data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
+                                <?= $stock <= 0 ? 'disabled' : '' ?>
+                                aria-label="Add to cart">
+                                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                            </button>
                         </div>
 
-                        <?php
-                        $all_sizes = ['XS','S','M','L','XL','XXL'];
-                        if ($has_sizes): ?>
-                            <div class="size-selector" data-has-sizes="true">
-                                <h4 class="size-title">Select Size</h4>
-                                <div class="size-options">
-                                    <?php foreach ($all_sizes as $s):
-                                        $isAvailable = in_array($s, $available_sizes);
-                                        $disabledClass = $isAvailable ? '' : 'disabled';
-                                    ?>
-                                        <div class="size-option <?= $disabledClass ?>" data-size="<?= $s ?>"><?= $s ?></div>
-                                    <?php endforeach; ?>
-                                </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><?= $name ?></h3>
+
+                            <div class="price-container">
+                                <span class="current-price">₹<?= number_format($discount_price) ?></span>
+                                <?php if ($discount_percent > 0): ?>
+                                    <span class="original-price">₹<?= number_format($original_price) ?></span>
+                                    <span class="discount-percent"><?= $discount_percent ?>% off</span>
+                                <?php endif; ?>
                             </div>
-                        <?php endif; ?>
+
+                            <?php
+                            // Size selector (render only if product has sizes)
+                            $all_sizes = ['XS','S','M','L','XL','XXL'];
+                            if ($has_sizes): ?>
+                                <div class="size-selector" data-has-sizes="true" aria-label="Size selector">
+                                    <h4 class="size-title">Select Size</h4>
+                                    <div class="size-options" role="list">
+                                        <?php foreach ($all_sizes as $s):
+                                            $isAvailable = in_array($s, $available_sizes);
+                                            $disabledClass = $isAvailable ? '' : 'disabled';
+                                        ?>
+                                            <div role="listitem" class="size-option <?= $disabledClass ?>" data-size="<?= $s ?>" aria-pressed="false"><?= $s ?></div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <!-- if no sizes, keep a data marker so JS knows -->
+                                <div class="size-selector" data-has-sizes="false" style="display:none;"></div>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                </div>
-            <?php
-                }
+                <?php
+                } // end while
             } else {
-                echo "<div class='empty-state'><i class='fas fa-tshirt'></i><p>No products available yet.</p></div>";
+                echo "<div class='empty-state'>
+                    <i class='fas fa-tshirt' aria-hidden='true'></i>
+                    <p>No products available yet.</p>
+                    <button class='btn' onclick='history.back()'>Continue Shopping</button>
+                </div>";
             }
-            $conn->close();
+
+            if ($conn) { $conn->close(); }
             ?>
         </div>
     </main>
 
-    <div class="toast" id="toast"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script>
     (function(){
-        const $ = s=>document.querySelector(s);
-        const $$= s=>document.querySelectorAll(s);
-        const toastEl=$('#toast');
+        'use strict';
 
-        function showToast(msg,type=''){toastEl.textContent=msg;toastEl.className='toast '+type;toastEl.classList.add('show');setTimeout(()=>toastEl.classList.remove('show'),2000);}
+        // small helpers
+        const $ = sel => document.querySelector(sel);
+        const $$ = sel => Array.from(document.querySelectorAll(sel));
+        const toastEl = $('#toast');
 
-        function getCart(){try{return JSON.parse(localStorage.getItem('cart'))||[]}catch(e){return[];}}
-        function setCart(c){localStorage.setItem('cart',JSON.stringify(c));}
-        function updateCartCount(){let t=getCart().reduce((s,i)=>s+(+i.qty||0),0);$('#cart-count').textContent=t;}
+        function showToast(message, type = '') {
+            toastEl.textContent = message;
+            toastEl.className = 'toast' + (type ? ' ' + type : '');
+            toastEl.classList.add('show');
+            setTimeout(() => toastEl.classList.remove('show'), 2500);
+        }
+
+        // Cart count init
+        function getCart() {
+            try {
+                return JSON.parse(localStorage.getItem('cart')) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+        function setCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+        function updateCartCount() {
+            const cart = getCart();
+            const total = cart.reduce((sum, it) => sum + (Number(it.qty) || 0), 0);
+            $('#cart-count').textContent = total;
+        }
         updateCartCount();
 
-        // Size selection
-        $$('.size-options').forEach(c=>{
-            c.addEventListener('click',e=>{
-                if(!e.target.classList.contains('size-option')||e.target.classList.contains('disabled'))return;
-                c.querySelectorAll('.size-option').forEach(o=>o.classList.remove('selected'));
-                e.target.classList.add('selected');
+        // View toggle
+        const gridViewBtn = $('#grid-view');
+        const listViewBtn = $('#list-view');
+        const productsContainer = $('#products-container');
+
+        gridViewBtn.addEventListener('click', () => {
+            productsContainer.classList.remove('list-view');
+            gridViewBtn.classList.add('active'); gridViewBtn.setAttribute('aria-pressed','true');
+            listViewBtn.classList.remove('active'); listViewBtn.setAttribute('aria-pressed','false');
+        });
+        listViewBtn.addEventListener('click', () => {
+            productsContainer.classList.add('list-view');
+            listViewBtn.classList.add('active'); listViewBtn.setAttribute('aria-pressed','true');
+            gridViewBtn.classList.remove('active'); gridViewBtn.setAttribute('aria-pressed','false');
+        });
+
+        // Filtering and sorting
+        const categoryFilter = $('#category-filter');
+        const priceFilter = $('#price-filter');
+        const sortBy = $('#sort-by');
+
+        [categoryFilter, priceFilter, sortBy].forEach(el => el.addEventListener('change', applyFilters));
+
+        function applyFilters() {
+            const categoryValue = categoryFilter.value;
+            const priceValue = priceFilter.value;
+            const sortValue = sortBy.value;
+
+            const cards = $$('.card').filter(c => c.style.display !== 'none'); // all cards
+            // First, show all then apply filters
+            $$('.card').forEach(card => card.style.display = '');
+
+            // Category filter
+            if (categoryValue !== 'all') {
+                $$('.card').forEach(card => {
+                    const productCategory = (card.dataset.category || '').toLowerCase();
+                    card.style.display = productCategory.includes(categoryValue) ? '' : 'none';
+                });
+            }
+
+            // Price filter
+            if (priceValue !== 'all') {
+                $$('.card').forEach(card => {
+                    const price = parseFloat(card.dataset.price || '0');
+                    let visible = true;
+                    if (priceValue === '0-1000') visible = price <= 1000;
+                    else if (priceValue === '1000-2500') visible = price >= 1000 && price <= 2500;
+                    else if (priceValue === '2500-5000') visible = price >= 2500 && price <= 5000;
+                    else if (priceValue === '5000+') visible = price > 5000;
+                    card.style.display = visible ? '' : 'none';
+                });
+            }
+
+            // Sorting (do only on visible items)
+            if (sortValue !== 'default') {
+                const parent = $('#products-container');
+                const visibleCards = Array.from(parent.querySelectorAll('.card')).filter(c => c.style.display !== 'none');
+
+                let sorted;
+                if (sortValue === 'price-asc') {
+                    sorted = visibleCards.sort((a,b)=> parseFloat(a.dataset.price||0) - parseFloat(b.dataset.price||0));
+                } else if (sortValue === 'price-desc') {
+                    sorted = visibleCards.sort((a,b)=> parseFloat(b.dataset.price||0) - parseFloat(a.dataset.price||0));
+                } else if (sortValue === 'newest') {
+                    sorted = visibleCards.sort((a,b)=>{
+                        const da = a.dataset.created ? Date.parse(a.dataset.created) : 0;
+                        const db = b.dataset.created ? Date.parse(b.dataset.created) : 0;
+                        return db - da;
+                    });
+                } else {
+                    sorted = visibleCards; // fallback
+                }
+
+                // re-append in order
+                sorted.forEach(c => parent.appendChild(c));
+            }
+        }
+
+        // Wishlist functionality (localStorage)
+        function getWishlist() {
+            try { return JSON.parse(localStorage.getItem('wishlist')) || []; } catch(e) { return []; }
+        }
+        function setWishlist(w) { localStorage.setItem('wishlist', JSON.stringify(w)); }
+
+        $$('.wishlist-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const icon = this.querySelector('i');
+                const productId = String(this.dataset.id);
+                let wishlist = getWishlist();
+
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far'); icon.classList.add('fas'); this.classList.add('active');
+                    if (!wishlist.includes(productId)) wishlist.push(productId);
+                    setWishlist(wishlist);
+                    showToast('Added to wishlist!', 'success');
+                } else {
+                    icon.classList.remove('fas'); icon.classList.add('far'); this.classList.remove('active');
+                    wishlist = wishlist.filter(id => id !== productId);
+                    setWishlist(wishlist);
+                    showToast('Removed from wishlist');
+                }
             });
         });
 
-        // Cart add
-        $$('.cart-btn').forEach(btn=>{
-            btn.addEventListener('click',e=>{
-                e.stopPropagation();
-                if(btn.disabled)return;
-                const card=btn.closest('.card');
-                let selectedSize=null;
-                if(btn.dataset.hasSizes==='true'){
-                    const sel=card.querySelector('.size-option.selected');
-                    if(!sel){showToast('Please select a size');return;}
-                    selectedSize=sel.dataset.size;
+        // initialize wishlist UI
+        (function initWishlistUI(){
+            const wishlist = getWishlist();
+            $$('.wishlist-btn').forEach(btn => {
+                if (wishlist.includes(String(btn.dataset.id))) {
+                    btn.classList.add('active');
+                    const icon = btn.querySelector('i');
+                    icon.classList.remove('far'); icon.classList.add('fas');
                 }
-                let cart=getCart();
-                let ex=cart.find(it=>it.id===btn.dataset.id && it.size===selectedSize);
-                if(ex)ex.qty++;
-                else cart.push({id:btn.dataset.id,name:btn.dataset.name,price:+btn.dataset.price,image:btn.dataset.image,size:selectedSize,qty:1});
-                setCart(cart);updateCartCount();showToast('Added to cart','success');
+            });
+        })();
+
+        // Size selection (auto-disable logic already handled on server)
+        $$('.size-options').forEach(container => {
+            container.addEventListener('click', e => {
+                e.stopPropagation();
+                const target = e.target;
+                if (!target.classList.contains('size-option') || target.classList.contains('disabled')) return;
+                // de-select siblings
+                container.querySelectorAll('.size-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                    opt.setAttribute('aria-pressed','false');
+                });
+                target.classList.add('selected');
+                target.setAttribute('aria-pressed','true');
             });
         });
 
-        // Buy Now
-        $$('.buy-btn').forEach(btn=>{
-            btn.addEventListener('click',e=>{
+        // Add to Cart from the cart button on image
+        $$('.cart-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                if(btn.disabled)return;
-                const card=btn.closest('.card');
-                let selectedSize=null;
-                if(btn.dataset.hasSizes==='true'){
-                    const sel=card.querySelector('.size-option.selected');
-                    if(!sel){showToast('Please select a size');return;}
-                    selectedSize=sel.dataset.size;
+                if (this.disabled) return;
+                const card = this.closest('.card');
+                const hasSizes = this.dataset.hasSizes === 'true';
+                let selectedSize = null;
+                if (hasSizes) {
+                    const sel = card.querySelector('.size-option.selected');
+                    if (!sel) { showToast('Please select a size before adding to cart'); return; }
+                    selectedSize = sel.dataset.size;
                 }
-                // Redirect with product id and size
-                let url="checkout.php?id="+btn.dataset.id;
-                if(selectedSize) url+="&size="+encodeURIComponent(selectedSize);
-                window.location.href=url;
+                const id = String(this.dataset.id);
+                const name = this.dataset.name;
+                const price = parseFloat(this.dataset.price) || 0;
+                const image = this.dataset.image || '';
+                let cart = getCart();
+                const existing = cart.find(item => item.id === id && (item.size || null) === selectedSize);
+
+                if (existing) existing.qty = Number(existing.qty || 0) + 1;
+                else cart.push({ id, name, price, image, size: selectedSize, qty: 1 });
+
+                setCart(cart);
+                updateCartCount();
+                showToast('Added to cart!', 'success');
             });
         });
+
+        // Initialize wishlist and cart UI states already done
+        // Defensive: ensure cart-count is numeric
+        (function normalizeCartCount(){
+            const el = $('#cart-count');
+            const n = parseInt(el.textContent, 10);
+            if (isNaN(n)) el.textContent = 0;
+        })();
+
     })();
     </script>
 </body>
