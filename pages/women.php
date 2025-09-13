@@ -254,10 +254,11 @@ include '../db/db_connect.php';
             font-weight: 600;
         }
 
-        /* Size Selector */
+        /* Size Selector - Improved for single line */
         .size-selector {
             margin-top: auto; /* Pushes selector to the bottom */
             padding-top: 8px;
+            margin-bottom: 10px;
         }
         .size-title {
             font-size: 12px;
@@ -267,14 +268,20 @@ include '../db/db_connect.php';
         }
         .size-options {
             display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
+            gap: 4px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none; /* Firefox */
+        }
+        .size-options::-webkit-scrollbar {
+            display: none; /* Chrome, Safari */
         }
         .size-option {
             border: 1px solid var(--border-color);
-            min-width: 32px;
-            height: 32px;
-            font-size: 12px;
+            min-width: 28px;
+            height: 28px;
+            font-size: 11px;
             font-weight: 500;
             border-radius: 6px;
             cursor: pointer;
@@ -282,6 +289,7 @@ include '../db/db_connect.php';
             transition: all 0.2s ease;
             display: grid;
             place-items: center;
+            flex-shrink: 0;
         }
         .size-option:not(.disabled):hover {
             border-color: var(--primary);
@@ -299,20 +307,21 @@ include '../db/db_connect.php';
             border-color: #e0e0e0;
         }
         
-        /* Action Buttons */
+        /* Action Buttons - Now on separate lines */
         .card-actions {
             display: flex;
+            flex-direction: column;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 0;
         }
 
         .action-btn {
-            flex: 1;
+            width: 100%;
             padding: 10px;
             border: 1px solid;
             border-radius: 6px;
             font-family: 'Outfit', sans-serif;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -492,106 +501,104 @@ include '../db/db_connect.php';
 
     <div class="toast" id="toast"></div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            function updateCartCount() {
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                const totalItems = cart.reduce((total, item) => total + item.qty, 0);
-                document.getElementById('cart-count').textContent = totalItems;
-            }
+   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((total, item) => total + item.qty, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
 
-            function showToast(message) {
-                const toast = document.getElementById('toast');
-                toast.textContent = message;
-                toast.classList.add('show');
-                setTimeout(() => { toast.classList.remove('show'); }, 2500);
-            }
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 2500);
+        }
 
-            // Size Selection Logic
-            document.querySelectorAll('.size-options').forEach(container => {
-                container.addEventListener('click', e => {
-                    const target = e.target;
-                    if (target.classList.contains('size-option') && !target.classList.contains('disabled')) {
-                        // Deselect sibling options
-                        container.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
-                        // Select the clicked option
-                        target.classList.add('selected');
-                    }
-                });
+        // Size Selection Logic
+        document.querySelectorAll('.size-options').forEach(container => {
+            container.addEventListener('click', e => {
+                const target = e.target;
+                if (target.classList.contains('size-option') && !target.classList.contains('disabled')) {
+                    container.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+                    target.classList.add('selected');
+                }
             });
-
-            // Add to Cart Logic
-            document.querySelectorAll('.add-to-cart').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    if (this.disabled) return;
-
-                    const card = this.closest('.card');
-                    const hasSizes = this.getAttribute('data-has-sizes') === 'true';
-                    let selectedSize = null;
-
-                    if (hasSizes) {
-                        const selectedSizeEl = card.querySelector('.size-option.selected');
-                        if (!selectedSizeEl) {
-                            showToast('Please select a size first!');
-                            return;
-                        }
-                        selectedSize = selectedSizeEl.getAttribute('data-size');
-                    }
-
-                    const product = {
-                        id: this.getAttribute('data-id'),
-                        name: this.getAttribute('data-name'),
-                        price: this.getAttribute('data-price'),
-                        image: this.getAttribute('data-image'),
-                        size: selectedSize,
-                        qty: 1
-                    };
-
-                    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                    const existingItemIndex = cart.findIndex(item => item.id === product.id && item.size === product.size);
-
-                    if (existingItemIndex > -1) {
-                        cart[existingItemIndex].qty += 1;
-                    } else {
-                        cart.push(product);
-                    }
-
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    updateCartCount();
-                    showToast(`Added: ${product.name} ${product.size ? '(' + product.size + ')' : ''}`);
-                });
-            });
-            
-            // Buy Now Logic
-            document.querySelectorAll('.buy-now').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    if (this.disabled) return;
-
-                    const card = this.closest('.card');
-                    const hasSizes = this.getAttribute('data-has-sizes') === 'true';
-                    
-                    if (hasSizes) {
-                        const selectedSizeEl = card.querySelector('.size-option.selected');
-                        if (!selectedSizeEl) {
-                            showToast('Please select a size first!');
-                            return;
-                        }
-                        const id = this.getAttribute('data-id');
-                        const size = selectedSizeEl.getAttribute('data-size');
-                        // For Buy Now, you might add to cart and redirect, or just redirect
-                        // Here, we redirect to product detail with size pre-selected
-                        window.location.href = `product_detail.php?id=${id}&size=${size}`;
-                    } else {
-                        const id = this.getAttribute('data-id');
-                        window.location.href = `product_detail.php?id=${id}`;
-                    }
-                });
-            });
-
-            // Initial cart count update on page load
-            updateCartCount();
         });
-    </script>
-</body>
-</html>
+
+        // Add to Cart Logic
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.disabled) return;
+
+                const card = this.closest('.card');
+                const hasSizes = this.dataset.hasSizes === "true";
+                let selectedSize = null;
+
+                if (hasSizes) {
+                    const selected = card.querySelector('.size-option.selected');
+                    if (!selected) {
+                        showToast("Please select a size before adding to cart");
+                        return;
+                    }
+                    selectedSize = selected.dataset.size;
+                }
+
+                const id = this.dataset.id;
+                const name = this.dataset.name;
+                const price = parseFloat(this.dataset.price);
+                const image = this.dataset.image;
+
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const existing = cart.find(item => item.id === id && item.size === selectedSize);
+
+                if (existing) {
+                    existing.qty += 1;
+                } else {
+                    cart.push({ id, name, price, image, size: selectedSize, qty: 1 });
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                showToast("Added to cart!");
+            });
+        });
+
+        // Buy Now Logic
+        document.querySelectorAll('.buy-now').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.disabled) return;
+
+                const card = this.closest('.card');
+                const hasSizes = this.dataset.hasSizes === "true";
+                let selectedSize = null;
+
+                if (hasSizes) {
+                    const selected = card.querySelector('.size-option.selected');
+                    if (!selected) {
+                        showToast("Please select a size before buying");
+                        return;
+                    }
+                    selectedSize = selected.dataset.size;
+                }
+
+                const id = this.dataset.id;
+                const name = card.querySelector('.card-title').textContent.trim();
+                const price = parseFloat(card.querySelector('.current-price').textContent.replace('₹','').replace(',',''));
+                const image = card.querySelector('img').src;
+
+                // Create a temp cart for this single product
+                const buyNowItem = [{ id, name, price, image, size: selectedSize, qty: 1 }];
+                localStorage.setItem('buyNow', JSON.stringify(buyNowItem));
+
+                // Redirect to checkout
+                window.location.href = "checkout.php?buyNow=1";
+            });
+        });
+
+        // Initialize cart count on page load
+        updateCartCount();
+    });
+</script>
