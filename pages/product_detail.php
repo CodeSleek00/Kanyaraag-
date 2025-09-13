@@ -1220,7 +1220,7 @@ $product = $result->fetch_assoc();
           <th>Returns</th>
           <td>
             <ul>
-              <li>Easy returns within 15 days</li>
+              <li style="text-decoration: none;">Easy returns within 15 days</li>
               <li>No questions asked return policy</li>
               <li>Free return shipping for defective items</li>
             </ul>
