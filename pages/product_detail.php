@@ -93,8 +93,8 @@ $product = $result->fetch_assoc();
     .product-detail-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin: 40px 0;
+      gap: 30px;
+      margin: 30px 0;
     }
     
     @media (max-width: 992px) {
@@ -118,16 +118,17 @@ $product = $result->fetch_assoc();
     
     .main-image-container {
       position: relative;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
     }
     
     .main-image {
       width: 100%;
-      height: 500px;
+      height: 450px;
       object-fit: contain;
       background: white;
-      border-radius: var(--border-radius);
       padding: 20px;
-      box-shadow: var(--shadow);
       margin-bottom: 15px;
     }
     
@@ -167,8 +168,8 @@ $product = $result->fetch_assoc();
     }
     
     .thumbnail {
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       object-fit: cover;
       border-radius: 8px;
       cursor: pointer;
@@ -186,27 +187,27 @@ $product = $result->fetch_assoc();
     .product-info {
       background: white;
       border-radius: var(--border-radius);
-      padding: 25px;
+      padding: 20px;
       box-shadow: var(--shadow);
     }
     
     .product-title {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       margin-bottom: 10px;
       color: var(--dark);
     }
     
     @media (max-width: 768px) {
       .product-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
       }
     }
     
     .stock-badge {
       display: inline-block;
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 20px;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 500;
       margin-bottom: 15px;
     }
@@ -223,52 +224,53 @@ $product = $result->fetch_assoc();
     
     /* Pricing */
     .pricing-container {
-      margin: 20px 0;
-      padding: 15px;
+      margin: 15px 0;
+      padding: 12px;
       background: var(--light);
       border-radius: var(--border-radius);
     }
     
     .current-price {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: var(--dark);
     }
     
     .original-price {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       text-decoration: line-through;
       color: var(--gray);
-      margin: 0 10px;
+      margin: 0 8px;
     }
     
     .discount-badge {
       background: var(--secondary);
       color: white;
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: 20px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
     }
     
     .tax-text {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--gray);
       margin-top: 5px;
     }
     
     /* Description */
     .description {
-      margin: 20px 0;
-      line-height: 1.8;
+      margin: 15px 0;
+      line-height: 1.7;
+      font-size: 0.95rem;
     }
     
     /* Details */
     .details-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin: 20px 0;
+      gap: 12px;
+      margin: 15px 0;
     }
     
     @media (max-width: 480px) {
@@ -285,32 +287,34 @@ $product = $result->fetch_assoc();
     .detail-label {
       font-weight: 600;
       color: var(--gray);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
     
     .detail-value {
       font-weight: 500;
+      font-size: 0.95rem;
     }
     
     /* Size Selector */
     .size-selector {
-      margin: 25px 0;
+      margin: 20px 0;
     }
     
     .size-title {
       font-weight: 600;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
     }
     
     .size-options {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
     
     .size-option {
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -319,6 +323,7 @@ $product = $result->fetch_assoc();
       cursor: pointer;
       font-weight: 600;
       transition: var(--transition);
+      font-size: 0.9rem;
     }
     
     .size-option:hover {
@@ -341,8 +346,8 @@ $product = $result->fetch_assoc();
     .action-buttons {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin: 25px 0;
+      gap: 12px;
+      margin: 20px 0;
     }
     
     @media (max-width: 480px) {
@@ -352,17 +357,17 @@ $product = $result->fetch_assoc();
     }
     
     .btn {
-      padding: 15px;
+      padding: 12px;
       border-radius: var(--border-radius);
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       transition: var(--transition);
       border: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
     
     .btn-primary {
@@ -389,12 +394,13 @@ $product = $result->fetch_assoc();
     .shipping-info {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 15px;
+      gap: 8px;
+      padding: 12px;
       background: rgba(56, 134, 255, 0.1);
       border-radius: var(--border-radius);
       color: var(--primary);
       font-weight: 500;
+      font-size: 0.9rem;
     }
     
     /* Tabs */
@@ -403,7 +409,7 @@ $product = $result->fetch_assoc();
       border-radius: var(--border-radius);
       overflow: hidden;
       box-shadow: var(--shadow);
-      margin: 40px 0;
+      margin: 30px 0;
     }
     
     .tab-headers {
@@ -418,12 +424,13 @@ $product = $result->fetch_assoc();
     }
     
     .tab-header {
-      padding: 15px 25px;
+      padding: 12px 20px;
       font-weight: 600;
       cursor: pointer;
       transition: var(--transition);
       border-bottom: 3px solid transparent;
       white-space: nowrap;
+      font-size: 0.95rem;
     }
     
     .tab-header.active {
@@ -432,7 +439,7 @@ $product = $result->fetch_assoc();
     }
     
     .tab-content {
-      padding: 25px;
+      padding: 20px;
       display: none;
     }
     
@@ -451,7 +458,7 @@ $product = $result->fetch_assoc();
     
     .tab-content table th,
     .tab-content table td {
-      padding: 12px 15px;
+      padding: 10px 12px;
       text-align: left;
     }
     
@@ -459,16 +466,22 @@ $product = $result->fetch_assoc();
       width: 30%;
       color: var(--gray);
       font-weight: 500;
+      font-size: 0.9rem;
+    }
+    
+    .tab-content table td {
+      font-size: 0.95rem;
     }
     
     .tab-content ul {
-      padding-left: 20px;
+      padding-left: 18px;
     }
     
     .tab-content li {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       position: relative;
       padding-left: 15px;
+      font-size: 0.95rem;
     }
     
     .tab-content li:before {
@@ -486,16 +499,17 @@ $product = $result->fetch_assoc();
       right: 20px;
       background: var(--success);
       color: white;
-      padding: 15px 20px;
+      padding: 12px 18px;
       border-radius: var(--border-radius);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       box-shadow: var(--shadow);
       transform: translateY(100px);
       opacity: 0;
       transition: var(--transition);
       z-index: 1000;
+      font-size: 0.9rem;
     }
     
     .toast.show {
@@ -505,10 +519,10 @@ $product = $result->fetch_assoc();
     
     /* Section Headers */
     .section-header {
-      font-size: 1.5rem;
-      margin: 40px 0 20px;
+      font-size: 1.3rem;
+      margin: 30px 0 15px;
       position: relative;
-      padding-bottom: 10px;
+      padding-bottom: 8px;
     }
     
     .section-header::after {
@@ -516,51 +530,51 @@ $product = $result->fetch_assoc();
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 60px;
+      width: 50px;
       height: 3px;
       background: var(--primary);
       border-radius: 3px;
     }
     
-    /* FBT Section - IMPROVED */
+    /* FBT Section */
     .fbt-container {
       background: white;
       border-radius: var(--border-radius);
-      padding: 25px;
+      padding: 20px;
       box-shadow: var(--shadow);
-      margin: 40px 0;
+      margin: 30px 0;
     }
     
     .product-card-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
 
     .fbt-products {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 20px;
-      margin: 25px 0;
+      gap: 15px;
+      margin: 20px 0;
     }
     
     @media (max-width: 768px) {
       .fbt-products {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto;
-        gap: 15px;
+        gap: 12px;
       }
       
       .fbt-plus {
         grid-column: 1 / span 2;
         grid-row: 2;
-        margin: 10px 0;
+        margin: 8px 0;
       }
     }
     
     .fbt-plus {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: var(--gray);
       text-align: center;
@@ -568,22 +582,22 @@ $product = $result->fetch_assoc();
     
     .fbt-item {
       text-align: center;
-      padding: 15px;
+      padding: 12px;
       border: 1px solid var(--light-gray);
       border-radius: var(--border-radius);
       transition: var(--transition);
     }
     
     .fbt-item:hover {
-      transform: translateY(-5px);
+      transform: translateY(-3px);
       box-shadow: var(--shadow);
     }
     
     .fbt-item-image-container {
       position: relative;
       width: 100%;
-      height: 180px;
-      margin-bottom: 15px;
+      height: 160px;
+      margin-bottom: 12px;
       overflow: hidden;
       border-radius: 8px;
     }
@@ -600,43 +614,43 @@ $product = $result->fetch_assoc();
     }
     
     .fbt-item-title {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
-      height: 48px;
+      height: 44px;
     }
     
     .fbt-item-price {
       color: var(--primary);
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     
     .fbt-total {
       background: var(--light);
-      padding: 20px;
+      padding: 15px;
       border-radius: var(--border-radius);
       text-align: center;
-      margin-top: 20px;
+      margin-top: 15px;
     }
     
-    /* Product Cards - IMPROVED */
+    /* Product Cards */
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 25px;
-      margin: 30px 0;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 20px;
+      margin: 25px 0;
     }
     
     @media (max-width: 640px) {
       .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
       }
     }
     
@@ -652,14 +666,14 @@ $product = $result->fetch_assoc();
     }
     
     .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
     
     .product-image-container {
       position: relative;
       overflow: hidden;
-      height: 280px;
+      height: 250px;
       background: #f8f9fa;
       display: flex;
       align-items: center;
@@ -670,7 +684,7 @@ $product = $result->fetch_assoc();
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      padding: 15px;
+      padding: 12px;
       transition: var(--transition);
     }
     
@@ -699,8 +713,8 @@ $product = $result->fetch_assoc();
     .quick-view-btn {
       background: white;
       border: none;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -717,15 +731,15 @@ $product = $result->fetch_assoc();
     }
     
     .product-card-content {
-      padding: 15px;
+      padding: 12px;
       flex-grow: 1;
       display: flex;
       flex-direction: column;
     }
     
     .product-card-title {
-      font-size: 1rem;
-      margin-bottom: 8px;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
       font-weight: 600;
       color: var(--dark);
       display: -webkit-box;
@@ -733,32 +747,32 @@ $product = $result->fetch_assoc();
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
-      height: 48px;
+      height: 44px;
     }
     
     .price-container {
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 5px 10px;
+      gap: 4px 8px;
     }
     
     .product-card-price {
       color: var(--primary);
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     
     .product-card-original-price {
       color: var(--gray);
       text-decoration: line-through;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
     
     .discount-percent {
       color: var(--secondary);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       background: rgba(255, 0, 110, 0.1);
       padding: 2px 6px;
@@ -769,7 +783,7 @@ $product = $result->fetch_assoc();
       background: #db7140ff ;
       color: white;
       border: none;
-      padding: 10px;
+      padding: 8px;
       border-radius: var(--border-radius);
       font-weight: 600;
       cursor: pointer;
@@ -777,8 +791,9 @@ $product = $result->fetch_assoc();
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 4px;
       margin-top: auto;
+      font-size: 0.9rem;
     }
     
     .buy-now-btn:hover {
@@ -788,12 +803,12 @@ $product = $result->fetch_assoc();
     
     @media (max-width: 480px) {
       .product-image-container {
-        height: 200px;
+        height: 180px;
       }
       
       .buy-now-btn {
-        font-size: 0.9rem;
-        padding: 8px;
+        font-size: 0.85rem;
+        padding: 6px;
       }
     }
     
@@ -801,42 +816,43 @@ $product = $result->fetch_assoc();
     .review-form {
       background: white;
       border-radius: var(--border-radius);
-      padding: 25px;
+      padding: 20px;
       box-shadow: var(--shadow);
-      margin: 40px 0;
+      margin: 30px 0;
     }
     
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     
     .form-label {
       display: block;
-      margin-bottom: 8px;
-      font-weight: 6 00;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
     }
     
     .form-input, .form-textarea {
       width: 100%;
-      padding: 12px 15px;
+      padding: 10px 12px;
       border: 1px solid var(--light-gray);
       border-radius: 8px;
       font-family: inherit;
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
     
     .form-textarea {
-      min-height: 120px;
+      min-height: 100px;
       resize: vertical;
     }
     
     .star-rating {
       display: flex;
-      gap: 5px;
+      gap: 4px;
     }
     
     .star {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: var(--warning);
       cursor: pointer;
     }
@@ -845,13 +861,13 @@ $product = $result->fetch_assoc();
     .reviews-container {
       background: white;
       border-radius: var(--border-radius);
-      padding: 25px;
+      padding: 20px;
       box-shadow: var(--shadow);
-      margin: 40px 0;
+      margin: 30px 0;
     }
     
     .review-item {
-      padding: 20px 0;
+      padding: 15px 0;
       border-bottom: 1px solid var(--light-gray);
     }
     
@@ -863,12 +879,13 @@ $product = $result->fetch_assoc();
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     
     .reviewer-name {
       font-weight: 600;
       color: var(--primary);
+      font-size: 0.95rem;
     }
     
     .share-review-btn {
@@ -876,20 +893,20 @@ $product = $result->fetch_assoc();
       border: none;
       color: var(--gray);
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     
     .review-stars {
       color: var(--warning);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     
     .review-image {
-      max-width: 150px;
-      max-height: 150px;
+      max-width: 130px;
+      max-height: 130px;
       object-fit: cover;
       border-radius: 8px;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     
     /* Share Modal */
@@ -917,27 +934,27 @@ $product = $result->fetch_assoc();
     .share-modal-content {
       background: white;
       border-radius: var(--border-radius);
-      padding: 25px;
+      padding: 20px;
       width: 90%;
-      max-width: 400px;
+      max-width: 380px;
       box-shadow: var(--shadow);
     }
     
     .share-options {
       display: flex;
       justify-content: center;
-      gap: 20px;
-      margin: 20px 0;
+      gap: 15px;
+      margin: 15px 0;
     }
     
     .share-option {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       cursor: pointer;
       transition: var(--transition);
-      padding: 10px;
+      padding: 8px;
       border-radius: 8px;
     }
     
@@ -946,13 +963,13 @@ $product = $result->fetch_assoc();
     }
     
     .share-icon {
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       color: white;
     }
     
@@ -975,11 +992,11 @@ $product = $result->fetch_assoc();
     .share-modal-close {
       background: var(--light-gray);
       border: none;
-      padding: 10px 20px;
+      padding: 8px 16px;
       border-radius: var(--border-radius);
       cursor: pointer;
       font-weight: 600;
-      margin-top: 15px;
+      margin-top: 12px;
       width: 100%;
       transition: var(--transition);
     }
@@ -989,30 +1006,30 @@ $product = $result->fetch_assoc();
       color: white;
     }
     
-    /* New: Product Badges */
+    /* Product Badges */
     .product-badge {
       position: absolute;
-      top: 10px;
-      left: 10px;
+      top: 8px;
+      left: 8px;
       background: var(--secondary);
       color: white;
-      padding: 4px 8px;
+      padding: 3px 6px;
       border-radius: 4px;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 600;
       z-index: 5;
     }
     
-    /* New: Color Options */
+    /* Color Options */
     .color-options {
       display: flex;
-      gap: 8px;
-      margin: 10px 0;
+      gap: 6px;
+      margin: 8px 0;
     }
     
     .color-option {
-      width: 25px;
-      height: 25px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid transparent;
@@ -1024,14 +1041,14 @@ $product = $result->fetch_assoc();
       transform: scale(1.1);
     }
     
-    /* New: Wishlist Button */
+    /* Wishlist Button */
     .wishlist-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 8px;
+      right: 8px;
       background: white;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -1092,7 +1109,7 @@ $product = $result->fetch_assoc();
       </div>
       
       <div class="pricing-container">
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
           <div class="current-price">₹<?php echo $product['discount_price']; ?></div>
           <div class="original-price">₹<?php echo $product['original_price']; ?></div>
           <div class="discount-badge"><?php echo round($product['discount_percent']); ?>% OFF</div>
@@ -1234,7 +1251,7 @@ $product = $result->fetch_assoc();
     </div>
   </div>
   
-  <!-- Frequently Bought Together - IMPROVED -->
+  <!-- Frequently Bought Together -->
   <h2 class="section-header">Frequently Bought Together</h2>
   <div class="fbt-container">
     <div class="fbt-products">
@@ -1264,12 +1281,12 @@ $product = $result->fetch_assoc();
       ?>
     </div>
     
-    <button id="addAllFBT" class="btn btn-primary" style="display: block; width: 100%; margin: 20px 0;">
+    <button id="addAllFBT" class="btn btn-primary" style="display: block; width: 100%; margin: 15px 0;">
       <i class="fas fa-shopping-cart"></i> Add Both to Cart (Save ₹<?php echo number_format($totalPrice - $discountedTotal, 2); ?>)
     </button>
     
     <div class="fbt-total">
-      <h3>Total: ₹<?php echo number_format($discountedTotal, 2); ?> <span style="text-decoration: line-through; color: var(--gray); font-size: 1rem;">₹<?php echo number_format($totalPrice, 2); ?></span></h3>
+      <h3>Total: ₹<?php echo number_format($discountedTotal, 2); ?> <span style="text-decoration: line-through; color: var(--gray); font-size: 0.9rem;">₹<?php echo number_format($totalPrice, 2); ?></span></h3>
       <p>You save ₹<?php echo number_format($totalPrice - $discountedTotal, 2); ?> with this bundle</p>
     </div>
   </div>
