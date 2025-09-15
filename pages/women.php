@@ -1,6 +1,5 @@
 <?php
 include '../db/db_connect.php';
-
 ?>
 
 <!DOCTYPE html>
@@ -32,24 +31,24 @@ include '../db/db_connect.php';
             line-height:1.6;
         }
         .buy-now-btn {
-            margin-top: 10px;
-            width: 100%;
-            padding: 10px;
-            background: #C75D2c;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition:  .2s;
-        }
-        .buy-now-btn:hover {
-            background: #a54a22;
-        }
-        .buy-now-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background: #C75D2c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition:  .2s;
+}
+.buy-now-btn:hover {
+    background: #a54a22;
+}
+.buy-now-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
 
         .header{
             position:fixed; top:0; left:0; width:100%;
@@ -131,135 +130,14 @@ include '../db/db_connect.php';
         .empty-state{ grid-column:1 / -1; text-align:center; padding:60px 20px; color:var(--text-light); }
         .empty-state i{ font-size:64px; margin-bottom:20px; opacity:.3; }
         .empty-state p{ font-size:18px; margin-bottom:25px; }
-        .cat { display: block; } /* Changed from display:none to display:block */
-        
-        /* New styles for enhanced functionality */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            visibility: hidden;
-            opacity: 0;
-            transition: all 0.3s;
-        }
-        .loading-overlay.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--primary-light);
-            border-top: 5px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        .stock-badge {
-            position: absolute;
-            bottom: 12px;
-            left: 12px;
-            background: #f8f8f8;
-            color: var(--text-dark);
-            padding: 4px 8px;
-            border-radius: var(--radius-sm);
-            font-size: 11px;
-            font-weight: 600;
-            z-index: 2;
-        }
-        .quick-view-btn {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            cursor: pointer;
-            color: var(--text-light);
-            transition: all .2s;
-            z-index: 2;
-            box-shadow: var(--shadow-light);
-        }
-        .quick-view-btn:hover {
-            color: var(--primary);
-            background: var(--primary-light);
-        }
-        .filter-reset {
-            background: none;
-            border: none;
-            color: var(--primary);
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 5px 10px;
-            border-radius: var(--radius-sm);
-        }
-        .filter-reset:hover {
-            background: var(--primary-light);
-        }
-        .mobile-filter-btn {
+          .cat {
             display: none;
-            background: var(--white);
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            cursor: pointer;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        @media (max-width: 992px) {
-            .filter-bar {
-                position: relative;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .filter-group {
-                width: 100%;
-                justify-content: space-between;
-                flex-wrap: wrap;
-            }
-            .mobile-filter-btn {
-                display: flex;
-            }
-            .filter-controls {
-                display: none;
-                width: 100%;
-                margin-top: 15px;
-                flex-direction: column;
-                gap: 10px;
-            }
-            .filter-controls.active {
-                display: flex;
-            }
-        }
-        @media (max-width:768px){ 
-            .products.list-view .card{ flex-direction:column; } 
-            .products.list-view .card-image{ width:100%; } 
-            .products.list-view .card-actions{ flex-direction:column; } 
-        }
-        @media (max-width:480px){ 
-            .header{ padding:0 15px; height:70px; } 
-            .logo{ font-size:20px; } 
-            .page-title{ font-size:26px; } 
-            .products{ grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:15px; } 
-            .filter-select {
-                padding: 6px 10px;
-                font-size: 13px;
-            }
-        }
+          }
+        .loading{ display:inline-block; width:20px; height:20px; border:3px solid rgba(255,255,255,.3); border-radius:50%; border-top-color:#fff; animation:spin 1s ease-in-out infinite; }
+        @keyframes spin{ to{ transform:rotate(360deg); } }
+
+        @media (max-width:768px){ .filter-bar{ flex-direction:column; align-items:flex-start; } .filter-group{ width:100%; justify-content:space-between; } .products.list-view .card{ flex-direction:column; } .products.list-view .card-image{ width:100%; } .products.list-view .card-actions{ flex-direction:column; } }
+        @media (max-width:480px){ .header{ padding:0 15px; height:70px; } .logo{ font-size:20px; } .page-title{ font-size:26px; } .products{ grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:15px; } }
     </style>
 </head>
 <body>
@@ -273,41 +151,30 @@ include '../db/db_connect.php';
         </a>
     </header>
 
-    <div class="loading-overlay" id="loading-overlay">
-        <div class="loading-spinner"></div>
-    </div>
-
     <main class="container" role="main">
         <h1 class="page-title">Women's Collection</h1>
 
         <!-- Filter and Sort Bar -->
         <div class="filter-bar" role="region" aria-label="Filter and sort products">
-            <div class="filter-group">
-                <button class="mobile-filter-btn" id="mobile-filter-toggle">
-                    <i class="fas fa-filter"></i> Filters
-                </button>
-                
-                <div class="filter-controls" id="filter-controls">
-                    <label class="filter-label" for="category-filter">Filter by:</label>
-                    <div class="cat">
-                        <select class="filter-select" id="category-filter" aria-label="Category filter">
-                            <option value="all">All Categories</option>
-                            <?php foreach($categories as $category): ?>
-                                <option value="<?= htmlspecialchars(strtolower($category)) ?>"><?= htmlspecialchars($category) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <select class="filter-select" id="price-filter" aria-label="Price filter">
-                        <option value="all">Price Range</option>
-                        <option value="0-1000">Under ₹1000</option>
-                        <option value="1000-2500">₹1000 - ₹2500</option>
-                        <option value="2500-5000">₹2500 - ₹5000</option>
-                        <option value="5000+">Over ₹5000</option>
-                    </select>
-                    
-                    <button class="filter-reset" id="reset-filters">Reset</button>
+            <div class="filter-group" aria-hidden="false">
+                <label class="filter-label" for="category-filter">Filter by:</label>
+                <div class="cat">
+                <select class="filter-select"  id="category-filter" aria-label="Category filter">
+                    <option value="all">All Categories</option>
+                    <option value="dresses">Dresses</option>
+                    <option value="tops">Tops</option>
+                    <option value="bottoms">Bottoms</option>
+                    <option value="outerwear">Outerwear</option>
+                </select>
                 </div>
+
+                <select class="filter-select" id="price-filter" aria-label="Price filter">
+                    <option value="all">Price Range</option>
+                    <option value="0-1000">Under ₹1000</option>
+                    <option value="1000-2500">₹1000 - ₹2500</option>
+                    <option value="2500-5000">₹2500 - ₹5000</option>
+                    <option value="5000+">Over ₹5000</option>
+                </select>
             </div>
 
             <div class="filter-group">
@@ -360,23 +227,14 @@ include '../db/db_connect.php';
                          data-original-price="<?= htmlspecialchars($original_price) ?>"
                          data-created="<?= htmlspecialchars($created_at) ?>"
                          data-stock="<?= $stock ?>"
-                         data-id="<?= $id ?>">
+                         data-id="<?= $id ?>"
+                         onclick="window.location.href='product_detail.php?id=<?= $id ?>'">
                         <div class="card-image" aria-hidden="false">
                             <img src="<?= $image ?>" alt="<?= $name ?>" loading="lazy">
                             <?php if ($discount_percent > 0): ?>
                                 <div class="card-badge"><?= $discount_percent ?>% OFF</div>
                             <?php endif; ?>
                             
-                            <?php if ($stock <= 5 && $stock > 0): ?>
-                                <div class="stock-badge">Only <?= $stock ?> left</div>
-                            <?php elseif ($stock == 0): ?>
-                                <div class="stock-badge">Out of stock</div>
-                            <?php endif; ?>
-                            
-                            <!-- Wishlist button -->
-                            <button class="wishlist-btn" data-id="<?= $id ?>" aria-label="Add to wishlist">
-                                <i class="far fa-heart" aria-hidden="true"></i>
-                            </button>
                             
                             <!-- New cart button on image -->
                             <button class="cart-btn" data-id="<?= $id ?>" 
@@ -388,15 +246,10 @@ include '../db/db_connect.php';
                                 aria-label="Add to cart">
                                 <i class="fas fa-shopping-cart" aria-hidden="true"></i>
                             </button>
-                            
-                            <!-- Quick view button -->
-                            <button class="quick-view-btn" data-id="<?= $id ?>" aria-label="Quick view">
-                                <i class="fas fa-eye" aria-hidden="true"></i>
-                            </button>
                         </div>
 
                         <div class="card-content">
-                            <h3 class="card-title" onclick="window.location.href='product_detail.php?id=<?= $id ?>'"><?= $name ?></h3>
+                            <h3 class="card-title"><?= $name ?></h3>
 
                             <div class="price-container">
                                 <span class="current-price">₹<?= number_format($discount_price) ?></span>
@@ -425,17 +278,17 @@ include '../db/db_connect.php';
                                 <!-- if no sizes, keep a data marker so JS knows -->
                                 <div class="size-selector" data-has-sizes="false" style="display:none;"></div>
                             <?php endif; ?>
-                            
                             <!-- ✅ Buy Now Button -->
-                            <button class="buy-now-btn" 
-                                data-id="<?= $id ?>" 
-                                data-name="<?= $name ?>"
-                                data-price="<?= $discount_price ?>"
-                                data-image="<?= $image ?>"
-                                data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
-                                <?= $stock <= 0 ? 'disabled' : '' ?>>
-                                Buy Now
-                            </button>
+<button class="buy-now-btn" 
+    data-id="<?= $id ?>" 
+    data-name="<?= $name ?>"
+    data-price="<?= $discount_price ?>"
+    data-image="<?= $image ?>"
+    data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
+    <?= $stock <= 0 ? 'disabled' : '' ?>>
+    Buy Now
+</button>
+
                         </div>
                     </div>
                 <?php
@@ -463,21 +316,12 @@ include '../db/db_connect.php';
         const $ = sel => document.querySelector(sel);
         const $$ = sel => Array.from(document.querySelectorAll(sel));
         const toastEl = $('#toast');
-        const loadingOverlay = $('#loading-overlay');
 
         function showToast(message, type = '') {
             toastEl.textContent = message;
             toastEl.className = 'toast' + (type ? ' ' + type : '');
             toastEl.classList.add('show');
             setTimeout(() => toastEl.classList.remove('show'), 2500);
-        }
-        
-        function showLoading() {
-            loadingOverlay.classList.add('active');
-        }
-        
-        function hideLoading() {
-            loadingOverlay.classList.remove('active');
         }
 
         // Cart count init
@@ -497,16 +341,6 @@ include '../db/db_connect.php';
             $('#cart-count').textContent = total;
         }
         updateCartCount();
-
-        // Mobile filter toggle
-        const mobileFilterToggle = $('#mobile-filter-toggle');
-        const filterControls = $('#filter-controls');
-        
-        mobileFilterToggle.addEventListener('click', () => {
-            filterControls.classList.toggle('active');
-            const isExpanded = filterControls.classList.contains('active');
-            mobileFilterToggle.setAttribute('aria-expanded', isExpanded);
-        });
 
         // View toggle
         const gridViewBtn = $('#grid-view');
@@ -528,110 +362,62 @@ include '../db/db_connect.php';
         const categoryFilter = $('#category-filter');
         const priceFilter = $('#price-filter');
         const sortBy = $('#sort-by');
-        const resetFiltersBtn = $('#reset-filters');
 
         [categoryFilter, priceFilter, sortBy].forEach(el => el.addEventListener('change', applyFilters));
-        resetFiltersBtn.addEventListener('click', resetFilters);
-
-        function resetFilters() {
-            categoryFilter.value = 'all';
-            priceFilter.value = 'all';
-            sortBy.value = 'default';
-            applyFilters();
-            showToast('Filters reset');
-        }
 
         function applyFilters() {
-            showLoading();
-            
-            // Use setTimeout to allow the UI to update before heavy processing
-            setTimeout(() => {
-                const categoryValue = categoryFilter.value;
-                const priceValue = priceFilter.value;
-                const sortValue = sortBy.value;
+            const categoryValue = categoryFilter.value;
+            const priceValue = priceFilter.value;
+            const sortValue = sortBy.value;
 
-                const cards = $$('.card');
-                // First, show all then apply filters
-                cards.forEach(card => card.style.display = '');
+            const cards = $$('.card').filter(c => c.style.display !== 'none'); // all cards
+            // First, show all then apply filters
+            $$('.card').forEach(card => card.style.display = '');
 
-                // Category filter
-                if (categoryValue !== 'all') {
-                    cards.forEach(card => {
-                        const productCategory = (card.dataset.category || '').toLowerCase();
-                        card.style.display = productCategory.includes(categoryValue) ? '' : 'none';
+            // Category filter
+            if (categoryValue !== 'all') {
+                $$('.card').forEach(card => {
+                    const productCategory = (card.dataset.category || '').toLowerCase();
+                    card.style.display = productCategory.includes(categoryValue) ? '' : 'none';
+                });
+            }
+
+            // Price filter
+            if (priceValue !== 'all') {
+                $$('.card').forEach(card => {
+                    const price = parseFloat(card.dataset.price || '0');
+                    let visible = true;
+                    if (priceValue === '0-1000') visible = price <= 1000;
+                    else if (priceValue === '1000-2500') visible = price >= 1000 && price <= 2500;
+                    else if (priceValue === '2500-5000') visible = price >= 2500 && price <= 5000;
+                    else if (priceValue === '5000+') visible = price > 5000;
+                    card.style.display = visible ? '' : 'none';
+                });
+            }
+
+            // Sorting (do only on visible items)
+            if (sortValue !== 'default') {
+                const parent = $('#products-container');
+                const visibleCards = Array.from(parent.querySelectorAll('.card')).filter(c => c.style.display !== 'none');
+
+                let sorted;
+                if (sortValue === 'price-asc') {
+                    sorted = visibleCards.sort((a,b)=> parseFloat(a.dataset.price||0) - parseFloat(b.dataset.price||0));
+                } else if (sortValue === 'price-desc') {
+                    sorted = visibleCards.sort((a,b)=> parseFloat(b.dataset.price||0) - parseFloat(a.dataset.price||0));
+                } else if (sortValue === 'newest') {
+                    sorted = visibleCards.sort((a,b)=>{
+                        const da = a.dataset.created ? Date.parse(a.dataset.created) : 0;
+                        const db = b.dataset.created ? Date.parse(b.dataset.created) : 0;
+                        return db - da;
                     });
-                }
-
-                // Price filter
-                if (priceValue !== 'all') {
-                    cards.forEach(card => {
-                        if (card.style.display === 'none') return; // Skip already hidden cards
-                        
-                        const price = parseFloat(card.dataset.price || '0');
-                        let visible = true;
-                        if (priceValue === '0-1000') visible = price <= 1000;
-                        else if (priceValue === '1000-2500') visible = price >= 1000 && price <= 2500;
-                        else if (priceValue === '2500-5000') visible = price >= 2500 && price <= 5000;
-                        else if (priceValue === '5000+') visible = price > 5000;
-                        card.style.display = visible ? '' : 'none';
-                    });
-                }
-
-                // Stock filter - hide out of stock items if filter is enabled
-                const hideOutOfStock = $('#stock-filter') && $('#stock-filter').checked;
-                if (hideOutOfStock) {
-                    cards.forEach(card => {
-                        if (card.style.display === 'none') return;
-                        
-                        const stock = parseInt(card.dataset.stock || '0');
-                        if (stock <= 0) {
-                            card.style.display = 'none';
-                        }
-                    });
-                }
-
-                // Sorting (do only on visible items)
-                if (sortValue !== 'default') {
-                    const parent = $('#products-container');
-                    const visibleCards = Array.from(parent.querySelectorAll('.card')).filter(c => c.style.display !== 'none');
-
-                    let sorted;
-                    if (sortValue === 'price-asc') {
-                        sorted = visibleCards.sort((a,b)=> parseFloat(a.dataset.price||0) - parseFloat(b.dataset.price||0));
-                    } else if (sortValue === 'price-desc') {
-                        sorted = visibleCards.sort((a,b)=> parseFloat(b.dataset.price||0) - parseFloat(a.dataset.price||0));
-                    } else if (sortValue === 'newest') {
-                        sorted = visibleCards.sort((a,b)=>{
-                            const da = a.dataset.created ? Date.parse(a.dataset.created) : 0;
-                            const db = b.dataset.created ? Date.parse(b.dataset.created) : 0;
-                            return db - da;
-                        });
-                    } else {
-                        sorted = visibleCards; // fallback
-                    }
-
-                    // re-append in order
-                    sorted.forEach(c => parent.appendChild(c));
-                }
-                
-                // Check if any products are visible after filtering
-                const visibleProducts = cards.filter(card => card.style.display !== 'none');
-                if (visibleProducts.length === 0) {
-                    const emptyMessage = document.createElement('div');
-                    emptyMessage.className = 'empty-state';
-                    emptyMessage.innerHTML = `
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                        <p>No products match your filters.</p>
-                        <button class="filter-reset" onclick="resetFilters()">Reset Filters</button>
-                    `;
-                    productsContainer.appendChild(emptyMessage);
                 } else {
-                    const emptyMessage = productsContainer.querySelector('.empty-state');
-                    if (emptyMessage) emptyMessage.remove();
+                    sorted = visibleCards; // fallback
                 }
-                
-                hideLoading();
-            }, 100);
+
+                // re-append in order
+                sorted.forEach(c => parent.appendChild(c));
+            }
         }
 
         // Wishlist functionality (localStorage)
@@ -717,55 +503,6 @@ include '../db/db_connect.php';
                 showToast('Added to cart!', 'success');
             });
         });
-        
-        // Buy Now button functionality
-        $$('.buy-now-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if (this.disabled) return;
-                
-                const card = this.closest('.card');
-                const hasSizes = this.dataset.hasSizes === 'true';
-                let selectedSize = null;
-                
-                if (hasSizes) {
-                    const sel = card.querySelector('.size-option.selected');
-                    if (!sel) { 
-                        showToast('Please select a size before buying'); 
-                        return; 
-                    }
-                    selectedSize = sel.dataset.size;
-                }
-                
-                const id = String(this.dataset.id);
-                const name = this.dataset.name;
-                const price = parseFloat(this.dataset.price) || 0;
-                const image = this.dataset.image || '';
-                
-                // Create cart with just this item
-                const cartItem = { id, name, price, image, size: selectedSize, qty: 1 };
-                setCart([cartItem]);
-                updateCartCount();
-                
-                // Redirect to checkout page
-                window.location.href = 'checkout.php';
-            });
-        });
-        
-        // Quick view functionality
-        $$('.quick-view-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const productId = this.dataset.id;
-                showLoading();
-                
-                // In a real implementation, you would fetch product details via AJAX
-                // For now, redirect to product detail page
-                setTimeout(() => {
-                    window.location.href = `product_detail.php?id=${productId}`;
-                }, 300);
-            });
-        });
 
         // Initialize wishlist and cart UI states already done
         // Defensive: ensure cart-count is numeric
@@ -774,31 +511,6 @@ include '../db/db_connect.php';
             const n = parseInt(el.textContent, 10);
             if (isNaN(n)) el.textContent = 0;
         })();
-        
-        // Lazy load images
-        if ('IntersectionObserver' in window) {
-            const lazyImages = $$('.card-image img');
-            
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src || img.src;
-                        imageObserver.unobserve(img);
-                    }
-                });
-            });
-            
-            lazyImages.forEach(img => {
-                // Store original src in data-src for lazy loading
-                if (!img.dataset.src) {
-                    img.dataset.src = img.src;
-                    // Set a placeholder initially
-                    img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3C/svg%3E";
-                    imageObserver.observe(img);
-                }
-            });
-        }
 
     })();
     
