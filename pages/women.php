@@ -100,7 +100,7 @@ include '../db/db_connect.php';
         .cart-btn:hover{ color:var(--primary); background:var(--primary-light); }
 
         .card-content{ padding:18px; display:flex; flex-direction:column; flex-grow:1; }
-        .card-title{ font-size:16px; font-weight:600; margin-bottom:8px; color:var(--text-dark); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; height:44px; line-height:1.4; }
+        .card-title{ font-size:16px; font-weight:600; margin-bottom:8px; color:var(--text-dark); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;  line-height:1.4; }
         .price-container{ display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
         .current-price{ font-weight:700; font-size:18px; color:var(--primary); }
         .original-price{ font-size:14px; text-decoration:line-through; color:var(--text-light); }
