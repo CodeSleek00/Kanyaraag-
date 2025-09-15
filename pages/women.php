@@ -31,24 +31,24 @@ include '../db/db_connect.php';
             line-height:1.6;
         }
         .buy-now-btn {
-    margin-top: 10px;
-    width: 100%;
-    padding: 10px;
-    background: #C75D2c;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition:  .2s;
-}
-.buy-now-btn:hover {
-    background: #a54a22;
-}
-.buy-now-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            background: #C75D2c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition:  .2s;
+        }
+        .buy-now-btn:hover {
+            background: #a54a22;
+        }
+        .buy-now-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
 
         .header{
             position:fixed; top:0; left:0; width:100%;
@@ -91,12 +91,9 @@ include '../db/db_connect.php';
         .card-image img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease; display:block; }
         .card:hover .card-image img{ transform:scale(1.08); }
         .card-badge{ position:absolute; top:12px; left:12px; background:var(--primary); color:white; padding:5px 10px; border-radius:var(--radius-sm); font-size:12px; font-weight:700; z-index:2; }
-        .wishlist-btn{ position:absolute; top:12px; right:12px; width:36px; height:36px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; color:var(--text-light); transition:all .2s; z-index:2; }
-        .wishlist-btn:hover{ color:var(--primary); background:var(--primary-light); }
-        .wishlist-btn.active{ color:var(--primary); }
         
-        /* New cart button on image */
-        .cart-btn{ position:absolute; top:56px; right:12px; width:36px; height:36px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; color:var(--text-light); transition:all .2s; z-index:2; box-shadow: var(--shadow-light); }
+        /* Cart button on image */
+        .cart-btn{ position:absolute; top:12px; right:12px; width:36px; height:36px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; color:var(--text-light); transition:all .2s; z-index:2; box-shadow: var(--shadow-light); }
         .cart-btn:hover{ color:var(--primary); background:var(--primary-light); }
 
         .card-content{ padding:18px; display:flex; flex-direction:column; flex-grow:1; }
@@ -130,14 +127,178 @@ include '../db/db_connect.php';
         .empty-state{ grid-column:1 / -1; text-align:center; padding:60px 20px; color:var(--text-light); }
         .empty-state i{ font-size:64px; margin-bottom:20px; opacity:.3; }
         .empty-state p{ font-size:18px; margin-bottom:25px; }
-          .cat {
+        .cat {
             display: none;
-          }
+        }
         .loading{ display:inline-block; width:20px; height:20px; border:3px solid rgba(255,255,255,.3); border-radius:50%; border-top-color:#fff; animation:spin 1s ease-in-out infinite; }
         @keyframes spin{ to{ transform:rotate(360deg); } }
 
-        @media (max-width:768px){ .filter-bar{ flex-direction:column; align-items:flex-start; } .filter-group{ width:100%; justify-content:space-between; } .products.list-view .card{ flex-direction:column; } .products.list-view .card-image{ width:100%; } .products.list-view .card-actions{ flex-direction:column; } }
-        @media (max-width:480px){ .header{ padding:0 15px; height:70px; } .logo{ font-size:20px; } .page-title{ font-size:26px; } .products{ grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:15px; } }
+        /* Mobile Filter Modal */
+        .mobile-filter-btn {
+            display: none;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .filter-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .filter-modal-content {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .filter-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .filter-modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .filter-modal-group {
+            margin-bottom: 20px;
+        }
+        
+        .filter-modal-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .filter-modal-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+
+        /* Mobile optimizations */
+        @media (max-width:768px){
+            .filter-bar{ 
+                flex-direction:column; 
+                align-items:flex-start; 
+                padding: 10px;
+                position: relative;
+            } 
+            
+            .filter-group{ 
+                width:100%; 
+                justify-content:space-between; 
+                flex-wrap: wrap;
+            } 
+            
+            .products.list-view .card{ 
+                flex-direction:column; 
+            } 
+            
+            .products.list-view .card-image{ 
+                width:100%; 
+            } 
+            
+            .products.list-view .card-actions{ 
+                flex-direction:column; 
+            }
+            
+            .filter-group:first-child {
+                display: none;
+            }
+            
+            .mobile-filter-btn {
+                display: block;
+                margin-top: 10px;
+            }
+            
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .card-content {
+                padding: 12px;
+            }
+            
+            .card-title {
+                font-size: 14px;
+                height: 40px;
+            }
+            
+            .current-price {
+                font-size: 16px;
+            }
+            
+            .original-price, .discount-percent {
+                font-size: 12px;
+            }
+            
+            .size-option {
+                min-width: 28px;
+                height: 28px;
+                font-size: 11px;
+            }
+            
+            .action-btn {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width:480px){
+            .header{ 
+                padding:0 15px; 
+                height:70px; 
+            } 
+            
+            .logo{ 
+                font-size:20px; 
+            } 
+            
+            .page-title{ 
+                font-size:26px; 
+                margin-bottom: 20px;
+            } 
+            
+            .products{ 
+                grid-template-columns:repeat(2, minmax(140px, 1fr)); 
+                gap:12px; 
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .filter-bar {
+                margin-bottom: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -192,6 +353,57 @@ include '../db/db_connect.php';
                     <button class="view-btn" id="list-view" title="List view" aria-pressed="false"><i class="fas fa-list" aria-hidden="true"></i></button>
                 </div>
             </div>
+            
+            <button class="mobile-filter-btn" id="mobile-filter-btn">
+                <i class="fas fa-filter"></i> Filters
+            </button>
+        </div>
+
+        <!-- Mobile Filter Modal -->
+        <div class="filter-modal" id="filter-modal">
+            <div class="filter-modal-content">
+                <div class="filter-modal-header">
+                    <h3>Filters</h3>
+                    <button class="filter-modal-close" id="filter-modal-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="filter-modal-group">
+                    <label class="filter-modal-label" for="modal-category-filter">Category</label>
+                    <select class="filter-modal-select" id="modal-category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="dresses">Dresses</option>
+                        <option value="tops">Tops</option>
+                        <option value="bottoms">Bottoms</option>
+                        <option value="outerwear">Outerwear</option>
+                    </select>
+                </div>
+                
+                <div class="filter-modal-group">
+                    <label class="filter-modal-label" for="modal-price-filter">Price Range</label>
+                    <select class="filter-modal-select" id="modal-price-filter">
+                        <option value="all">All Prices</option>
+                        <option value="0-1000">Under ₹1000</option>
+                        <option value="1000-2500">₹1000 - ₹2500</option>
+                        <option value="2500-5000">₹2500 - ₹5000</option>
+                        <option value="5000+">Over ₹5000</option>
+                    </select>
+                </div>
+                
+                <div class="filter-modal-group">
+                    <label class="filter-modal-label" for="modal-sort-by">Sort By</label>
+                    <select class="filter-modal-select" id="modal-sort-by">
+                        <option value="default">Recommended</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="newest">Newest First</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+                </div>
+                
+                <button class="buy-now-btn" id="apply-filters-btn">Apply Filters</button>
+            </div>
         </div>
 
         <div class="products" id="products-container" aria-live="polite">
@@ -235,8 +447,7 @@ include '../db/db_connect.php';
                                 <div class="card-badge"><?= $discount_percent ?>% OFF</div>
                             <?php endif; ?>
                             
-                            
-                            <!-- New cart button on image -->
+                            <!-- Cart button on image -->
                             <button class="cart-btn" data-id="<?= $id ?>" 
                                 data-name="<?= $name ?>"
                                 data-price="<?= htmlspecialchars($discount_price) ?>"
@@ -279,15 +490,15 @@ include '../db/db_connect.php';
                                 <div class="size-selector" data-has-sizes="false" style="display:none;"></div>
                             <?php endif; ?>
                             <!-- ✅ Buy Now Button -->
-<button class="buy-now-btn" 
-    data-id="<?= $id ?>" 
-    data-name="<?= $name ?>"
-    data-price="<?= $discount_price ?>"
-    data-image="<?= $image ?>"
-    data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
-    <?= $stock <= 0 ? 'disabled' : '' ?>>
-    Buy Now
-</button>
+                            <button class="buy-now-btn" 
+                                data-id="<?= $id ?>" 
+                                data-name="<?= $name ?>"
+                                data-price="<?= $discount_price ?>"
+                                data-image="<?= $image ?>"
+                                data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
+                                <?= $stock <= 0 ? 'disabled' : '' ?>>
+                                Buy Now
+                            </button>
 
                         </div>
                     </div>
@@ -324,6 +535,46 @@ include '../db/db_connect.php';
             setTimeout(() => toastEl.classList.remove('show'), 2500);
         }
 
+        // Mobile filter modal functionality
+        const mobileFilterBtn = $('#mobile-filter-btn');
+        const filterModal = $('#filter-modal');
+        const filterModalClose = $('#filter-modal-close');
+        const applyFiltersBtn = $('#apply-filters-btn');
+        
+        if (mobileFilterBtn && filterModal) {
+            mobileFilterBtn.addEventListener('click', () => {
+                filterModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            filterModalClose.addEventListener('click', () => {
+                filterModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            applyFiltersBtn.addEventListener('click', () => {
+                // Sync modal values with main filter values
+                $('#category-filter').value = $('#modal-category-filter').value;
+                $('#price-filter').value = $('#modal-price-filter').value;
+                $('#sort-by').value = $('#modal-sort-by').value;
+                
+                // Apply filters
+                applyFilters();
+                
+                // Close modal
+                filterModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Close modal when clicking outside
+            filterModal.addEventListener('click', (e) => {
+                if (e.target === filterModal) {
+                    filterModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
         // Cart count init
         function getCart() {
             try {
@@ -347,28 +598,32 @@ include '../db/db_connect.php';
         const listViewBtn = $('#list-view');
         const productsContainer = $('#products-container');
 
-        gridViewBtn.addEventListener('click', () => {
-            productsContainer.classList.remove('list-view');
-            gridViewBtn.classList.add('active'); gridViewBtn.setAttribute('aria-pressed','true');
-            listViewBtn.classList.remove('active'); listViewBtn.setAttribute('aria-pressed','false');
-        });
-        listViewBtn.addEventListener('click', () => {
-            productsContainer.classList.add('list-view');
-            listViewBtn.classList.add('active'); listViewBtn.setAttribute('aria-pressed','true');
-            gridViewBtn.classList.remove('active'); gridViewBtn.setAttribute('aria-pressed','false');
-        });
+        if (gridViewBtn && listViewBtn) {
+            gridViewBtn.addEventListener('click', () => {
+                productsContainer.classList.remove('list-view');
+                gridViewBtn.classList.add('active'); gridViewBtn.setAttribute('aria-pressed','true');
+                listViewBtn.classList.remove('active'); listViewBtn.setAttribute('aria-pressed','false');
+            });
+            listViewBtn.addEventListener('click', () => {
+                productsContainer.classList.add('list-view');
+                listViewBtn.classList.add('active'); listViewBtn.setAttribute('aria-pressed','true');
+                gridViewBtn.classList.remove('active'); gridViewBtn.setAttribute('aria-pressed','false');
+            });
+        }
 
         // Filtering and sorting
         const categoryFilter = $('#category-filter');
         const priceFilter = $('#price-filter');
         const sortBy = $('#sort-by');
 
-        [categoryFilter, priceFilter, sortBy].forEach(el => el.addEventListener('change', applyFilters));
+        [categoryFilter, priceFilter, sortBy].forEach(el => {
+            if (el) el.addEventListener('change', applyFilters);
+        });
 
         function applyFilters() {
-            const categoryValue = categoryFilter.value;
-            const priceValue = priceFilter.value;
-            const sortValue = sortBy.value;
+            const categoryValue = categoryFilter ? categoryFilter.value : 'all';
+            const priceValue = priceFilter ? priceFilter.value : 'all';
+            const sortValue = sortBy ? sortBy.value : 'default';
 
             const cards = $$('.card').filter(c => c.style.display !== 'none'); // all cards
             // First, show all then apply filters
@@ -420,45 +675,6 @@ include '../db/db_connect.php';
             }
         }
 
-        // Wishlist functionality (localStorage)
-        function getWishlist() {
-            try { return JSON.parse(localStorage.getItem('wishlist')) || []; } catch(e) { return []; }
-        }
-        function setWishlist(w) { localStorage.setItem('wishlist', JSON.stringify(w)); }
-
-        $$('.wishlist-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const icon = this.querySelector('i');
-                const productId = String(this.dataset.id);
-                let wishlist = getWishlist();
-
-                if (icon.classList.contains('far')) {
-                    icon.classList.remove('far'); icon.classList.add('fas'); this.classList.add('active');
-                    if (!wishlist.includes(productId)) wishlist.push(productId);
-                    setWishlist(wishlist);
-                    showToast('Added to wishlist!', 'success');
-                } else {
-                    icon.classList.remove('fas'); icon.classList.add('far'); this.classList.remove('active');
-                    wishlist = wishlist.filter(id => id !== productId);
-                    setWishlist(wishlist);
-                    showToast('Removed from wishlist');
-                }
-            });
-        });
-
-        // initialize wishlist UI
-        (function initWishlistUI(){
-            const wishlist = getWishlist();
-            $$('.wishlist-btn').forEach(btn => {
-                if (wishlist.includes(String(btn.dataset.id))) {
-                    btn.classList.add('active');
-                    const icon = btn.querySelector('i');
-                    icon.classList.remove('far'); icon.classList.add('fas');
-                }
-            });
-        })();
-
         // Size selection (auto-disable logic already handled on server)
         $$('.size-options').forEach(container => {
             container.addEventListener('click', e => {
@@ -504,12 +720,55 @@ include '../db/db_connect.php';
             });
         });
 
-        // Initialize wishlist and cart UI states already done
-        // Defensive: ensure cart-count is numeric
+        // Buy Now button functionality
+        $$('.buy-now-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (this.disabled) return;
+                
+                const card = this.closest('.card');
+                const hasSizes = this.dataset.hasSizes === 'true';
+                let selectedSize = null;
+                
+                if (hasSizes) {
+                    const sel = card.querySelector('.size-option.selected');
+                    if (!sel) { 
+                        showToast('Please select a size before buying'); 
+                        return; 
+                    }
+                    selectedSize = sel.dataset.size;
+                }
+                
+                const id = String(this.dataset.id);
+                const name = this.dataset.name;
+                const price = parseFloat(this.dataset.price) || 0;
+                const image = this.dataset.image || '';
+                
+                // Add to cart
+                let cart = getCart();
+                const existing = cart.find(item => item.id === id && (item.size || null) === selectedSize);
+
+                if (existing) {
+                    existing.qty = Number(existing.qty || 0) + 1;
+                } else {
+                    cart.push({ id, name, price, image, size: selectedSize, qty: 1 });
+                }
+                
+                setCart(cart);
+                updateCartCount();
+                
+                // Redirect to cart page
+                window.location.href = 'cart.php';
+            });
+        });
+
+        // Initialize cart UI state
         (function normalizeCartCount(){
             const el = $('#cart-count');
-            const n = parseInt(el.textContent, 10);
-            if (isNaN(n)) el.textContent = 0;
+            if (el) {
+                const n = parseInt(el.textContent, 10);
+                if (isNaN(n)) el.textContent = 0;
+            }
         })();
 
     })();
