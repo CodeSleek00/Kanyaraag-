@@ -178,7 +178,7 @@ include '../db/db_connect.php';
             </div>
 
             <div class="filter-group">
-                <label class="filter-label" for="sort-by">Sort by:</label>
+                <label class="filter-label" for="sort-by">Sort:</label>
                 <select class="filter-select" id="sort-by" aria-label="Sort products">
                     <option value="default">Recommended</option>
                     <option value="price-asc">Price: Low to High</option>
