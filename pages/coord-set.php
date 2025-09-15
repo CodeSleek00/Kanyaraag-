@@ -133,6 +133,16 @@ include '../db/db_connect.php';
           .cat {
             display: none;
           }
+          .btn{
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background .2s;
+          }
         .loading{ display:inline-block; width:20px; height:20px; border:3px solid rgba(255,255,255,.3); border-radius:50%; border-top-color:#fff; animation:spin 1s ease-in-out infinite; }
         @keyframes spin{ to{ transform:rotate(360deg); } }
 
