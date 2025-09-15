@@ -96,7 +96,7 @@ include '../db/db_connect.php';
         .wishlist-btn.active{ color:var(--primary); }
         
         /* New cart button on image */
-        .cart-btn{ position:absolute; top:56px; right:12px; width:36px; height:36px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; color:var(--text-light); transition:all .2s; z-index:2; box-shadow: var(--shadow-light); }
+        .cart-btn{ position:absolute; top:10px; right:12px; width:36px; height:36px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; color:var(--text-light); transition:all .2s; z-index:2; box-shadow: var(--shadow-light); }
         .cart-btn:hover{ color:var(--primary); background:var(--primary-light); }
 
         .card-content{ padding:18px; display:flex; flex-direction:column; flex-grow:1; }
