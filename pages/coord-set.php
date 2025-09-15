@@ -152,7 +152,7 @@ include '../db/db_connect.php';
     </header>
 
     <main class="container" role="main">
-        <h1 class="page-title">Women's Collection</h1>
+        <h1 class="page-title">Co-Ord Collection</h1>
 
         <!-- Filter and Sort Bar -->
         <div class="filter-bar" role="region" aria-label="Filter and sort products">
