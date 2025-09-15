@@ -66,7 +66,7 @@ include '../db/db_connect.php';
         .cart-count{ position:absolute; top:3px; right:3px; background:var(--primary); color:var(--white);
             font-size:10px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center;
             font-weight:700; border:2px solid var(--white); }
-        .container{ max-width:1280px; margin:0 auto; padding:0px 20px; }
+        .container{ max-width:1280px; margin:0 auto; padding:10px 20px; }
         .page-title{ text-align:center; font-size:32px; font-weight:700; margin-bottom:30px; position:relative; padding-bottom:15px; }
         .page-title::after{ content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:60px; height:3px; background:var(--primary); border-radius:3px; }
 
