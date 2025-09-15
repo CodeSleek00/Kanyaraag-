@@ -408,11 +408,23 @@ include '../db/db_connect.php';
 
         <div class="products" id="products-container" aria-live="polite">
             <?php
-            $sql = "SELECT * FROM products ORDER BY RAND()";
+            // Get all products
+            $sql = "SELECT * FROM products";
             $result = $conn->query($sql);
-
+            
+            // Store products for sorting
+            $products = [];
             if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
+                    $products[] = $row;
+                }
+            }
+            
+            // Sort products by popularity (random for demo, you can replace with actual popularity metric)
+            shuffle($products);
+            
+            if (count($products) > 0) {
+                foreach ($products as $row) {
                     // Safe outputs
                     $id = (int) $row['id'];
                     $name = htmlspecialchars($row['product_name']);
@@ -439,8 +451,7 @@ include '../db/db_connect.php';
                          data-original-price="<?= htmlspecialchars($original_price) ?>"
                          data-created="<?= htmlspecialchars($created_at) ?>"
                          data-stock="<?= $stock ?>"
-                         data-id="<?= $id ?>"
-                         onclick="window.location.href='product_detail.php?id=<?= $id ?>'">
+                         data-id="<?= $id ?>">
                         <div class="card-image" aria-hidden="false">
                             <img src="<?= $image ?>" alt="<?= $name ?>" loading="lazy">
                             <?php if ($discount_percent > 0): ?>
@@ -503,7 +514,7 @@ include '../db/db_connect.php';
                         </div>
                     </div>
                 <?php
-                } // end while
+                } // end foreach
             } else {
                 echo "<div class='empty-state'>
                     <i class='fas fa-tshirt' aria-hidden='true'></i>
@@ -625,13 +636,13 @@ include '../db/db_connect.php';
             const priceValue = priceFilter ? priceFilter.value : 'all';
             const sortValue = sortBy ? sortBy.value : 'default';
 
-            const cards = $$('.card').filter(c => c.style.display !== 'none'); // all cards
+            const cards = $$('.card'); // all cards
             // First, show all then apply filters
-            $$('.card').forEach(card => card.style.display = '');
+            cards.forEach(card => card.style.display = '');
 
             // Category filter
             if (categoryValue !== 'all') {
-                $$('.card').forEach(card => {
+                cards.forEach(card => {
                     const productCategory = (card.dataset.category || '').toLowerCase();
                     card.style.display = productCategory.includes(categoryValue) ? '' : 'none';
                 });
@@ -639,7 +650,7 @@ include '../db/db_connect.php';
 
             // Price filter
             if (priceValue !== 'all') {
-                $$('.card').forEach(card => {
+                cards.forEach(card => {
                     const price = parseFloat(card.dataset.price || '0');
                     let visible = true;
                     if (priceValue === '0-1000') visible = price <= 1000;
@@ -653,7 +664,7 @@ include '../db/db_connect.php';
             // Sorting (do only on visible items)
             if (sortValue !== 'default') {
                 const parent = $('#products-container');
-                const visibleCards = Array.from(parent.querySelectorAll('.card')).filter(c => c.style.display !== 'none');
+                const visibleCards = Array.from(cards).filter(c => c.style.display !== 'none');
 
                 let sorted;
                 if (sortValue === 'price-asc') {
@@ -666,6 +677,9 @@ include '../db/db_connect.php';
                         const db = b.dataset.created ? Date.parse(b.dataset.created) : 0;
                         return db - da;
                     });
+                } else if (sortValue === 'popular') {
+                    // For popular sorting, we'll shuffle the array to simulate popularity
+                    sorted = [...visibleCards].sort(() => Math.random() - 0.5);
                 } else {
                     sorted = visibleCards; // fallback
                 }
