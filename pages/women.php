@@ -1,15 +1,6 @@
 <?php
 include '../db/db_connect.php';
 
-// Get unique categories from database for filter dropdown
-$category_sql = "SELECT DISTINCT category FROM products WHERE category IS NOT NULL AND category != ''";
-$category_result = $conn->query($category_sql);
-$categories = [];
-if ($category_result && $category_result->num_rows > 0) {
-    while ($row = $category_result->fetch_assoc()) {
-        $categories[] = $row['category'];
-    }
-}
 ?>
 
 <!DOCTYPE html>
