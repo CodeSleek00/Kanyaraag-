@@ -212,6 +212,7 @@ include '../db/db_connect.php';
             
             .filter-group{ 
                 width:100%; 
+                justify-content:space-between; 
                 flex-wrap: wrap;
             } 
             
