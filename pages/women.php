@@ -221,65 +221,76 @@ include '../db/db_connect.php';
                     $created_at = $row['created_at'] ?? null;
                     // print the card
                     ?>
-                   <div class="card"
-     data-category="<?= $category ?>"
-     data-price="<?= htmlspecialchars($discount_price) ?>"
-     data-original-price="<?= htmlspecialchars($original_price) ?>"
-     data-created="<?= htmlspecialchars($created_at) ?>"
-     data-stock="<?= $stock ?>"
-     data-id="<?= $id ?>">
-     
-    <div class="card-image" aria-hidden="false">
-        <img src="<?= $image ?>" alt="<?= $name ?>" loading="lazy">
-        <?php if ($discount_percent > 0): ?>
-            <div class="card-badge"><?= $discount_percent ?>% OFF</div>
-        <?php endif; ?>
+                    <div class="card"
+                         data-category="<?= $category ?>"
+                         data-price="<?= htmlspecialchars($discount_price) ?>"
+                         data-original-price="<?= htmlspecialchars($original_price) ?>"
+                         data-created="<?= htmlspecialchars($created_at) ?>"
+                         data-stock="<?= $stock ?>"
+                         data-id="<?= $id ?>"
+                         onclick="window.location.href='product_detail.php?id=<?= $id ?>'">
+                        <div class="card-image" aria-hidden="false">
+                            <img src="<?= $image ?>" alt="<?= $name ?>" loading="lazy">
+                            <?php if ($discount_percent > 0): ?>
+                                <div class="card-badge"><?= $discount_percent ?>% OFF</div>
+                            <?php endif; ?>
+                            
+                            
+                            <!-- New cart button on image -->
+                            <button class="cart-btn" data-id="<?= $id ?>" 
+                                data-name="<?= $name ?>"
+                                data-price="<?= htmlspecialchars($discount_price) ?>"
+                                data-image="<?= $image ?>"
+                                data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
+                                <?= $stock <= 0 ? 'disabled' : '' ?>
+                                aria-label="Add to cart">
+                                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                            </button>
+                        </div>
 
-        <!-- Cart button -->
-        <button class="cart-btn" data-id="<?= $id ?>" 
-            data-name="<?= $name ?>"
-            data-price="<?= htmlspecialchars($discount_price) ?>"
-            data-image="<?= $image ?>"
-            data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
-            <?= $stock <= 0 ? 'disabled' : '' ?>
-            aria-label="Add to cart">
-            <i class="fas fa-shopping-cart" aria-hidden="true"></i>
-        </button>
-    </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><?= $name ?></h3>
 
-    <div class="card-content">
-        <h3 class="card-title"><?= $name ?></h3>
+                            <div class="price-container">
+                                <span class="current-price">₹<?= number_format($discount_price) ?></span>
+                                <?php if ($discount_percent > 0): ?>
+                                    <span class="original-price">₹<?= number_format($original_price) ?></span>
+                                    <span class="discount-percent"><?= $discount_percent ?>% off</span>
+                                <?php endif; ?>
+                            </div>
 
-        <div class="price-container">
-            <span class="current-price">₹<?= number_format($discount_price) ?></span>
-            <?php if ($discount_percent > 0): ?>
-                <span class="original-price">₹<?= number_format($original_price) ?></span>
-                <span class="discount-percent"><?= $discount_percent ?>% off</span>
-            <?php endif; ?>
-        </div>
+                            <?php
+                            // Size selector (render only if product has sizes)
+                            $all_sizes = ['XS','S','M','L','XL','XXL'];
+                            if ($has_sizes): ?>
+                                <div class="size-selector" data-has-sizes="true" aria-label="Size selector">
+                                    <h4 class="size-title">Select Size</h4>
+                                    <div class="size-options" role="list">
+                                        <?php foreach ($all_sizes as $s):
+                                            $isAvailable = in_array($s, $available_sizes);
+                                            $disabledClass = $isAvailable ? '' : 'disabled';
+                                        ?>
+                                            <div role="listitem" class="size-option <?= $disabledClass ?>" data-size="<?= $s ?>" aria-pressed="false"><?= $s ?></div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <!-- if no sizes, keep a data marker so JS knows -->
+                                <div class="size-selector" data-has-sizes="false" style="display:none;"></div>
+                            <?php endif; ?>
+                            <!-- ✅ Buy Now Button -->
+<button class="buy-now-btn" 
+    data-id="<?= $id ?>" 
+    data-name="<?= $name ?>"
+    data-price="<?= $discount_price ?>"
+    data-image="<?= $image ?>"
+    data-has-sizes="<?= $has_sizes ? 'true' : 'false' ?>"
+    <?= $stock <= 0 ? 'disabled' : '' ?>>
+    Buy Now
+</button>
 
-        <?php
-        // Size selector
-        $all_sizes = ['XS','S','M','L','XL','XXL'];
-        if ($has_sizes): ?>
-            <div class="size-selector" data-has-sizes="true" aria-label="Size selector">
-                <h4 class="size-title">Select Size</h4>
-                <div class="size-options" role="list">
-                    <?php foreach ($all_sizes as $s):
-                        $isAvailable = in_array($s, $available_sizes);
-                        $disabledClass = $isAvailable ? '' : 'disabled';
-                    ?>
-                        <div role="listitem" class="size-option <?= $disabledClass ?>" data-size="<?= $s ?>" aria-pressed="false"><?= $s ?></div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <!-- ✅ Buy Now Button -->
-        <button class="buy-now-btn" 
-            data-id="<?= $id ?>">Buy Now</button>
-    </div>
-</div>
+                        </div>
+                    </div>
                 <?php
                 } // end while
             } else {
@@ -409,52 +420,100 @@ include '../db/db_connect.php';
             }
         }
 
-       
-// Buy Now button (redirect only)
-$$('.buy-now-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const id = this.dataset.id;
-        // Direct open product detail
-        window.location.href = 'product_detail.php?id=' + encodeURIComponent(id);
-    });
-});
-
-// Add to Cart button (size required if available)
-$$('.cart-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        if (this.disabled) return;
-        const card = this.closest('.card');
-        const hasSizes = this.dataset.hasSizes === 'true';
-        let selectedSize = null;
-
-        if (hasSizes) {
-            const sel = card.querySelector('.size-option.selected');
-            if (!sel) { 
-                showToast('Please select a size before adding to cart'); 
-                return; 
-            }
-            selectedSize = sel.dataset.size;
+        // Wishlist functionality (localStorage)
+        function getWishlist() {
+            try { return JSON.parse(localStorage.getItem('wishlist')) || []; } catch(e) { return []; }
         }
+        function setWishlist(w) { localStorage.setItem('wishlist', JSON.stringify(w)); }
 
-        const id = String(this.dataset.id);
-        const name = this.dataset.name;
-        const price = parseFloat(this.dataset.price) || 0;
-        const image = this.dataset.image || '';
+        $$('.wishlist-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const icon = this.querySelector('i');
+                const productId = String(this.dataset.id);
+                let wishlist = getWishlist();
 
-        let cart = getCart();
-        const existing = cart.find(item => item.id === id && (item.size || null) === selectedSize);
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far'); icon.classList.add('fas'); this.classList.add('active');
+                    if (!wishlist.includes(productId)) wishlist.push(productId);
+                    setWishlist(wishlist);
+                    showToast('Added to wishlist!', 'success');
+                } else {
+                    icon.classList.remove('fas'); icon.classList.add('far'); this.classList.remove('active');
+                    wishlist = wishlist.filter(id => id !== productId);
+                    setWishlist(wishlist);
+                    showToast('Removed from wishlist');
+                }
+            });
+        });
 
-        if (existing) existing.qty = Number(existing.qty || 0) + 1;
-        else cart.push({ id, name, price, image, size: selectedSize, qty: 1 });
+        // initialize wishlist UI
+        (function initWishlistUI(){
+            const wishlist = getWishlist();
+            $$('.wishlist-btn').forEach(btn => {
+                if (wishlist.includes(String(btn.dataset.id))) {
+                    btn.classList.add('active');
+                    const icon = btn.querySelector('i');
+                    icon.classList.remove('far'); icon.classList.add('fas');
+                }
+            });
+        })();
 
-        setCart(cart);
-        updateCartCount();
-        showToast('Added to cart!', 'success');
-    });
-});
+        // Size selection (auto-disable logic already handled on server)
+        $$('.size-options').forEach(container => {
+            container.addEventListener('click', e => {
+                e.stopPropagation();
+                const target = e.target;
+                if (!target.classList.contains('size-option') || target.classList.contains('disabled')) return;
+                // de-select siblings
+                container.querySelectorAll('.size-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                    opt.setAttribute('aria-pressed','false');
+                });
+                target.classList.add('selected');
+                target.setAttribute('aria-pressed','true');
+            });
+        });
 
+        // Add to Cart from the cart button on image
+        $$('.cart-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (this.disabled) return;
+                const card = this.closest('.card');
+                const hasSizes = this.dataset.hasSizes === 'true';
+                let selectedSize = null;
+                if (hasSizes) {
+                    const sel = card.querySelector('.size-option.selected');
+                    if (!sel) { showToast('Please select a size before adding to cart'); return; }
+                    selectedSize = sel.dataset.size;
+                }
+                const id = String(this.dataset.id);
+                const name = this.dataset.name;
+                const price = parseFloat(this.dataset.price) || 0;
+                const image = this.dataset.image || '';
+                let cart = getCart();
+                const existing = cart.find(item => item.id === id && (item.size || null) === selectedSize);
+
+                if (existing) existing.qty = Number(existing.qty || 0) + 1;
+                else cart.push({ id, name, price, image, size: selectedSize, qty: 1 });
+
+                setCart(cart);
+                updateCartCount();
+                showToast('Added to cart!', 'success');
+            });
+        });
+
+        // Initialize wishlist and cart UI states already done
+        // Defensive: ensure cart-count is numeric
+        (function normalizeCartCount(){
+            const el = $('#cart-count');
+            const n = parseInt(el.textContent, 10);
+            if (isNaN(n)) el.textContent = 0;
+        })();
+
+    })();
+    
     </script>
 </body>
 </html>
