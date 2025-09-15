@@ -136,7 +136,7 @@ include '../db/db_connect.php';
         .loading{ display:inline-block; width:20px; height:20px; border:3px solid rgba(255,255,255,.3); border-radius:50%; border-top-color:#fff; animation:spin 1s ease-in-out infinite; }
         @keyframes spin{ to{ transform:rotate(360deg); } }
 
-        @media (max-width:768px){ .filter-bar{ flex-direction:column; align-items:flex-start; } .filter-group{ width:100%; justify-content:space-between; } .products.list-view .card{ flex-direction:column; } .products.list-view .card-image{ width:100%; } .products.list-view .card-actions{ flex-direction:column; } }
+        @media (max-width:768px){ .filter-bar{ flex-direction:column; align-items:flex-start; } .filter-group{ width:100%;  } .products.list-view .card{ flex-direction:column; } .products.list-view .card-image{ width:100%; } .products.list-view .card-actions{ flex-direction:column; } }
         @media (max-width:480px){ .header{ padding:0 15px; height:70px; } .logo{ font-size:20px; } .page-title{ font-size:26px; } .products{ grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:15px; } }
     </style>
 </head>
