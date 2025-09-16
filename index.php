@@ -43,7 +43,7 @@
       </button>
 
       <div class="menu">
-        <a href="index.php">Home</a>
+        <a href="index.php">Old Money</a>
         <a href="pages/women.php">Women</a>
         <a href="pages/coord-set.php">Co-ord Set</a>
         <a href="pages/croptop.php">Crop Top</a>
@@ -443,9 +443,9 @@
       <div class="footer-track">
         <h2>Orders & Support</h2>
         <a href=""><i class="fas fa-truck-fast"></i> Track Order</a>
-        <a href=""><i class="fas fa-pen-to-square"></i> Customization</a>
-        <a href=""><i class="fas fa-arrow-rotate-left"></i> Returns & Refunds</a>
-        <a href=""><i class="fas fa-file-lines"></i> Purchase Policy</a>
+        <a href=""><i class="fas fa-pen-to-square"></i> Old Money</a>
+        <a href="policy/return_policy.html"><i class="fas fa-arrow-rotate-left"></i> Returns & Refunds</a>
+        <a href="policy/shipping_policy.html"><i class="fas fa-file-lines"></i> Shipping Policy</a>
         
         <div class="contact-info">
           <h2>Contact Us</h2>
