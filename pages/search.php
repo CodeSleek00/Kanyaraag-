@@ -75,8 +75,8 @@ if ($search !== '') {
       <div class="grid">
         <?php foreach ($products as $row): 
           $id = $row['id'];
-          $name = $row['name'];
-          $image = $row['image'];
+          $name = $row['product_name'];
+          $image = $row['product_image'];
           $original_price = $row['original_price'];
           $discount_price = $row['discount_price'];
           $discount_percent = round((($original_price - $discount_price) / $original_price) * 100);
