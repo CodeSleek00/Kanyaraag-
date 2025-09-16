@@ -53,7 +53,7 @@
 
       <div class="brand"><span class="kanya">कन्या</span>Raag</div>
 
-      <a href="pages/search.php"><div class="search-container">
+      <div class="search-container"><a href="pages/search.php">
         <span class="search-placeholder">Search Bar</span>
         <span class="search-rotate" id="rotateText">Lehenga</span>
         <input type="text" aria-label="Search products" />
