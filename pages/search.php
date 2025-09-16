@@ -9,9 +9,9 @@ if ($search !== '') {
     // Search in multiple fields
     $stmt = $conn->prepare("
         SELECT * FROM products 
-        WHERE name LIKE ? 
+        WHERE product_name LIKE ? 
         OR description LIKE ? 
-        OR category LIKE ? 
+        OR fabric LIKE ? 
         OR sizes LIKE ?
         ORDER BY created_at DESC
     ");
