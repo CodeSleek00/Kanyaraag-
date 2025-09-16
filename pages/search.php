@@ -12,7 +12,7 @@ if ($search !== '') {
         WHERE product_name LIKE ? 
         OR description LIKE ? 
         OR fabric LIKE ? 
-        OR sizes LIKE ?
+        OR discount_price LIKE ?
         ORDER BY created_at DESC
     ");
     $like = "%" . $search . "%";
