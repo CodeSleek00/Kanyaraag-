@@ -93,7 +93,6 @@ if ($search !== '') {
               <?php endif; ?>
             </div>
             <div class="btns">
-              <button class="add-cart" data-id="<?= $id ?>" data-name="<?= $name ?>" data-price="<?= $discount_price ?>" data-image="<?= $image ?>">Add to Cart</button>
               <button class="buy-now" onclick="window.location.href='product_detail.php?id=<?= $id ?>'">Buy Now</button>
             </div>
           </div>
