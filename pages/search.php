@@ -13,11 +13,10 @@ if ($search !== '') {
         OR description LIKE ? 
         OR fabric LIKE ? 
         OR sizes LIKE ?
-        OR discount_price LIKE ?
         ORDER BY created_at DESC
     ");
     $like = "%" . $search . "%";
-    $stmt->bind_param("ssss", $like, $like, $like, $like , $like);
+    $stmt->bind_param("ssss", $like, $like, $like, $like);
     $stmt->execute();
     $result = $stmt->get_result();
     $products = $result->fetch_all(MYSQLI_ASSOC);
