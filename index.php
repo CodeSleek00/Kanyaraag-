@@ -457,12 +457,12 @@
 
       <div class="footer-contact">
         <h2>Quick Links</h2>
-        <a href=""><i class="fas fa-shield-alt"></i> Privacy Policy</a>
-        <a href=""><i class="fas fa-scale-balanced"></i> Terms of Use</a>
-        <a href=""><i class="fas fa-phone"></i> Contact Us</a>
-        <a href=""><i class="fas fa-info-circle"></i> About Us</a>
-        <a href=""><i class="fas fa-exchange"></i> Return Policy</a>
-        <a href=""><i class="fas fa-shipping-fast"></i> Shipping Policy</a>
+        <a href="policy/privacy_policy.html"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+        <a href="policy/terms_of_use.html"><i class="fas fa-scale-balanced"></i> Terms of Use</a>
+        <a href="policy/contact_us.html"><i class="fas fa-phone"></i> Contact Us</a>
+        <a href="policy/about_us.html"><i class="fas fa-info-circle"></i> About Us</a>
+        <a href="policy/return_policy.html"><i class="fas fa-exchange"></i> Return Policy</a>
+        <a href="policy/shipping_policy.html"><i class="fas fa-shipping-fast"></i> Shipping Policy</a>
       </div>
 
       <div class="footer-payment">
