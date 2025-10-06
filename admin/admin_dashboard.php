@@ -6,12 +6,12 @@ include '../db/db_connect.php'; // db connection
 $total_products = $conn->query("SELECT COUNT(*) as total FROM products")->fetch_assoc()['total'];
 
 // Product List
-$product_list = $conn->query("SELECT id, product_name, original_price, discount_price, stock FROM products ORDER BY id DESC LIMIT 10");
+$product_list = $conn->query("SELECT id, product_name, product_image, original_price, discount_price, discount_percent, stock FROM products ORDER BY id DESC LIMIT 10");
 
 // Total Orders
 $total_orders = $conn->query("SELECT COUNT(*) as total FROM orders")->fetch_assoc()['total'];
 
-// Total Sales
+// Total Sales (अगर orders table में amount नहीं है तो आपको सही column बताना पड़ेगा)
 $total_sales = $conn->query("SELECT SUM(amount) as total FROM orders WHERE payment_status='Completed'")->fetch_assoc()['total'];
 $total_sales = $total_sales ? $total_sales : 0;
 ?>
@@ -29,6 +29,7 @@ $total_sales = $total_sales ? $total_sales : 0;
     .sidebar a { display:block; padding:10px; margin:5px 0; color:#ddd; text-decoration:none; border-radius:6px; }
     .sidebar a:hover { background:#444; color:white; }
     .main { margin-left:240px; padding:20px; }
+    .product-img { width:60px; height:60px; object-fit:cover; border-radius:8px; }
   </style>
 </head>
 <body>
@@ -72,21 +73,28 @@ $total_sales = $total_sales ? $total_sales : 0;
 
     <h3 class="mt-5">Latest Products</h3>
     <div class="card p-3">
-      <table class="table table-striped">
-        <thead>
+      <table class="table table-striped align-middle">
+        <thead class="table-dark">
           <tr>
-            <th>ID</th><th>Name</th><th>Price</th><th>Discount</th><th>Stock</th>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Original Price</th>
+            <th>Discount Price</th>
+            <th>Discount %</th>
+            <th>Stock</th>
           </tr>
         </thead>
         <tbody>
           <?php while($row = $product_list->fetch_assoc()) { ?>
             <tr>
               <td><?php echo $row['id']; ?></td>
+              <td><img src="<?php echo $row['product_image']; ?>" class="product-img"></td>
               <td><?php echo $row['product_name']; ?></td>
               <td>₹<?php echo $row['original_price']; ?></td>
-              <td><?php echo $row['discount_price']; ?></td>
+              <td>₹<?php echo $row['discount_price']; ?></td>
+              <td><?php echo number_format($row['discount_percent'], 2); ?>%</td>
               <td><?php echo $row['stock']; ?></td>
-               <td><?php echo $row['product_image']; ?></td>
             </tr>
           <?php } ?>
         </tbody>
