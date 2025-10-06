@@ -13,7 +13,7 @@ if (isset($_GET['confirm_payment'])) {
 }
 
 // Fetch all orders
-$orders = $conn->query("SELECT id, customer_name, total_amount, delivery_status, payment_status FROM orders ORDER BY id DESC");
+$orders = $conn->query("SELECT id, user_first,user_last, total_amount, delivery_status, payment_status FROM orders ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
