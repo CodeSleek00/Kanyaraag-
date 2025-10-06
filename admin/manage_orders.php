@@ -44,8 +44,8 @@ $orders = $conn->query("SELECT id, user_first,user_last, amount, delivery_status
         <?php while ($row = $orders->fetch_assoc()) { ?>
         <tr>
             <td><?= $row['id'] ?></td>
-            <td><?= $row['customer_name'] ?></td>
-            <td>₹<?= $row['total_amount'] ?></td>
+            <td><?= $row['user_first'] ?><?= $row['user_last'] ?></td>
+            <td>₹<?= $row['amount'] ?></td>
             <td><?= $row['delivery_status'] ?></td>
             <td><?= $row['payment_status'] ?></td>
             <td>
