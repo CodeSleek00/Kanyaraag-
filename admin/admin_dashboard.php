@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../database_connection/db_connect.php'; // db connection
+include '../db/db_connect.php'; // db connection
 
 // Total Products
 $total_products = $conn->query("SELECT COUNT(*) as total FROM products")->fetch_assoc()['total'];
