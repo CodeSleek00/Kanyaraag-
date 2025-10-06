@@ -83,8 +83,8 @@ $total_sales = $total_sales ? $total_sales : 0;
             <tr>
               <td><?php echo $row['id']; ?></td>
               <td><?php echo $row['product_name']; ?></td>
-              <td>₹<?php echo $row['discount_price']; ?></td>
-              <td><?php echo $row['discount']; ?>%</td>
+              <td>₹<?php echo $row['original_price']; ?></td>
+              <td><?php echo $row['discount_price']; ?></td>
               <td><?php echo $row['stock']; ?></td>
             </tr>
           <?php } ?>
