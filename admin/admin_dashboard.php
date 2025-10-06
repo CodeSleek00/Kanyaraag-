@@ -82,6 +82,7 @@ $total_sales = $total_sales ? $total_sales : 0;
           <?php while($row = $product_list->fetch_assoc()) { ?>
             <tr>
               <td><?php echo $row['id']; ?></td>
+               <td><?php echo $row['product_image']; ?></td>
               <td><?php echo $row['product_name']; ?></td>
               <td>₹<?php echo $row['original_price']; ?></td>
               <td><?php echo $row['discount_price']; ?></td>
