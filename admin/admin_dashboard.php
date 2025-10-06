@@ -6,7 +6,7 @@ include '../db/db_connect.php'; // db connection
 $total_products = $conn->query("SELECT COUNT(*) as total FROM products")->fetch_assoc()['total'];
 
 // Product List
-$product_list = $conn->query("SELECT id, product_name, discount_price, discount, stock FROM products ORDER BY id DESC LIMIT 10");
+$product_list = $conn->query("SELECT id, product_name, original_price, discount_price, stock FROM products ORDER BY id DESC LIMIT 10");
 
 // Total Orders
 $total_orders = $conn->query("SELECT COUNT(*) as total FROM orders")->fetch_assoc()['total'];
