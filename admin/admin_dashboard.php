@@ -12,7 +12,7 @@ $product_list = $conn->query("SELECT id, product_name, original_price, discount_
 $total_orders = $conn->query("SELECT COUNT(*) as total FROM orders")->fetch_assoc()['total'];
 
 // Total Sales
-$total_sales = $conn->query("SELECT SUM(total_amount) as total FROM orders WHERE status='Completed'")->fetch_assoc()['total'];
+$total_sales = $conn->query("SELECT SUM(amount) as total FROM orders WHERE status='Completed'")->fetch_assoc()['total'];
 $total_sales = $total_sales ? $total_sales : 0;
 ?>
 <!DOCTYPE html>
