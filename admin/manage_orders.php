@@ -1,98 +1,60 @@
 <?php
-session_start();
-include '../db/db_connect.php';
+include '../database_connection/db_connect.php';
 
-// Fetch all orders
-$orders = $conn->query("SELECT * FROM orders ORDER BY id DESC");
+// Payment confirm action
+if (isset($_GET['confirm_payment'])) {
+    $order_id = intval($_GET['confirm_payment']);
 
-// Update logic
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $order_id = $_POST['order_id'];
-    $delivery_status = $_POST['delivery_status'] ?? null;
-    $payment_status  = $_POST['payment_status'] ?? null;
+    // Update payment_status
+    $conn->query("UPDATE orders SET payment_status = 'Confirmed' WHERE id = $order_id");
 
-    if ($delivery_status) {
-        $conn->query("UPDATE orders SET delivery_status='$delivery_status' WHERE id=$order_id");
-    }
-    if ($payment_status) {
-        $conn->query("UPDATE orders SET payment_status='$payment_status' WHERE id=$order_id");
-    }
-
-    header("Location: manage_orders.php?updated=1");
+    header("Location: manage_orders.php");
     exit;
 }
+
+// Fetch all orders
+$orders = $conn->query("SELECT id, customer_name, total_amount, delivery_status, payment_status FROM orders ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Manage Orders - Kanyaraag Admin</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body { background:#f8f9fa; }
-    .card { box-shadow:0 2px 10px rgba(0,0,0,0.1); border-radius:10px; }
-    select { min-width:150px; }
-  </style>
+    <meta charset="UTF-8">
+    <title>Manage Orders</title>
+    <style>
+        body {font-family: Arial, sans-serif; margin: 20px;}
+        table {width: 100%; border-collapse: collapse; margin-top: 20px;}
+        th, td {padding: 10px; border: 1px solid #ddd; text-align: center;}
+        th {background: #333; color: #fff;}
+        a {padding: 5px 10px; border-radius: 5px; text-decoration: none;}
+        .btn-confirm {background: green; color: white;}
+        .btn-status {background: blue; color: white;}
+    </style>
 </head>
-<body class="p-4">
-  <div class="container">
-    <h2 class="mb-4">Manage Orders</h2>
-
-    <?php if(isset($_GET['updated'])) { ?>
-      <div class="alert alert-success">Order updated successfully!</div>
-    <?php } ?>
-
-    <div class="card p-3">
-      <table class="table table-bordered align-middle">
-        <thead class="table-dark">
-          <tr>
+<body>
+    <h1>Manage Orders</h1>
+    <table>
+        <tr>
             <th>Order ID</th>
             <th>Customer</th>
             <th>Amount</th>
-            <th>Date</th>
-            <th>Payment Status</th>
             <th>Delivery Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php while($row = $orders->fetch_assoc()) { ?>
-          <tr>
-            <form method="post">
-              <td><?php echo $row['id']; ?></td>
-              <td><?php echo $row['customer_name'] ?? 'N/A'; ?></td>
-              <td>₹<?php echo $row['amount']; ?></td>
-              <td><?php echo $row['created_at']; ?></td>
-              
-              <!-- Payment Status -->
-              <td>
-                <select name="payment_status" class="form-select">
-                  <option value="Pending"   <?php if($row['payment_status']=='Pending') echo 'selected'; ?>>Pending</option>
-                  <option value="Confirmed" <?php if($row['payment_status']=='Confirmed') echo 'selected'; ?>>Confirmed</option>
-                  <option value="Failed"    <?php if($row['payment_status']=='Failed') echo 'selected'; ?>>Failed</option>
-                </select>
-              </td>
-
-              <!-- Delivery Status -->
-              <td>
-                <select name="delivery_status" class="form-select">
-                  <option value="Order Confirmed" <?php if($row['delivery_status']=='Order Confirmed') echo 'selected'; ?>>Order Confirmed</option>
-                  <option value="Dispatched"     <?php if($row['delivery_status']=='Dispatched') echo 'selected'; ?>>Dispatched</option>
-                  <option value="Shipped"        <?php if($row['delivery_status']=='Shipped') echo 'selected'; ?>>Shipped</option>
-                  <option value="Delivered"      <?php if($row['delivery_status']=='Delivered') echo 'selected'; ?>>Delivered</option>
-                </select>
-              </td>
-
-              <td>
-                <input type="hidden" name="order_id" value="<?php echo $row['id']; ?>">
-                <button type="submit" class="btn btn-sm btn-primary">Update</button>
-              </td>
-            </form>
-          </tr>
+            <th>Payment Status</th>
+            <th>Actions</th>
+        </tr>
+        <?php while ($row = $orders->fetch_assoc()) { ?>
+        <tr>
+            <td><?= $row['id'] ?></td>
+            <td><?= $row['customer_name'] ?></td>
+            <td>₹<?= $row['total_amount'] ?></td>
+            <td><?= $row['delivery_status'] ?></td>
+            <td><?= $row['payment_status'] ?></td>
+            <td>
+                <?php if ($row['payment_status'] !== 'Confirmed') { ?>
+                    <a class="btn-confirm" href="?confirm_payment=<?= $row['id'] ?>">Confirm Payment</a>
+                <?php } ?>
+            </td>
+        </tr>
         <?php } ?>
-        </tbody>
-      </table>
-    </div>
-  </div>
+    </table>
 </body>
 </html>
