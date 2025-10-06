@@ -1,5 +1,5 @@
 <?php
-include '../database_connection/db_connect.php';
+include '../db/db_connect.php';
 
 // Payment confirm action
 if (isset($_GET['confirm_payment'])) {
